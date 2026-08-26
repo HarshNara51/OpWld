@@ -27,7 +27,7 @@ public class AutoLODSetup : MonoBehaviour
 
             // The '0.5f' means the object drops out when it takes up less than 50% of the screen height. 
             // You can tweak this number!
-            lods[0] = new LOD(0.0f, renderers);
+            lods[0] = new LOD(0.05f, renderers);
 
             lodGroup.SetLODs(lods);
             lodGroup.RecalculateBounds();
