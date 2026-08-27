@@ -1,0 +1,187 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &5079335497286665923
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5078250620365217653}
+  - component: {fileID: 4536023127813788611}
+  m_Layer: 0
+  m_Name: Truck_Skin02_LODParent
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5078250620365217653
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5079335497286665923}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 198.44331, y: -0.55, z: 635.378}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1569290827446413037}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!205 &4536023127813788611
+LODGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5079335497286665923}
+  serializedVersion: 2
+  m_LocalReferencePoint: {x: -0.23536682, y: 2.1384976, z: 0.20711327}
+  m_Size: 8.823854
+  m_FadeMode: 0
+  m_AnimateCrossFading: 0
+  m_LastLODIsBillboard: 0
+  m_LODs:
+  - screenRelativeHeight: 0.5
+    fadeTransitionWidth: 0
+    renderers:
+    - renderer: {fileID: 6685962033732772581}
+    - renderer: {fileID: 8689558627748000609}
+    - renderer: {fileID: 1345616317061647738}
+    - renderer: {fileID: 1051105246226090998}
+    - renderer: {fileID: 3684998046319650462}
+    - renderer: {fileID: 5702627311878341955}
+    - renderer: {fileID: 7176703353896684558}
+    - renderer: {fileID: 1206827697556269000}
+    - renderer: {fileID: 9185498564418415770}
+    - renderer: {fileID: 6916211483118032297}
+  m_Enabled: 1
+--- !u!1001 &5072449260066249973
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 5078250620365217653}
+    m_Modifications:
+    - target: {fileID: 6026880677805947416, guid: a79eed4aa26be214694b482af97baf38, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.36
+      objectReference: {fileID: 0}
+    - target: {fileID: 6026880677805947416, guid: a79eed4aa26be214694b482af97baf38, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.36
+      objectReference: {fileID: 0}
+    - target: {fileID: 6026880677805947416, guid: a79eed4aa26be214694b482af97baf38, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.36
+      objectReference: {fileID: 0}
+    - target: {fileID: 6026880677805947416, guid: a79eed4aa26be214694b482af97baf38, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6026880677805947416, guid: a79eed4aa26be214694b482af97baf38, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6026880677805947416, guid: a79eed4aa26be214694b482af97baf38, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6026880677805947416, guid: a79eed4aa26be214694b482af97baf38, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6026880677805947416, guid: a79eed4aa26be214694b482af97baf38, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6026880677805947416, guid: a79eed4aa26be214694b482af97baf38, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6026880677805947416, guid: a79eed4aa26be214694b482af97baf38, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6026880677805947416, guid: a79eed4aa26be214694b482af97baf38, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6026880677805947416, guid: a79eed4aa26be214694b482af97baf38, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6026880677805947416, guid: a79eed4aa26be214694b482af97baf38, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7347783130161285131, guid: a79eed4aa26be214694b482af97baf38, type: 3}
+      propertyPath: m_Name
+      value: Truck_Skin02
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: a79eed4aa26be214694b482af97baf38, type: 3}
+--- !u!23 &1051105246226090998 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 5256460652660791043, guid: a79eed4aa26be214694b482af97baf38, type: 3}
+  m_PrefabInstance: {fileID: 5072449260066249973}
+  m_PrefabAsset: {fileID: 0}
+--- !u!23 &1206827697556269000 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 6258726809567804221, guid: a79eed4aa26be214694b482af97baf38, type: 3}
+  m_PrefabInstance: {fileID: 5072449260066249973}
+  m_PrefabAsset: {fileID: 0}
+--- !u!23 &1345616317061647738 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 6109242103351267727, guid: a79eed4aa26be214694b482af97baf38, type: 3}
+  m_PrefabInstance: {fileID: 5072449260066249973}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &1569290827446413037 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6026880677805947416, guid: a79eed4aa26be214694b482af97baf38, type: 3}
+  m_PrefabInstance: {fileID: 5072449260066249973}
+  m_PrefabAsset: {fileID: 0}
+--- !u!23 &3684998046319650462 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 8450806277089868395, guid: a79eed4aa26be214694b482af97baf38, type: 3}
+  m_PrefabInstance: {fileID: 5072449260066249973}
+  m_PrefabAsset: {fileID: 0}
+--- !u!23 &5702627311878341955 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 668565645574674870, guid: a79eed4aa26be214694b482af97baf38, type: 3}
+  m_PrefabInstance: {fileID: 5072449260066249973}
+  m_PrefabAsset: {fileID: 0}
+--- !u!23 &6685962033732772581 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 1922397889038056976, guid: a79eed4aa26be214694b482af97baf38, type: 3}
+  m_PrefabInstance: {fileID: 5072449260066249973}
+  m_PrefabAsset: {fileID: 0}
+--- !u!23 &6916211483118032297 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 1846374732380457308, guid: a79eed4aa26be214694b482af97baf38, type: 3}
+  m_PrefabInstance: {fileID: 5072449260066249973}
+  m_PrefabAsset: {fileID: 0}
+--- !u!23 &7176703353896684558 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 2737115549617934587, guid: a79eed4aa26be214694b482af97baf38, type: 3}
+  m_PrefabInstance: {fileID: 5072449260066249973}
+  m_PrefabAsset: {fileID: 0}
+--- !u!23 &8689558627748000609 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 4536099207931015060, guid: a79eed4aa26be214694b482af97baf38, type: 3}
+  m_PrefabInstance: {fileID: 5072449260066249973}
+  m_PrefabAsset: {fileID: 0}
+--- !u!23 &9185498564418415770 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 4115595155559690351, guid: a79eed4aa26be214694b482af97baf38, type: 3}
+  m_PrefabInstance: {fileID: 5072449260066249973}
+  m_PrefabAsset: {fileID: 0}
