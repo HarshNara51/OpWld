@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6734416886239973458}
   - component: {fileID: 6976746452315929288}
+  - component: {fileID: 4398841090786131049}
   m_Layer: 0
   m_Name: fence01_LODParent
   m_TagString: Untagged
@@ -52,6 +53,27 @@ LODGroup:
     renderers:
     - renderer: {fileID: 2472656765380524843}
   m_Enabled: 1
+--- !u!65 &4398841090786131049
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 870808781118731987}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 3.74, y: 0.3, z: 1.28}
+  m_Center: {x: 1.75, y: 0, z: 0.66}
 --- !u!1001 &6785876972980214992
 PrefabInstance:
   m_ObjectHideFlags: 0

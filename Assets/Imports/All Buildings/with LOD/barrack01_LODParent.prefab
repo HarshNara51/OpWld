@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3833279684693809990}
   - component: {fileID: 6262610421527514744}
+  - component: {fileID: 3512510950697966382}
   m_Layer: 0
   m_Name: barrack01_LODParent
   m_TagString: Untagged
@@ -52,6 +53,27 @@ LODGroup:
     renderers:
     - renderer: {fileID: 2887414811725467776}
   m_Enabled: 1
+--- !u!65 &3512510950697966382
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 131633968411083288}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 5.15, y: 2.05, z: 2.25}
+  m_Center: {x: 0, y: 0, z: 1.15}
 --- !u!1001 &2593957477363945957
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6731432756368556590}
   - component: {fileID: 8455008194064865718}
+  - component: {fileID: 6771640048924532673}
   m_Layer: 0
   m_Name: watertank01_LODParent
   m_TagString: Untagged
@@ -52,6 +53,27 @@ LODGroup:
     renderers:
     - renderer: {fileID: 8126597990098000625}
   m_Enabled: 1
+--- !u!65 &6771640048924532673
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2798541194911920474}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 3.55, y: 3.55, z: 3.2}
+  m_Center: {x: 0, y: 0, z: 3.27}
 --- !u!1001 &7282695171765051162
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1452968442468109714}
   - component: {fileID: 8305442459831023700}
+  - component: {fileID: 4541364312368950307}
   m_Layer: 0
   m_Name: truck01_LODParent
   m_TagString: Untagged
@@ -52,6 +53,27 @@ LODGroup:
     renderers:
     - renderer: {fileID: 6813461635394430693}
   m_Enabled: 1
+--- !u!65 &4541364312368950307
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2661517350290720885}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 5, y: 2.39, z: 1.75}
+  m_Center: {x: 0, y: 0, z: 0.8}
 --- !u!1001 &7808594522777967291
 PrefabInstance:
   m_ObjectHideFlags: 0
