@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &4041742681953452782
+--- !u!1 &3724142333469126848
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,57 +8,79 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 3269636650556563687}
-  - component: {fileID: 6678776256870168407}
+  - component: {fileID: 1571788837739531827}
+  - component: {fileID: 177129574416013078}
+  - component: {fileID: 4964884097019185441}
   m_Layer: 0
-  m_Name: tractor_231220_LODParent 1
+  m_Name: TractorMaster
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &3269636650556563687
+--- !u!4 &1571788837739531827
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4041742681953452782}
+  m_GameObject: {fileID: 3724142333469126848}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.3072962, y: -0.63684314, z: -0.63684297, w: 0.30729622}
-  m_LocalPosition: {x: 810.9254, y: -0.000006556511, z: 501.8648}
+  m_LocalRotation: {x: -0.62193316, y: -0.33645093, z: -0.33645085, w: 0.62193316}
+  m_LocalPosition: {x: 109.58, y: 0, z: 719.27}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 2518442843585839206}
+  - {fileID: 4482403973349386129}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!205 &6678776256870168407
+--- !u!205 &177129574416013078
 LODGroup:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4041742681953452782}
+  m_GameObject: {fileID: 3724142333469126848}
   serializedVersion: 2
-  m_LocalReferencePoint: {x: -0.010254145, y: 0.021484375, z: 1.3623047}
-  m_Size: 4.2578144
+  m_LocalReferencePoint: {x: -0.0102546215, y: 0.021484375, z: 1.3623054}
+  m_Size: 4.2578154
   m_FadeMode: 0
   m_AnimateCrossFading: 0
   m_LastLODIsBillboard: 0
   m_LODs:
-  - screenRelativeHeight: 0.10469577
+  - screenRelativeHeight: 0.0972809
     fadeTransitionWidth: 0
     renderers:
-    - renderer: {fileID: 6012274202523220814}
+    - renderer: {fileID: 5739872145385790649}
   m_Enabled: 1
---- !u!1001 &4250118507611976050
+--- !u!65 &4964884097019185441
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3724142333469126848}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 2.15, y: 4.5, z: 2.5}
+  m_Center: {x: 0, y: 0, z: 1.35}
+--- !u!1001 &2755227180207396485
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 3269636650556563687}
+    m_TransformParent: {fileID: 1571788837739531827}
     m_Modifications:
     - target: {fileID: 1358376842708493735, guid: 7386f1e649baf6044b51bba6dc144213, type: 3}
       propertyPath: m_Name
@@ -102,20 +124,20 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1731698034498695444, guid: 7386f1e649baf6044b51bba6dc144213, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: -128.483
+      value: -56.825
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7386f1e649baf6044b51bba6dc144213, type: 3}
---- !u!4 &2518442843585839206 stripped
+--- !u!4 &4482403973349386129 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1731698034498695444, guid: 7386f1e649baf6044b51bba6dc144213, type: 3}
-  m_PrefabInstance: {fileID: 4250118507611976050}
+  m_PrefabInstance: {fileID: 2755227180207396485}
   m_PrefabAsset: {fileID: 0}
---- !u!23 &6012274202523220814 stripped
+--- !u!23 &5739872145385790649 stripped
 MeshRenderer:
   m_CorrespondingSourceObject: {fileID: 7607872572396554812, guid: 7386f1e649baf6044b51bba6dc144213, type: 3}
-  m_PrefabInstance: {fileID: 4250118507611976050}
+  m_PrefabInstance: {fileID: 2755227180207396485}
   m_PrefabAsset: {fileID: 0}
