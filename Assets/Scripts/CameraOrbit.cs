@@ -18,6 +18,11 @@ public class CameraOrbit : MonoBehaviour
     private float yaw;
     private float pitch;
 
+    public void SetTarget(Transform newTarget)
+    {
+        target = newTarget;
+    }
+
     private void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
