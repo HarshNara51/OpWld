@@ -1518,6 +1518,7 @@ GameObject:
   - component: {fileID: 104977803}
   - component: {fileID: 104977802}
   - component: {fileID: 104977801}
+  - component: {fileID: 104977804}
   m_Layer: 0
   m_Name: Spline (3)
   m_TagString: Untagged
@@ -1659,7 +1660,7 @@ MonoBehaviour:
   m_UpdateColliders: 1
   m_Sides: 8
   m_SegmentsPerUnit: 4
-  m_Capped: 1
+  m_Capped: 0
   m_Radius: 10
   m_Range: {x: 0, y: 1}
   m_FlipNormals: 0
@@ -1727,6 +1728,28 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 104977798}
+  m_Mesh: {fileID: 0}
+--- !u!64 &104977804
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 104977798}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 0
+  m_CookingOptions: 30
   m_Mesh: {fileID: 0}
 --- !u!1001 &120356546
 PrefabInstance:
@@ -1989,6 +2012,7 @@ GameObject:
   - component: {fileID: 136671724}
   - component: {fileID: 136671723}
   - component: {fileID: 136671722}
+  - component: {fileID: 136671726}
   m_Layer: 0
   m_Name: Spline (13)
   m_TagString: Untagged
@@ -2179,6 +2203,28 @@ MonoBehaviour:
       m_Data: []
   m_Knots:
     m_KnotsLink: []
+--- !u!64 &136671726
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 136671720}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 0}
 --- !u!1001 &137165530
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2715,6 +2761,7 @@ GameObject:
   - component: {fileID: 182480922}
   - component: {fileID: 182480921}
   - component: {fileID: 182480920}
+  - component: {fileID: 182480923}
   m_Layer: 0
   m_Name: Spline (4)
   m_TagString: Untagged
@@ -3016,7 +3063,7 @@ MonoBehaviour:
   m_UpdateColliders: 1
   m_Sides: 8
   m_SegmentsPerUnit: 4
-  m_Capped: 1
+  m_Capped: 0
   m_Radius: 10
   m_Range: {x: 0, y: 1}
   m_FlipNormals: 0
@@ -3084,6 +3131,28 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 182480917}
+  m_Mesh: {fileID: 0}
+--- !u!64 &182480923
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 182480917}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 0
+  m_CookingOptions: 30
   m_Mesh: {fileID: 0}
 --- !u!4 &185297260 stripped
 Transform:
@@ -3710,6 +3779,7 @@ GameObject:
   - component: {fileID: 213430742}
   - component: {fileID: 213430741}
   - component: {fileID: 213430740}
+  - component: {fileID: 213430743}
   m_Layer: 0
   m_Name: Spline (5)
   m_TagString: Untagged
@@ -3871,7 +3941,7 @@ MonoBehaviour:
   m_UpdateColliders: 1
   m_Sides: 8
   m_SegmentsPerUnit: 4
-  m_Capped: 1
+  m_Capped: 0
   m_Radius: 10
   m_Range: {x: 0, y: 1}
   m_FlipNormals: 0
@@ -3939,6 +4009,28 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 213430737}
+  m_Mesh: {fileID: 0}
+--- !u!64 &213430743
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 213430737}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 0
+  m_CookingOptions: 30
   m_Mesh: {fileID: 0}
 --- !u!1001 &213745729
 PrefabInstance:
@@ -6438,6 +6530,7 @@ GameObject:
   - component: {fileID: 358824395}
   - component: {fileID: 358824394}
   - component: {fileID: 358824393}
+  - component: {fileID: 358824396}
   m_Layer: 0
   m_Name: Spline (7)
   m_TagString: Untagged
@@ -6627,6 +6720,28 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 358824390}
+  m_Mesh: {fileID: 0}
+--- !u!64 &358824396
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 358824390}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 0
+  m_CookingOptions: 30
   m_Mesh: {fileID: 0}
 --- !u!1 &359046056
 GameObject:
@@ -10339,6 +10454,7 @@ GameObject:
   - component: {fileID: 679862079}
   - component: {fileID: 679862078}
   - component: {fileID: 679862077}
+  - component: {fileID: 679862080}
   m_Layer: 0
   m_Name: Spline (2)
   m_TagString: Untagged
@@ -10460,7 +10576,7 @@ MonoBehaviour:
   m_UpdateColliders: 1
   m_Sides: 8
   m_SegmentsPerUnit: 4
-  m_Capped: 1
+  m_Capped: 0
   m_Radius: 10
   m_Range: {x: 0, y: 1}
   m_FlipNormals: 0
@@ -10528,6 +10644,28 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 679862074}
+  m_Mesh: {fileID: 0}
+--- !u!64 &679862080
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 679862074}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 0
+  m_CookingOptions: 30
   m_Mesh: {fileID: 0}
 --- !u!1001 &679951962
 PrefabInstance:
@@ -11430,6 +11568,7 @@ GameObject:
   - component: {fileID: 734580445}
   - component: {fileID: 734580444}
   - component: {fileID: 734580443}
+  - component: {fileID: 734580447}
   m_Layer: 0
   m_Name: Spline (12)
   m_TagString: Untagged
@@ -11471,7 +11610,7 @@ MonoBehaviour:
   m_UpdateColliders: 1
   m_Sides: 8
   m_SegmentsPerUnit: 4
-  m_Capped: 1
+  m_Capped: 0
   m_Radius: 10
   m_Range: {x: 0, y: 1}
   m_FlipNormals: 0
@@ -11620,6 +11759,28 @@ MonoBehaviour:
       m_Data: []
   m_Knots:
     m_KnotsLink: []
+--- !u!64 &734580447
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 734580441}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 0}
 --- !u!1001 &737878151
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -15053,6 +15214,7 @@ GameObject:
   - component: {fileID: 1014937414}
   - component: {fileID: 1014937413}
   - component: {fileID: 1014937412}
+  - component: {fileID: 1014937415}
   m_Layer: 0
   m_Name: Spline (10)
   m_TagString: Untagged
@@ -15242,6 +15404,28 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1014937409}
+  m_Mesh: {fileID: 0}
+--- !u!64 &1014937415
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1014937409}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 0
+  m_CookingOptions: 30
   m_Mesh: {fileID: 0}
 --- !u!1001 &1016230069
 PrefabInstance:
@@ -16780,6 +16964,7 @@ GameObject:
   - component: {fileID: 1105786578}
   - component: {fileID: 1105786577}
   - component: {fileID: 1105786576}
+  - component: {fileID: 1105786579}
   m_Layer: 0
   m_Name: Spline (8)
   m_TagString: Untagged
@@ -17049,6 +17234,28 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1105786573}
+  m_Mesh: {fileID: 0}
+--- !u!64 &1105786579
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1105786573}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 0
+  m_CookingOptions: 30
   m_Mesh: {fileID: 0}
 --- !u!1001 &1109479933
 PrefabInstance:
@@ -22023,6 +22230,7 @@ GameObject:
   - component: {fileID: 1559117977}
   - component: {fileID: 1559117976}
   - component: {fileID: 1559117975}
+  - component: {fileID: 1559117978}
   m_Layer: 0
   m_Name: Spline (6)
   m_TagString: Untagged
@@ -22164,7 +22372,7 @@ MonoBehaviour:
   m_UpdateColliders: 1
   m_Sides: 8
   m_SegmentsPerUnit: 4
-  m_Capped: 1
+  m_Capped: 0
   m_Radius: 10
   m_Range: {x: 0, y: 1}
   m_FlipNormals: 0
@@ -22232,6 +22440,28 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1559117972}
+  m_Mesh: {fileID: 0}
+--- !u!64 &1559117978
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1559117972}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 0
+  m_CookingOptions: 30
   m_Mesh: {fileID: 0}
 --- !u!1 &1559718220
 GameObject:
@@ -23346,6 +23576,7 @@ GameObject:
   - component: {fileID: 1635440071}
   - component: {fileID: 1635440070}
   - component: {fileID: 1635440069}
+  - component: {fileID: 1635440072}
   m_Layer: 0
   m_Name: Spline (1)
   m_TagString: Untagged
@@ -23547,7 +23778,7 @@ MonoBehaviour:
   m_UpdateColliders: 1
   m_Sides: 8
   m_SegmentsPerUnit: 4
-  m_Capped: 1
+  m_Capped: 0
   m_Radius: 10
   m_Range: {x: 0, y: 1}
   m_FlipNormals: 0
@@ -23615,6 +23846,28 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1635440066}
+  m_Mesh: {fileID: 0}
+--- !u!64 &1635440072
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1635440066}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 0
+  m_CookingOptions: 30
   m_Mesh: {fileID: 0}
 --- !u!1001 &1636271251
 PrefabInstance:
@@ -25318,6 +25571,7 @@ GameObject:
   - component: {fileID: 1746104613}
   - component: {fileID: 1746104612}
   - component: {fileID: 1746104611}
+  - component: {fileID: 1746104614}
   m_Layer: 0
   m_Name: Spline
   m_TagString: Untagged
@@ -25547,6 +25801,28 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1746104608}
+  m_Mesh: {fileID: 0}
+--- !u!64 &1746104614
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1746104608}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 0
+  m_CookingOptions: 30
   m_Mesh: {fileID: 0}
 --- !u!1 &1748021034
 GameObject:
@@ -27519,6 +27795,7 @@ GameObject:
   - component: {fileID: 1860688937}
   - component: {fileID: 1860688936}
   - component: {fileID: 1860688935}
+  - component: {fileID: 1860688938}
   m_Layer: 0
   m_Name: Spline (9)
   m_TagString: Untagged
@@ -27660,7 +27937,7 @@ MonoBehaviour:
   m_UpdateColliders: 1
   m_Sides: 8
   m_SegmentsPerUnit: 4
-  m_Capped: 1
+  m_Capped: 0
   m_Radius: 10
   m_Range: {x: 0, y: 1}
   m_FlipNormals: 0
@@ -27728,6 +28005,28 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1860688932}
+  m_Mesh: {fileID: 0}
+--- !u!64 &1860688938
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1860688932}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 0
+  m_CookingOptions: 30
   m_Mesh: {fileID: 0}
 --- !u!1001 &1861938168
 PrefabInstance:
@@ -28470,6 +28769,7 @@ GameObject:
   - component: {fileID: 1894190396}
   - component: {fileID: 1894190395}
   - component: {fileID: 1894190394}
+  - component: {fileID: 1894190398}
   m_Layer: 0
   m_Name: Spline (11)
   m_TagString: Untagged
@@ -28511,7 +28811,7 @@ MonoBehaviour:
   m_UpdateColliders: 1
   m_Sides: 8
   m_SegmentsPerUnit: 4
-  m_Capped: 1
+  m_Capped: 0
   m_Radius: 10
   m_Range: {x: 0, y: 1}
   m_FlipNormals: 0
@@ -28660,6 +28960,28 @@ MonoBehaviour:
       m_Data: []
   m_Knots:
     m_KnotsLink: []
+--- !u!64 &1894190398
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1894190392}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 0}
 --- !u!1001 &1897411242
 PrefabInstance:
   m_ObjectHideFlags: 0
