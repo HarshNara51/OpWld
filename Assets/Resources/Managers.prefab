@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1715042755324608199}
   - component: {fileID: 5199641313413962664}
+  - component: {fileID: 7753623550526555425}
   m_Layer: 0
   m_Name: Managers
   m_TagString: Untagged
@@ -46,3 +47,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
   hubSceneName: Hub
   mainMenuSceneName: MainMenu
+--- !u!114 &7753623550526555425
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7198674379158672777}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4485e1c0a2ce36f4e928d152febc03fb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::VehicleSummon
+  summonKey: 118
+  distanceInFront: 4
+  groundMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
