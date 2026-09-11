@@ -2281,7 +2281,8 @@ PrefabInstance:
       propertyPath: m_Name
       value: Prometheus
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 3741254513817496329, guid: 79d0ca8b77e301442afdb49f102e8aed, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 261786959625234688, guid: 79d0ca8b77e301442afdb49f102e8aed, type: 3}
@@ -10291,6 +10292,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: HumanDummy_F White
       objectReference: {fileID: 0}
+    - target: {fileID: 990903540611260484, guid: 8e1471e805192fd4e902f7cc7eec8378, type: 3}
+      propertyPath: m_TagString
+      value: Player
+      objectReference: {fileID: 0}
     - target: {fileID: 5794894658370936964, guid: 8e1471e805192fd4e902f7cc7eec8378, type: 3}
       propertyPath: m_Controller
       value: 
@@ -15012,6 +15017,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 15785608844ea9f48a2aa076ecc1c4f0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ReturnHomeTrigger
+  interactKey: 101
 --- !u!135 &984030852
 SphereCollider:
   m_ObjectHideFlags: 0

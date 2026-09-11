@@ -12,9 +12,6 @@ public class ReturnHomeTrigger : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        // TEMP DIAGNOSTIC — remove once ReturnHome is confirmed working
-        Debug.Log($"[DIAGNOSTIC] Something entered ReturnHome trigger: name={other.name}, tag={other.tag}");
-
         if (!other.CompareTag("Player")) return;
         playerInRange = true;
         Debug.Log($"Press {interactKey} to return to Hub");
