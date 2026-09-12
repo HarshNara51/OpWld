@@ -22,12 +22,9 @@ public class Mission1Manager : MonoBehaviour
         Instance = this;
     }
 
-    private void Start()
-    {
-        StartMission();
-    }
-
-    private void StartMission()
+    // Called by MissionBriefing once the player has read the
+    // instructions and the 3-2-1 countdown finishes.
+    public void StartMission()
     {
         CurrentState = MissionState.InProgress;
         deliveredCount = 0;
