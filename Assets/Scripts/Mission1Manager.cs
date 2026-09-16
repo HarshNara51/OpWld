@@ -71,7 +71,7 @@ public class Mission1Manager : MonoBehaviour
 
         CurrentState = MissionState.Success;
         Debug.Log("Mission Complete!");
-        GameManager.Instance.ReturnToHub();
+        MissionResultUI.Instance.ShowMessage("Mission Complete!");
     }
 
     public void FailMission(string reason)
