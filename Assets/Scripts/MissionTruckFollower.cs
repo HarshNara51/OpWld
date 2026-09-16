@@ -143,8 +143,7 @@ public class MissionTruckFollower : MonoBehaviour
         yield return new WaitForSeconds(stopDurationSeconds);
         state = State.DrivingToEnd;
         Debug.Log("Truck resuming.");
-        // Hook point: once Mission3Manager exists, tell it the trucks
-        // are leaving so it can show "get in your car and follow them".
+        Mission3Manager.Instance?.OnTrucksLeavingFarm();
     }
 
     private Vector3 SnapToGround(Vector3 pos)
