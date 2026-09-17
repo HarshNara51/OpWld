@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Mission1Manager : MonoBehaviour
+public class Mission1Manager : MonoBehaviour, IFailableMission
 {
     public static Mission1Manager Instance { get; private set; }
 
@@ -9,6 +9,9 @@ public class Mission1Manager : MonoBehaviour
 
     [Tooltip("All cargo pickup points in this mission, in the order they should unlock")]
     [SerializeField] private CargoPickup[] cargoPickups;
+
+    [Tooltip("Optional - toggles mission-only objects off and reveal objects on when the mission succeeds")]
+    [SerializeField] private MissionCleanup cleanup;
 
     private int nextPickupIndex;
     private int deliveredCount;
@@ -72,6 +75,7 @@ public class Mission1Manager : MonoBehaviour
         CurrentState = MissionState.Success;
         Debug.Log("Mission Complete!");
         MissionResultUI.Instance.ShowMessage("Mission Complete!");
+        if (cleanup != null) cleanup.ApplySuccessState();
     }
 
     public void FailMission(string reason)

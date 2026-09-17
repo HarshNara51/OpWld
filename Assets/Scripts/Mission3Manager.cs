@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Mission3Manager : MonoBehaviour
+public class Mission3Manager : MonoBehaviour, IFailableMission
 {
     public static Mission3Manager Instance { get; private set; }
 
@@ -22,6 +22,9 @@ public class Mission3Manager : MonoBehaviour
 
     [Tooltip("Player must be inside this when the trucks arrive, and stay inside until they leave")]
     [SerializeField] private HideZone hideZone;
+
+    [Tooltip("Only turned on during the Following phase, so it can't trigger while hiding near the parked trucks")]
+    [SerializeField] private SuspicionManager suspicion;
 
     public bool BodyFound { get; private set; }
     public int CluesFound { get; private set; }
@@ -94,6 +97,7 @@ public class Mission3Manager : MonoBehaviour
 
         CurrentState = MissionState.Following;
         Debug.Log("Trucks are leaving. Get in your car and follow them - don't get too close.");
+        if (suspicion != null) suspicion.SetActive(true);
     }
 
     // Hook point: called by a photo-capture trigger, next up
@@ -102,7 +106,8 @@ public class Mission3Manager : MonoBehaviour
         if (CurrentState != MissionState.Following) return;
 
         CurrentState = MissionState.Delivering;
-        Debug.Log("Photo captured. Deliver it to the police.");
+        Debug.Log("Final photo captured! Now deliver it to the police station.");
+        if (suspicion != null) suspicion.SetActive(false);
     }
 
     // Hook point: called by a police delivery trigger, next up
@@ -111,6 +116,7 @@ public class Mission3Manager : MonoBehaviour
         if (CurrentState != MissionState.Delivering) return;
 
         CurrentState = MissionState.Success;
+        Debug.Log("All photos and evidence delivered.");
         Debug.Log("Mission Complete!");
         MissionResultUI.Instance.ShowMessage("Mission Complete!");
     }

@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-// Put this on an empty GameObject in Mission1_Railway (scene-local,
+// Put this on an empty GameObject in any mission scene (scene-local,
 // resets fresh each time the mission is attempted).
 public class SuspicionManager : MonoBehaviour
 {
@@ -13,30 +13,50 @@ public class SuspicionManager : MonoBehaviour
     [Tooltip("Decay speed per second once clear of every source")]
     [SerializeField] private float decayRate = 15f;
 
+    [Tooltip("Whether detection runs at all - leave true for missions like Mission 1 where cops are active from the start. Set false here and call SetActive(true) at the right moment for missions like Mission 3, where it shouldn't matter until a specific phase (e.g. the chase, not while hiding near parked trucks).")]
+    [SerializeField] private bool startActive = true;
+
+    [Tooltip("Whichever mission manager is in this scene - must implement IFailableMission")]
+    [SerializeField] private MonoBehaviour missionManagerSource;
+
     private readonly List<SuspicionSource> sources = new List<SuspicionSource>();
+    private IFailableMission missionManager;
     private Transform player;
     private Transform car;
     private float currentSuspicion;
     private bool busted;
+    private bool isActive;
 
     public float Percent01 => currentSuspicion / maxSuspicion;
 
     private void Awake()
     {
         Instance = this;
+        isActive = startActive;
 
         GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
         if (playerObj != null) player = playerObj.transform;
 
         GameObject carObj = GameObject.FindGameObjectWithTag("PlayerCar");
         if (carObj != null) car = carObj.transform;
+
+        missionManager = missionManagerSource as IFailableMission;
+        if (missionManager == null)
+        {
+            Debug.LogWarning("SuspicionManager: Mission Manager Source isn't assigned, or doesn't implement IFailableMission.");
+        }
+    }
+
+    public void SetActive(bool active)
+    {
+        isActive = active;
     }
 
     private void Start()
     {
         // Start() runs after every object's Awake() has completed, so this
-        // reliably finds every cop/thief already placed in the scene —
-        // sidesteps the OnEnable ordering issue entirely.
+        // reliably finds every cop/thief/truck already placed in the
+        // scene — sidesteps the OnEnable ordering issue entirely.
         sources.AddRange(FindObjectsByType<SuspicionSource>(FindObjectsInactive.Exclude, FindObjectsSortMode.None));
     }
 
@@ -51,7 +71,7 @@ public class SuspicionManager : MonoBehaviour
 
     private void Update()
     {
-        if (busted) return;
+        if (busted || !isActive) return;
 
         Transform target = GetDetectionTarget();
         if (target == null) return;
@@ -83,7 +103,7 @@ public class SuspicionManager : MonoBehaviour
         if (currentSuspicion >= maxSuspicion)
         {
             busted = true;
-            Mission1Manager.Instance.FailMission("Spotted");
+            missionManager?.FailMission("Spotted");
         }
     }
 }
