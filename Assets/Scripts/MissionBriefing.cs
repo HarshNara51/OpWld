@@ -1,8 +1,9 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Events;
 using TMPro;
 
-// Put this on an empty GameObject in Mission1_Railway, alongside a
+// Put this on an empty GameObject in each mission scene, alongside a
 // briefing panel (instructions + OK button) and a countdown panel
 // (one big number). Both panels are children of this same object
 // or referenced directly - either is fine.
@@ -12,6 +13,9 @@ public class MissionBriefing : MonoBehaviour
     [SerializeField] private GameObject countdownPanel;
     [SerializeField] private TMP_Text countdownText;
     [SerializeField] private int countdownSeconds = 3;
+
+    [Tooltip("Wire this per-scene: e.g. Mission1Manager.StartMission + TrainTimer.StartTimer for Railway, or just Mission3Manager.StartMission for Farm")]
+    [SerializeField] private UnityEvent onMissionStart;
 
     private void Start()
     {
@@ -33,6 +37,9 @@ public class MissionBriefing : MonoBehaviour
     // Wire this to the briefing panel's OK button OnClick event
     public void OnOkPressed()
     {
+        // TEMP DIAGNOSTIC - remove once click is confirmed working
+        Debug.Log("[DIAGNOSTIC] OnOkPressed called.");
+
         if (briefingPanel != null) briefingPanel.SetActive(false);
         StartCoroutine(CountdownRoutine());
     }
@@ -58,7 +65,6 @@ public class MissionBriefing : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
 
-        Mission1Manager.Instance.StartMission();
-        TrainTimer.Instance.StartTimer();
+        onMissionStart?.Invoke();
     }
 }

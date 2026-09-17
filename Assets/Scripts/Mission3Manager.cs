@@ -6,16 +6,22 @@ public class Mission3Manager : MonoBehaviour
 
     public enum MissionState
     {
-        Setup, Searching, Investigating, WaitingForTrucks,
-        TrucksAtFarm, Following, Delivering, Success, Failed
+        Setup, Searching, Investigating, TrucksAtFarm,
+        Following, Delivering, Success, Failed
     }
     public MissionState CurrentState { get; private set; } = MissionState.Setup;
 
-    [Tooltip("Total clues to find before the countdown can start")]
+    [Tooltip("Total clues to find before the trucks arrive")]
     [SerializeField] private int totalClues = 5;
 
-    [Tooltip("Starts once all clues are found")]
+    [Tooltip("Starts the instant the body is photographed")]
     [SerializeField] private TruckArrivalCountdown truckCountdown;
+
+    [Tooltip("Starts moving the instant the body is photographed - same moment as the countdown")]
+    [SerializeField] private MissionTruckFollower leadTruck;
+
+    [Tooltip("Player must be inside this when the trucks arrive, and stay inside until they leave")]
+    [SerializeField] private HideZone hideZone;
 
     public bool BodyFound { get; private set; }
     public int CluesFound { get; private set; }
@@ -36,13 +42,19 @@ public class Mission3Manager : MonoBehaviour
         BodyFound = false;
     }
 
+    // Called by BodyDiscoveryZone when the player presses the key at
+    // the body - this is the moment everything else kicks off.
     public void OnBodyFound()
     {
         if (CurrentState != MissionState.Searching || BodyFound) return;
 
         BodyFound = true;
         CurrentState = MissionState.Investigating;
-        Debug.Log("Farmer's body discovered. Find the clues before the trucks arrive.");
+        Debug.Log("Photograph captured.");
+        Debug.Log("Capture all 5 clues before the trucks arrive, and hide immediately!");
+
+        if (truckCountdown != null) truckCountdown.StartCountdown();
+        if (leadTruck != null) leadTruck.BeginMoving();
     }
 
     public void OnClueFound()
@@ -50,23 +62,29 @@ public class Mission3Manager : MonoBehaviour
         if (CurrentState != MissionState.Investigating) return;
 
         CluesFound++;
-        Debug.Log($"Clue found ({CluesFound}/{totalClues})");
-
-        if (CluesFound >= totalClues)
-        {
-            CurrentState = MissionState.WaitingForTrucks;
-            Debug.Log("All clues found. Hide before the trucks arrive!");
-            if (truckCountdown != null) truckCountdown.StartCountdown();
-        }
+        Debug.Log($"Photograph captured. Clue {CluesFound}/{totalClues}");
     }
 
-    // Called by TruckArrivalCountdown once it hits zero
+    // Called by TruckArrivalCountdown at zero - this is also exactly
+    // when the trucks reach the farm entrance.
     public void OnCountdownFinished()
     {
-        if (CurrentState != MissionState.WaitingForTrucks) return;
+        if (CurrentState != MissionState.Investigating) return;
+
+        if (CluesFound < totalClues)
+        {
+            FailMission("Spotted");
+            return;
+        }
+
+        if (hideZone != null && !hideZone.PlayerInside)
+        {
+            FailMission("Spotted");
+            return;
+        }
 
         CurrentState = MissionState.TrucksAtFarm;
-        Debug.Log("The trucks have arrived.");
+        Debug.Log("The trucks have arrived. Stay hidden.");
     }
 
     // Called by the lead MissionTruckFollower once it resumes after its pause
