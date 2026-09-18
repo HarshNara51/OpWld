@@ -2445,6 +2445,10 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 627556911, guid: 79d0ca8b77e301442afdb49f102e8aed, type: 3}
+      propertyPath: useSounds
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 261786959625234688, guid: 79d0ca8b77e301442afdb49f102e8aed, type: 3}
       propertyPath: m_LocalPosition.x
       value: 315.70847
@@ -15061,7 +15065,19 @@ MonoBehaviour:
   targetZoneWidth: 60
   onSolved:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1119763968}
+        m_TargetAssemblyTypeName: StealableCarInteraction, Assembly-CSharp
+        m_MethodName: EnterVehicle
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1001 &930848035
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -18307,90 +18323,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 7393988252432483256, guid: c2bad9163ee79a044ba28a79ec6db83f, type: 3}
   m_PrefabInstance: {fileID: 1118393569}
   m_PrefabAsset: {fileID: 0}
---- !u!1001 &1119763966
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 1655846266327382128, guid: 4a98efaf6a87fcc468578d62c0aeae59, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 210.39
-      objectReference: {fileID: 0}
-    - target: {fileID: 1655846266327382128, guid: 4a98efaf6a87fcc468578d62c0aeae59, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0.0011472106
-      objectReference: {fileID: 0}
-    - target: {fileID: 1655846266327382128, guid: 4a98efaf6a87fcc468578d62c0aeae59, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 583.86
-      objectReference: {fileID: 0}
-    - target: {fileID: 1655846266327382128, guid: 4a98efaf6a87fcc468578d62c0aeae59, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 0.53729963
-      objectReference: {fileID: 0}
-    - target: {fileID: 1655846266327382128, guid: 4a98efaf6a87fcc468578d62c0aeae59, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1655846266327382128, guid: 4a98efaf6a87fcc468578d62c0aeae59, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0.8433915
-      objectReference: {fileID: 0}
-    - target: {fileID: 1655846266327382128, guid: 4a98efaf6a87fcc468578d62c0aeae59, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1655846266327382128, guid: 4a98efaf6a87fcc468578d62c0aeae59, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1655846266327382128, guid: 4a98efaf6a87fcc468578d62c0aeae59, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 115
-      objectReference: {fileID: 0}
-    - target: {fileID: 1655846266327382128, guid: 4a98efaf6a87fcc468578d62c0aeae59, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5019934796592424552, guid: 4a98efaf6a87fcc468578d62c0aeae59, type: 3}
-      propertyPath: m_Name
-      value: Free Racing Car Gray Variant
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 5019934796592424552, guid: 4a98efaf6a87fcc468578d62c0aeae59, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1119763968}
-  m_SourcePrefab: {fileID: 100100000, guid: 4a98efaf6a87fcc468578d62c0aeae59, type: 3}
---- !u!1 &1119763967 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 5019934796592424552, guid: 4a98efaf6a87fcc468578d62c0aeae59, type: 3}
-  m_PrefabInstance: {fileID: 1119763966}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1119763968
+--- !u!114 &1119763968 stripped
 MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 2826227614068287652, guid: 4a98efaf6a87fcc468578d62c0aeae59, type: 3}
+  m_PrefabInstance: {fileID: 7010458740474724707}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1119763967}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7fc6dd55f5e82ef4cbf94416c4d071e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::StealableCarInteraction
-  player: {fileID: 1011221632}
-  carControllerScript: {fileID: 0}
-  cameraOrbit: {fileID: 0}
-  exitPoint: {fileID: 0}
-  stealPuzzle: {fileID: 0}
-  interactionRange: 3
-  interactKey: 101
 --- !u!1001 &1119803677
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -21031,85 +20974,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 695053929}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1357587510
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1357587513}
-  - component: {fileID: 1357587512}
-  - component: {fileID: 1357587511}
-  m_Layer: 0
-  m_Name: EventSystem
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1357587511
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1357587510}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 01614664b831546d2ae94a42149d80ac, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Unity.InputSystem::UnityEngine.InputSystem.UI.InputSystemUIInputModule
-  m_SendPointerHoverToParent: 1
-  m_MoveRepeatDelay: 0.5
-  m_MoveRepeatRate: 0.1
-  m_XRTrackingOrigin: {fileID: 0}
-  m_ActionsAsset: {fileID: -944628639613478452, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
-  m_PointAction: {fileID: -1654692200621890270, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
-  m_MoveAction: {fileID: -8784545083839296357, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
-  m_SubmitAction: {fileID: 392368643174621059, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
-  m_CancelAction: {fileID: 7727032971491509709, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
-  m_LeftClickAction: {fileID: 3001919216989983466, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
-  m_MiddleClickAction: {fileID: -2185481485913320682, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
-  m_RightClickAction: {fileID: -4090225696740746782, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
-  m_ScrollWheelAction: {fileID: 6240969308177333660, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
-  m_TrackedDevicePositionAction: {fileID: 6564999863303420839, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
-  m_TrackedDeviceOrientationAction: {fileID: 7970375526676320489, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
-  m_DeselectOnBackgroundClick: 1
-  m_PointerBehavior: 0
-  m_CursorLockBehavior: 0
-  m_ScrollDeltaPerTick: 6
---- !u!114 &1357587512
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1357587510}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 76c392e42b5098c458856cdf6ecaaaa1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.EventSystems.EventSystem
-  m_FirstSelected: {fileID: 0}
-  m_sendNavigationEvents: 1
-  m_DragThreshold: 10
---- !u!4 &1357587513
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1357587510}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1363153372
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -21301,6 +21165,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 7532963781007185331, guid: ce4634a873eb2be42abd2a38723c6362, type: 3}
   m_PrefabInstance: {fileID: 1728791632}
   m_PrefabAsset: {fileID: 0}
+--- !u!198 &1374644540 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 5075459551608977996, guid: 4a98efaf6a87fcc468578d62c0aeae59, type: 3}
+  m_PrefabInstance: {fileID: 7010458740474724707}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1377528735
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -21358,6 +21227,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: df296d40643d6ef4a8c91a6f6905d21c, type: 3}
+--- !u!96 &1385066528 stripped
+TrailRenderer:
+  m_CorrespondingSourceObject: {fileID: 2992225653058080089, guid: 4a98efaf6a87fcc468578d62c0aeae59, type: 3}
+  m_PrefabInstance: {fileID: 7010458740474724707}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1386964374
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -22887,6 +22761,11 @@ PrefabInstance:
 Transform:
   m_CorrespondingSourceObject: {fileID: 5223664099914683835, guid: 50735db97b0ffca498141f7612b276fb, type: 3}
   m_PrefabInstance: {fileID: 1490947402}
+  m_PrefabAsset: {fileID: 0}
+--- !u!198 &1494700877 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 4563412581313533453, guid: 4a98efaf6a87fcc468578d62c0aeae59, type: 3}
+  m_PrefabInstance: {fileID: 7010458740474724707}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1508144735
 PrefabInstance:
@@ -30732,6 +30611,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 2820117288082333865, guid: 452b120ed72788143a4f6394f2046752, type: 3}
   m_PrefabInstance: {fileID: 1954340505}
   m_PrefabAsset: {fileID: 0}
+--- !u!96 &1974997901 stripped
+TrailRenderer:
+  m_CorrespondingSourceObject: {fileID: 9061898540685191585, guid: 4a98efaf6a87fcc468578d62c0aeae59, type: 3}
+  m_PrefabInstance: {fileID: 7010458740474724707}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1979860822
 GameObject:
   m_ObjectHideFlags: 0
@@ -33818,6 +33702,123 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c75fe1f2f26c73b46a3af50f05faca4f, type: 3}
+--- !u!1001 &7010458740474724707
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 2826227614068287652, guid: 4a98efaf6a87fcc468578d62c0aeae59, type: 3}
+      propertyPath: player
+      value: 
+      objectReference: {fileID: 1011221632}
+    - target: {fileID: 2826227614068287652, guid: 4a98efaf6a87fcc468578d62c0aeae59, type: 3}
+      propertyPath: cameraOrbit
+      value: 
+      objectReference: {fileID: 330585549}
+    - target: {fileID: 2826227614068287652, guid: 4a98efaf6a87fcc468578d62c0aeae59, type: 3}
+      propertyPath: stealPuzzle
+      value: 
+      objectReference: {fileID: 930548617}
+    - target: {fileID: 3875101304646844424, guid: 4a98efaf6a87fcc468578d62c0aeae59, type: 3}
+      propertyPath: maxSpeed
+      value: 140
+      objectReference: {fileID: 0}
+    - target: {fileID: 3875101304646844424, guid: 4a98efaf6a87fcc468578d62c0aeae59, type: 3}
+      propertyPath: brakeForce
+      value: 420
+      objectReference: {fileID: 0}
+    - target: {fileID: 3875101304646844424, guid: 4a98efaf6a87fcc468578d62c0aeae59, type: 3}
+      propertyPath: RLWTireSkid
+      value: 
+      objectReference: {fileID: 1974997901}
+    - target: {fileID: 3875101304646844424, guid: 4a98efaf6a87fcc468578d62c0aeae59, type: 3}
+      propertyPath: RRWTireSkid
+      value: 
+      objectReference: {fileID: 1385066528}
+    - target: {fileID: 3875101304646844424, guid: 4a98efaf6a87fcc468578d62c0aeae59, type: 3}
+      propertyPath: steeringSpeed
+      value: 0.6
+      objectReference: {fileID: 0}
+    - target: {fileID: 3875101304646844424, guid: 4a98efaf6a87fcc468578d62c0aeae59, type: 3}
+      propertyPath: maxReverseSpeed
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 3875101304646844424, guid: 4a98efaf6a87fcc468578d62c0aeae59, type: 3}
+      propertyPath: maxSteeringAngle
+      value: 32
+      objectReference: {fileID: 0}
+    - target: {fileID: 3875101304646844424, guid: 4a98efaf6a87fcc468578d62c0aeae59, type: 3}
+      propertyPath: RLWParticleSystem
+      value: 
+      objectReference: {fileID: 1494700877}
+    - target: {fileID: 3875101304646844424, guid: 4a98efaf6a87fcc468578d62c0aeae59, type: 3}
+      propertyPath: RRWParticleSystem
+      value: 
+      objectReference: {fileID: 1374644540}
+    - target: {fileID: 3875101304646844424, guid: 4a98efaf6a87fcc468578d62c0aeae59, type: 3}
+      propertyPath: accelerationMultiplier
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 3875101304646844424, guid: 4a98efaf6a87fcc468578d62c0aeae59, type: 3}
+      propertyPath: decelerationMultiplier
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3875101304646844424, guid: 4a98efaf6a87fcc468578d62c0aeae59, type: 3}
+      propertyPath: handbrakeDriftMultiplier
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 4347449238020947523, guid: 4a98efaf6a87fcc468578d62c0aeae59, type: 3}
+      propertyPath: m_Name
+      value: Free Racing Car Gray Variant
+      objectReference: {fileID: 0}
+    - target: {fileID: 7459369697971652850, guid: 4a98efaf6a87fcc468578d62c0aeae59, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 210.39803
+      objectReference: {fileID: 0}
+    - target: {fileID: 7459369697971652850, guid: 4a98efaf6a87fcc468578d62c0aeae59, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.0011472106
+      objectReference: {fileID: 0}
+    - target: {fileID: 7459369697971652850, guid: 4a98efaf6a87fcc468578d62c0aeae59, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 583.8675
+      objectReference: {fileID: 0}
+    - target: {fileID: 7459369697971652850, guid: 4a98efaf6a87fcc468578d62c0aeae59, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.46174863
+      objectReference: {fileID: 0}
+    - target: {fileID: 7459369697971652850, guid: 4a98efaf6a87fcc468578d62c0aeae59, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7459369697971652850, guid: 4a98efaf6a87fcc468578d62c0aeae59, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.8870109
+      objectReference: {fileID: 0}
+    - target: {fileID: 7459369697971652850, guid: 4a98efaf6a87fcc468578d62c0aeae59, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7459369697971652850, guid: 4a98efaf6a87fcc468578d62c0aeae59, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7459369697971652850, guid: 4a98efaf6a87fcc468578d62c0aeae59, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 125
+      objectReference: {fileID: 0}
+    - target: {fileID: 7459369697971652850, guid: 4a98efaf6a87fcc468578d62c0aeae59, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 4a98efaf6a87fcc468578d62c0aeae59, type: 3}
 --- !u!1001 &7470336060906289226
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -33909,7 +33910,6 @@ SceneRoots:
   - {fileID: 222570233}
   - {fileID: 632547598}
   - {fileID: 419157182}
-  - {fileID: 1357587513}
   - {fileID: 758814647}
   - {fileID: 2064970614}
-  - {fileID: 1119763966}
+  - {fileID: 7010458740474724707}

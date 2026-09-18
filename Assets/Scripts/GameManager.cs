@@ -9,6 +9,10 @@ public class GameManager : MonoBehaviour
     public string hubSceneName = "Hub";
     public string mainMenuSceneName = "MainMenu";
 
+    [Header("Progression")]
+    [Tooltip("Set true by Mission5Manager once the bomb is successfully defused - persists across scenes for this play session")]
+    public bool isCar2Unlocked = false;
+
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -19,6 +23,17 @@ public class GameManager : MonoBehaviour
 
         Instance = this;
         DontDestroyOnLoad(gameObject);
+
+        // Load progress that survives closing and reopening the game
+        isCar2Unlocked = PlayerPrefs.GetInt("Car2Unlocked", 0) == 1;
+    }
+
+    // Call this from Mission5Manager on a successful defuse
+    public void UnlockCar2()
+    {
+        isCar2Unlocked = true;
+        PlayerPrefs.SetInt("Car2Unlocked", 1);
+        PlayerPrefs.Save();
     }
 
     // Auto-spawns the managers prefab before any scene loads,
