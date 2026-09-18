@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 using TMPro;
@@ -18,13 +19,16 @@ public class MissionResultUI : MonoBehaviour
         if (resultPanel != null) resultPanel.SetActive(false);
     }
 
-    public void ShowMessage(string message)
+    // onComplete is optional - success messages ignore it (mission just
+    // keeps running), fail messages use it to return to Hub only after
+    // the message has actually been shown.
+    public void ShowMessage(string message, Action onComplete = null)
     {
         StopAllCoroutines();
-        StartCoroutine(ShowRoutine(message));
+        StartCoroutine(ShowRoutine(message, onComplete));
     }
 
-    private IEnumerator ShowRoutine(string message)
+    private IEnumerator ShowRoutine(string message, Action onComplete)
     {
         if (resultText != null) resultText.text = message;
         if (resultPanel != null) resultPanel.SetActive(true);
@@ -34,5 +38,7 @@ public class MissionResultUI : MonoBehaviour
         yield return new WaitForSeconds(displaySeconds);
 
         if (resultPanel != null) resultPanel.SetActive(false);
+
+        onComplete?.Invoke();
     }
 }

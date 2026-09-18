@@ -127,6 +127,6 @@ public class Mission3Manager : MonoBehaviour, IFailableMission
 
         CurrentState = MissionState.Failed;
         Debug.Log($"Mission Failed: {reason}");
-        GameManager.Instance.ReturnToHub();
+        MissionResultUI.Instance.ShowMessage("Mission Failed", () => GameManager.Instance.ReturnToHub());
     }
 }
