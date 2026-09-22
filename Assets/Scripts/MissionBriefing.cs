@@ -34,6 +34,19 @@ public class MissionBriefing : MonoBehaviour
         if (countdownPanel != null) countdownPanel.SetActive(false);
     }
 
+    private void Update()
+    {
+        // PauseManager.OnSceneLoaded fires after every Start() in the scene
+        // and force-locks the cursor for any scene not in its cursorFreeScenes
+        // list, which silently undid the unlock above. Keep re-asserting for
+        // as long as the panel is up so nothing else can win that race.
+        if (briefingPanel != null && briefingPanel.activeSelf)
+        {
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+        }
+    }
+
     // Wire this to the briefing panel's OK button OnClick event
     public void OnOkPressed()
     {
