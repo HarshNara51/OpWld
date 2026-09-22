@@ -81,6 +81,8 @@ public class SuspicionManager : MonoBehaviour
 
         foreach (var source in sources)
         {
+            if (!source.gameObject.activeInHierarchy) continue;
+
             float dist = Vector3.Distance(target.position, source.transform.position);
             if (dist < closestDist) closestDist = dist;
 
