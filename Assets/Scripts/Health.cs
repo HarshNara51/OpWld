@@ -37,4 +37,16 @@ public class Health : MonoBehaviour
             onDeath?.Invoke();
         }
     }
+
+    // For instant kills (e.g. headshots) - cleaner than faking it
+    // with a huge TakeDamage amount.
+    public void Kill()
+    {
+        if (isDead) return;
+
+        currentHealth = 0f;
+        isDead = true;
+        Debug.Log($"{name} is down.");
+        onDeath?.Invoke();
+    }
 }
