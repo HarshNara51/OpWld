@@ -59,6 +59,14 @@ public class EnemyCover : MonoBehaviour
         CombatActive = true;
     }
 
+    // Wire this too, as a second listener on the same Health > On Death,
+    // alongside Mission4Manager.OnEnemyDown - stops the peek/hide loop
+    // and firing dead instead of continuing forever.
+    public void OnDeath()
+    {
+        gameObject.SetActive(false);
+    }
+
     private IEnumerator WaitThenEngage()
     {
         // Stand idle in the starting formation until someone gets shot.
@@ -112,7 +120,12 @@ public class EnemyCover : MonoBehaviour
 
         if (Physics.Raycast(transform.position, toPlayer.normalized, out RaycastHit hit, fireRange, hitMask))
         {
-            if (hit.collider.transform == player || hit.collider.transform.IsChildOf(player))
+            // Scene-view only, not a real effect - red if it hit something
+            // else (blocked), green if it actually reached the player.
+            bool hitPlayer = hit.collider.transform == player || hit.collider.transform.IsChildOf(player);
+            Debug.DrawLine(transform.position, hit.point, hitPlayer ? Color.green : Color.red, 0.5f);
+
+            if (hitPlayer)
             {
                 nextFireTime = Time.time + fireInterval;
                 Debug.Log($"{name} shoots at player");
