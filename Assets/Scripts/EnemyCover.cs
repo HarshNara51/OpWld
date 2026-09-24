@@ -28,6 +28,8 @@ public class EnemyCover : MonoBehaviour
     [SerializeField] private float fireInterval = 0.6f;
     [SerializeField] private float damage = 5f;
     [SerializeField] private LayerMask hitMask = ~0;
+    [Tooltip("Aim at this height above the player's base position, matching their CharacterController's Center Y - without this, enemies aim at ground level (the player's feet pivot) instead of their body")]
+    [SerializeField] private float aimHeightOffset = 0.9f;
 
     [Header("Ground snapping")]
     [Tooltip("Fixes enemies sinking underground if HiddenPoint/PeekPoint weren't placed at exactly the right height")]
@@ -114,7 +116,8 @@ public class EnemyCover : MonoBehaviour
         if (!isPeeking || !CombatActive || player == null) return;
         if (Time.time < nextFireTime) return;
 
-        Vector3 toPlayer = player.position - transform.position;
+        Vector3 aimPoint = player.position + Vector3.up * aimHeightOffset;
+        Vector3 toPlayer = aimPoint - transform.position;
         float dist = toPlayer.magnitude;
         if (dist > fireRange) return;
 

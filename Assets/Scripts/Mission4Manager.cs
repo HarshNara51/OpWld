@@ -10,6 +10,9 @@ public class Mission4Manager : MonoBehaviour, IFailableMission
     [Tooltip("Enemies to eliminate before the remaining ones flee in the truck")]
     [SerializeField] private int enemiesToEliminate = 8;
 
+    [Tooltip("The escaping truck - BeginMoving() is called on it once enough enemies are down")]
+    [SerializeField] private MissionTruckFollower truck;
+
     public int EnemiesDown { get; private set; }
 
     private void Awake()
@@ -35,8 +38,9 @@ public class Mission4Manager : MonoBehaviour, IFailableMission
         if (EnemiesDown >= enemiesToEliminate)
         {
             Debug.Log("Remaining enemies are fleeing - get to your car!");
-            // Hook point: trigger the truck's MissionTruckFollower.BeginMoving()
-            // here once that piece is wired in for this mission
+            // TEMP DIAGNOSTIC - remove once truck escape is confirmed working
+            Debug.Log($"[DIAGNOSTIC] Calling truck.BeginMoving() - truck assigned: {truck != null}");
+            if (truck != null) truck.BeginMoving();
         }
     }
 

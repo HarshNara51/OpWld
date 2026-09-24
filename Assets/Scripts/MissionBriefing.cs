@@ -17,8 +17,27 @@ public class MissionBriefing : MonoBehaviour
     [Tooltip("Wire this per-scene: e.g. Mission1Manager.StartMission + TrainTimer.StartTimer for Railway, or just Mission3Manager.StartMission for Farm")]
     [SerializeField] private UnityEvent onMissionStart;
 
+    // True from scene load until OK is pressed. Drives the cursor
+    // re-assert in Update() so it works even if briefingPanel is missing.
+    private bool waitingForOk;
+
+    private void Awake()
+    {
+        // The null checks below silently skip missing references, which
+        // makes an unwired briefing look like a "dead" OK button. Shout
+        // about it instead so a new mission scene gets caught on first play.
+        if (briefingPanel == null)
+            Debug.LogError($"[MissionBriefing] '{name}' in scene '{gameObject.scene.name}' has no Briefing Panel assigned - OK will not hide anything.", this);
+        if (countdownPanel == null)
+            Debug.LogError($"[MissionBriefing] '{name}' in scene '{gameObject.scene.name}' has no Countdown Panel assigned.", this);
+        if (countdownText == null)
+            Debug.LogError($"[MissionBriefing] '{name}' in scene '{gameObject.scene.name}' has no Countdown Text assigned.", this);
+    }
+
     private void Start()
     {
+        waitingForOk = true;
+
         // Freeze gameplay the instant the scene loads, so the player
         // can't wander off or grab cargo before the mission "officially"
         // begins.
@@ -36,11 +55,11 @@ public class MissionBriefing : MonoBehaviour
 
     private void Update()
     {
-        // PauseManager.OnSceneLoaded fires after every Start() in the scene
-        // and force-locks the cursor for any scene not in its cursorFreeScenes
-        // list, which silently undid the unlock above. Keep re-asserting for
-        // as long as the panel is up so nothing else can win that race.
-        if (briefingPanel != null && briefingPanel.activeSelf)
+        // Keeps re-asserting the free cursor for as long as the briefing
+        // panel is showing, so nothing else (e.g. PauseManager's own
+        // scene-load cursor logic, which fires after every Start()) can
+        // silently override it later in the same frame sequence.
+        if (waitingForOk)
         {
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
@@ -52,6 +71,9 @@ public class MissionBriefing : MonoBehaviour
     {
         // TEMP DIAGNOSTIC - remove once click is confirmed working
         Debug.Log("[DIAGNOSTIC] OnOkPressed called.");
+
+        if (!waitingForOk) return; // ignore double-clicks restarting the countdown
+        waitingForOk = false;
 
         if (briefingPanel != null) briefingPanel.SetActive(false);
         StartCoroutine(CountdownRoutine());
