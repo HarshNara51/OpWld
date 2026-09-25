@@ -13,6 +13,9 @@ public class Mission4Manager : MonoBehaviour, IFailableMission
     [Tooltip("The escaping truck - BeginMoving() is called on it once enough enemies are down")]
     [SerializeField] private MissionTruckFollower truck;
 
+    [Tooltip("The EMP bar's panel - hidden until the truck actually starts fleeing")]
+    [SerializeField] private GameObject empBarPanel;
+
     public int EnemiesDown { get; private set; }
 
     private void Awake()
@@ -38,9 +41,8 @@ public class Mission4Manager : MonoBehaviour, IFailableMission
         if (EnemiesDown >= enemiesToEliminate)
         {
             Debug.Log("Remaining enemies are fleeing - get to your car!");
-            // TEMP DIAGNOSTIC - remove once truck escape is confirmed working
-            Debug.Log($"[DIAGNOSTIC] Calling truck.BeginMoving() - truck assigned: {truck != null}");
             if (truck != null) truck.BeginMoving();
+            if (empBarPanel != null) empBarPanel.SetActive(true);
         }
     }
 
