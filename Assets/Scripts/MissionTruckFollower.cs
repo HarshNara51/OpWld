@@ -31,7 +31,7 @@ public class MissionTruckFollower : MonoBehaviour
     public int endKnotIndex;
 
     [Header("Turning")]
-    public float turnSpeedDegrees = 90f;
+    public float turnSpeedDegrees = 180f;
 
     [Header("Ground snapping")]
     [Tooltip("Fixes trucks floating where the road sits higher than the surrounding terrain. Increase if trucks still float - it means the gap between the spline's authored height and actual ground is bigger than this reaches.")]
@@ -44,6 +44,7 @@ public class MissionTruckFollower : MonoBehaviour
     public bool autoStart = true;
 
     public float DistanceTravelled { get; private set; }
+    public float CurrentSpeed => currentSpeed;
 
     private State state = State.DrivingToStop;
     private float currentSpeed;
@@ -67,6 +68,17 @@ public class MissionTruckFollower : MonoBehaviour
         moving = true;
     }
 
+    // Called externally (e.g. an EMP system) to force an immediate,
+    // permanent stop wherever the truck currently is. Call this on the
+    // leader only - any follower mirrors this automatically, since its
+    // own position is derived from the leader's DistanceTravelled.
+    public void ForceStop()
+    {
+        currentSpeed = 0f;
+        state = State.StoppedAtEnd;
+        Debug.Log($"{name} disabled and stopped.");
+    }
+
     private void Update()
     {
         if (spline == null) return;
@@ -84,10 +96,18 @@ public class MissionTruckFollower : MonoBehaviour
 
         float t = Mathf.Clamp01(DistanceTravelled / splineLength);
         Vector3 pos = SnapToGround(spline.EvaluatePosition(t));
+
+        // Face the direction actually travelled this frame, not the
+        // spline's theoretical tangent - this can't drift or lag
+        // behind a curve, since it's derived from the real motion.
+        Vector3 moveDelta = pos - transform.position;
         transform.position = pos;
 
-        Quaternion targetRotation = Quaternion.LookRotation(spline.EvaluateTangent(t));
-        transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, turnSpeedDegrees * Time.deltaTime);
+        if (moveDelta.sqrMagnitude > 0.0001f)
+        {
+            Quaternion targetRotation = Quaternion.LookRotation(moveDelta.normalized);
+            transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, turnSpeedDegrees * Time.deltaTime);
+        }
     }
 
     private void UpdateOwnMovement()
