@@ -24,6 +24,9 @@ public class TruckEMP : MonoBehaviour
     [SerializeField] private float disruptionIntervalMin = 4f;
     [SerializeField] private float disruptionIntervalMax = 10f;
 
+    [Tooltip("Revealed once the truck is actually stopped - starts inactive in the scene")]
+    [SerializeField] private GameObject callCopsPrompt;
+
     // 0-1, for a future UI bar
     public float Percent01 { get; private set; }
     public bool IsCharging { get; private set; }
@@ -96,6 +99,7 @@ public class TruckEMP : MonoBehaviour
         {
             complete = true;
             truck.ForceStop();
+            if (callCopsPrompt != null) callCopsPrompt.SetActive(true);
         }
     }
 

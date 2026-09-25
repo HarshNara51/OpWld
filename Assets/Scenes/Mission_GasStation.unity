@@ -2581,6 +2581,74 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 805465296}
   m_SourcePrefab: {fileID: 100100000, guid: 79d0ca8b77e301442afdb49f102e8aed, type: 3}
+--- !u!1 &138131180
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 138131183}
+  - component: {fileID: 138131182}
+  - component: {fileID: 138131181}
+  m_Layer: 0
+  m_Name: CallCopsTrigger
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!114 &138131181
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 138131180}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 14a4f440cedacb940927953d8d57e0a4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CallCopsTrigger
+  interactKey: 105
+  holdDuration: 5
+--- !u!65 &138131182
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 138131180}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 3.5, y: 3, z: 5.5}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!4 &138131183
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 138131180}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 1.5, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1580763653}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &141094259
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -27129,6 +27197,7 @@ MonoBehaviour:
   enemiesToEliminate: 8
   truck: {fileID: 1580763648}
   empBarPanel: {fileID: 477022231}
+  cleanup: {fileID: 2056950566}
 --- !u!4 &1479625704
 Transform:
   m_ObjectHideFlags: 0
@@ -27244,6 +27313,7 @@ MonoBehaviour:
   decayRatePercentPerSecond: 8
   disruptionIntervalMin: 4
   disruptionIntervalMax: 10
+  callCopsPrompt: {fileID: 138131180}
 --- !u!4 &1481999683
 Transform:
   m_ObjectHideFlags: 0
@@ -28597,7 +28667,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 400008, guid: b70eb1cf1be37564f8063fba2095584b, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 138131183}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 100008, guid: b70eb1cf1be37564f8063fba2095584b, type: 3}
       insertIndex: -1
@@ -28636,6 +28709,11 @@ MonoBehaviour:
   groundSearchHeight: 50
   groundOffset: 0
   autoStart: 0
+--- !u!4 &1580763653 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 400008, guid: b70eb1cf1be37564f8063fba2095584b, type: 3}
+  m_PrefabInstance: {fileID: 1580763646}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1580902238
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -37602,6 +37680,62 @@ Transform:
   - {fileID: 1551989536}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &2056950565
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2056950567}
+  - component: {fileID: 2056950566}
+  m_Layer: 0
+  m_Name: 'MissionCleanup '
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &2056950566
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2056950565}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 172cb2da76960724a9e7fbfe059115c3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MissionCleanup
+  disableOnSuccess:
+  - {fileID: 3055742}
+  - {fileID: 428168613}
+  - {fileID: 1369953709}
+  - {fileID: 417341398}
+  - {fileID: 1084109238}
+  - {fileID: 1190942387}
+  - {fileID: 1203171903}
+  - {fileID: 537013708}
+  - {fileID: 639531065}
+  - {fileID: 477022231}
+  enableOnSuccess: []
+--- !u!4 &2056950567
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2056950565}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 564.6145, y: 1.76884, z: 496.47318}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &2061780389
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -40010,3 +40144,4 @@ SceneRoots:
   - {fileID: 1546095441}
   - {fileID: 1225273060}
   - {fileID: 1481999683}
+  - {fileID: 2056950567}

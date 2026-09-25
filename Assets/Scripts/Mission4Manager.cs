@@ -16,6 +16,9 @@ public class Mission4Manager : MonoBehaviour, IFailableMission
     [Tooltip("The EMP bar's panel - hidden until the truck actually starts fleeing")]
     [SerializeField] private GameObject empBarPanel;
 
+    [Tooltip("Optional - toggles mission-only objects off and reveal objects on when the mission succeeds")]
+    [SerializeField] private MissionCleanup cleanup;
+
     public int EnemiesDown { get; private set; }
 
     private void Awake()
@@ -44,6 +47,16 @@ public class Mission4Manager : MonoBehaviour, IFailableMission
             if (truck != null) truck.BeginMoving();
             if (empBarPanel != null) empBarPanel.SetActive(true);
         }
+    }
+
+    public void CompleteMission()
+    {
+        if (CurrentState != MissionState.InProgress) return;
+
+        CurrentState = MissionState.Success;
+        Debug.Log("Mission Complete!");
+        MissionResultUI.Instance.ShowMessage("Mission Complete!");
+        if (cleanup != null) cleanup.ApplySuccessState();
     }
 
     public void FailMission(string reason)
