@@ -210,8 +210,7 @@ public static class FoliageOptimizer
                 // Trunks were exported as skinned meshes but are never animated: bake them to a static mesh.
                 mesh = new Mesh { indexFormat = IndexFormat.UInt32 };
                 smr.BakeMesh(mesh, true);
-                Transform t = smr.transform;
-                toRoot = worldToRoot * Matrix4x4.TRS(t.position, t.rotation, Vector3.one);
+                toRoot = worldToRoot * SkinnedBakeToWorld(smr, mesh);
             }
             else if (r is MeshRenderer)
             {
@@ -237,6 +236,22 @@ public static class FoliageOptimizer
             rendererCount++;
         }
         return parts;
+    }
+
+    // Blender FBX trunks usually sit under a transform scaled by 100 (armature at 0.01).
+    // Whether the baked vertices already contain that scale depends on the rig, so pick the
+    // matrix that makes the baked mesh the same size as the renderer really is in the scene.
+    // (Getting this wrong made trunks and branches 100x too small: leaves floating in the air.)
+    static Matrix4x4 SkinnedBakeToWorld(SkinnedMeshRenderer smr, Mesh baked)
+    {
+        Transform t = smr.transform;
+        Matrix4x4 withScale = t.localToWorldMatrix;
+        Matrix4x4 noScale = Matrix4x4.TRS(t.position, t.rotation, Vector3.one);
+        float target = smr.bounds.size.magnitude;
+        if (target <= 0f) return noScale;
+        float a = TransformBounds(baked.bounds, withScale).size.magnitude;
+        float b = TransformBounds(baked.bounds, noScale).size.magnitude;
+        return Mathf.Abs(Mathf.Log(a / target)) < Mathf.Abs(Mathf.Log(b / target)) ? withScale : noScale;
     }
 
     // Combines the parts into one mesh with one sub-mesh per material.
@@ -392,10 +407,22 @@ public static class FoliageOptimizer
         var atlas = new Texture2D(ImpostorRes * 2, ImpostorRes, TextureFormat.RGBA32, false, false);
         Vector3 center = bakePos + b.center;
         Vector3[] viewDirs = { Vector3.forward, Vector3.right };
+        // With async shader compilation the first render can come out empty (the front view
+        // of the impostor was blank), so compile synchronously and render a throw-away pass first.
+        bool asyncWas = ShaderUtil.allowAsyncCompilation;
+        ShaderUtil.allowAsyncCompilation = false;
         try
         {
-            for (int v = 0; v < 2; v++)
+            for (int v = -1; v < 2; v++)
             {
+                if (v < 0)
+                {
+                    camGo.transform.SetPositionAndRotation(center - viewDirs[0] * (half * 2f + 0.5f), Quaternion.LookRotation(viewDirs[0], Vector3.up));
+                    cam.targetTexture = rt;
+                    cam.Render();
+                    cam.targetTexture = null;
+                    continue;
+                }
                 camGo.transform.SetPositionAndRotation(center - viewDirs[v] * (half * 2f + 0.5f), Quaternion.LookRotation(viewDirs[v], Vector3.up));
                 var request = new UnityEngine.Rendering.Universal.UniversalRenderPipeline.SingleCameraRequest { destination = rt };
                 if (RenderPipeline.SupportsRenderRequest(cam, request))
@@ -414,6 +441,7 @@ public static class FoliageOptimizer
         }
         finally
         {
+            ShaderUtil.allowAsyncCompilation = asyncWas;
             Object.DestroyImmediate(treeGo);
             Object.DestroyImmediate(camGo);
             rt.Release();
