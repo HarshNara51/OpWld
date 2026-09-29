@@ -8,7 +8,7 @@ public class TruckEMP : MonoBehaviour
 {
     [Header("References")]
     [Tooltip("The LEAD truck's MissionTruckFollower - stopping it also stops any follower/trailer automatically")]
-    [SerializeField] private MissionTruckFollower truck;
+    [SerializeField] private SplineVehicle truck;
     [SerializeField] private Transform player;
     [SerializeField] private Transform car;
 

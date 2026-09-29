@@ -25,6 +25,18 @@ public class DeliveryZone : MonoBehaviour
         if (!playerInRange || !Input.GetKeyDown(interactKey)) return;
         if (!Mission1Manager.Instance.IsCarryingCargo) return;
 
+        if (Mission1Manager.Instance.HasTrainDeparted)
+        {
+            Debug.Log("Train is moving, not able to deliver");
+            return;
+        }
+
+        if (!Mission1Manager.Instance.IsTrainAtPlatform)
+        {
+            Debug.Log("Train hasn't arrived yet");
+            return;
+        }
+
         Mission1Manager.Instance.OnCargoDelivered();
     }
 }

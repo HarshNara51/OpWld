@@ -11,7 +11,7 @@ public class Mission4Manager : MonoBehaviour, IFailableMission
     [SerializeField] private int enemiesToEliminate = 8;
 
     [Tooltip("The escaping truck - BeginMoving() is called on it once enough enemies are down")]
-    [SerializeField] private MissionTruckFollower truck;
+    [SerializeField] private SplineVehicle truck;
 
     [Tooltip("The EMP bar's panel - hidden until the truck actually starts fleeing")]
     [SerializeField] private GameObject empBarPanel;

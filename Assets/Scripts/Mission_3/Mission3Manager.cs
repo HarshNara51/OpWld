@@ -18,7 +18,7 @@ public class Mission3Manager : MonoBehaviour, IFailableMission
     [SerializeField] private TruckArrivalCountdown truckCountdown;
 
     [Tooltip("Starts moving the instant the body is photographed - same moment as the countdown")]
-    [SerializeField] private MissionTruckFollower leadTruck;
+    [SerializeField] private SplineVehicle leadTruck;
 
     [Tooltip("Player must be inside this when the trucks arrive, and stay inside until they leave")]
     [SerializeField] private HideZone hideZone;
