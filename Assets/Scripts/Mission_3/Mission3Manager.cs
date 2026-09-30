@@ -90,7 +90,7 @@ public class Mission3Manager : MonoBehaviour, IFailableMission
         Debug.Log("The trucks have arrived. Stay hidden.");
     }
 
-    // Called by the lead MissionTruckFollower once it resumes after its pause
+    // Wired to the lead truck's SplineVehicle "On Departed Stop" event
     public void OnTrucksLeavingFarm()
     {
         if (CurrentState != MissionState.TrucksAtFarm) return;
@@ -118,6 +118,7 @@ public class Mission3Manager : MonoBehaviour, IFailableMission
         CurrentState = MissionState.Success;
         Debug.Log("All photos and evidence delivered.");
         Debug.Log("Mission Complete!");
+        GameManager.Instance.MarkMissionComplete(gameObject.scene.name); // saves progress
         MissionResultUI.Instance.ShowMessage("Mission Complete!");
     }
 

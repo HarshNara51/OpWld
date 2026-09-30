@@ -30,6 +30,7 @@ public class Mission5Manager : MonoBehaviour, IFailableMission
 
         CurrentState = MissionState.Success;
         Debug.Log("Car saved!");
+        GameManager.Instance.MarkMissionComplete(gameObject.scene.name); // saves progress
         MissionResultUI.Instance.ShowMessage("Car saved! It'll be waiting in the garage from now on.");
         GameManager.Instance.UnlockCar2();
         if (cleanup != null) cleanup.ApplySuccessState();

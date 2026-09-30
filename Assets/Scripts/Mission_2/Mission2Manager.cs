@@ -41,6 +41,7 @@ public class Mission2Manager : MonoBehaviour, IFailableMission
 
         CurrentState = MissionState.Success;
         Debug.Log("Item recovered. Mission Complete!");
+        GameManager.Instance.MarkMissionComplete(gameObject.scene.name); // saves progress
         MissionResultUI.Instance.ShowMessage("Mission Complete!");
         if (cleanup != null) cleanup.ApplySuccessState();
     }

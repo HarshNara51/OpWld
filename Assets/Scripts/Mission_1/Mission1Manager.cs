@@ -113,6 +113,7 @@ public class Mission1Manager : MonoBehaviour, IFailableMission
         if (train != null) train.Depart(); // leaves with the cargo
 
         Debug.Log("Mission Complete!");
+        GameManager.Instance.MarkMissionComplete(gameObject.scene.name); // saves progress
         MissionResultUI.Instance.ShowMessage("Mission Complete!");
         if (cleanup != null) cleanup.ApplySuccessState();
     }

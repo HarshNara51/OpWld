@@ -10,9 +10,15 @@ public class PauseManager : MonoBehaviour
     [Tooltip("The Canvas/Panel GameObject shown while paused")]
     [SerializeField] private GameObject pauseCanvas;
 
+    [Tooltip("Child of the pause canvas holding Resume / Settings / Return Home / Main Menu / Quit")]
+    [SerializeField] private GameObject buttonsPanel;
+
+    [Tooltip("Child of the pause canvas holding the volume sliders + a Back button")]
+    [SerializeField] private GameObject settingsPanel;
+
     [SerializeField] private KeyCode pauseKey = KeyCode.Escape;
 
-    [Tooltip("Scenes where the cursor should stay visible/unlocked on load, e.g. menus")]
+    [Tooltip("Menu scenes: cursor stays free on load, and pausing is disabled")]
     [SerializeField] private string[] cursorFreeScenes = { "MainMenu" };
 
     private bool isPaused;
@@ -61,8 +67,18 @@ public class PauseManager : MonoBehaviour
 
     private void Update()
     {
+        // No pause menu on the main menu - Esc does nothing there
+        if (IsCursorFreeScene(SceneManager.GetActiveScene().name)) return;
+
         if (Input.GetKeyDown(pauseKey))
         {
+            // Esc inside Settings steps back to the pause buttons first
+            if (isPaused && settingsPanel != null && settingsPanel.activeSelf)
+            {
+                OnSettingsBackPressed();
+                return;
+            }
+
             SetPaused(!isPaused);
         }
     }
@@ -74,19 +90,42 @@ public class PauseManager : MonoBehaviour
 
         if (pauseCanvas != null) pauseCanvas.SetActive(paused);
 
+        // Every pause opens on the main pause buttons, never mid-settings
+        if (paused) ShowButtons();
+
         // Adjust this if CameraOrbit doesn't actually lock the cursor
         // during normal gameplay — harmless either way if it doesn't.
         Cursor.lockState = paused ? CursorLockMode.None : CursorLockMode.Locked;
         Cursor.visible = paused;
     }
 
-    // Wire these to your three buttons' OnClick events
+    private void ShowButtons()
+    {
+        if (buttonsPanel != null) buttonsPanel.SetActive(true);
+        if (settingsPanel != null) settingsPanel.SetActive(false);
+    }
+
+    // Wire these to the pause menu buttons' OnClick events
     public void OnResumePressed() => SetPaused(false);
+
+    public void OnSettingsPressed()
+    {
+        if (buttonsPanel != null) buttonsPanel.SetActive(false);
+        if (settingsPanel != null) settingsPanel.SetActive(true);
+    }
+
+    public void OnSettingsBackPressed() => ShowButtons();
 
     public void OnReturnHomePressed()
     {
         SetPaused(false);
         GameManager.Instance.ReturnToHub();
+    }
+
+    public void OnMainMenuPressed()
+    {
+        SetPaused(false);
+        GameManager.Instance.LoadMainMenu();
     }
 
     public void OnQuitPressed()

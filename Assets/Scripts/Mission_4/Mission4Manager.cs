@@ -55,6 +55,7 @@ public class Mission4Manager : MonoBehaviour, IFailableMission
 
         CurrentState = MissionState.Success;
         Debug.Log("Mission Complete!");
+        GameManager.Instance.MarkMissionComplete(gameObject.scene.name); // saves progress
         MissionResultUI.Instance.ShowMessage("Mission Complete!");
         if (cleanup != null) cleanup.ApplySuccessState();
     }
