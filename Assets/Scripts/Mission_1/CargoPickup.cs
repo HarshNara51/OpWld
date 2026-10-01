@@ -25,6 +25,12 @@ public class CargoPickup : MonoBehaviour
     {
         if (playerInRange && Input.GetKeyDown(interactKey))
         {
+            if (!Mission1Manager.Instance.IsTaxiNear(transform.position))
+            {
+                Debug.Log("Bring the taxi here to load the cargo");
+                return;
+            }
+
             Mission1Manager.Instance.OnCargoPickedUp();
             gameObject.SetActive(false);
         }

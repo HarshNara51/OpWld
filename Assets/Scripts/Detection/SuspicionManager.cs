@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,6 +7,9 @@ using UnityEngine;
 public class SuspicionManager : MonoBehaviour
 {
     public static SuspicionManager Instance { get; private set; }
+
+    // Fires once when the meter fills - cop lights listen for this
+    public static event Action Busted;
 
     [SerializeField] private float maxSuspicion = 100f;
     [Tooltip("Fill speed per second at point-blank range from a source")]
@@ -28,6 +32,8 @@ public class SuspicionManager : MonoBehaviour
     private bool isActive;
 
     public float Percent01 => currentSuspicion / maxSuspicion;
+    public bool IsActive => isActive;
+    public bool IsBusted => busted;
 
     private void Awake()
     {
@@ -66,6 +72,7 @@ public class SuspicionManager : MonoBehaviour
     private Transform GetDetectionTarget()
     {
         if (player != null && player.gameObject.activeInHierarchy) return player;
+        if (VehicleInteraction.Current != null) return VehicleInteraction.Current.transform; // taxi, player car, any drivable car
         return car;
     }
 
@@ -77,14 +84,12 @@ public class SuspicionManager : MonoBehaviour
         if (target == null) return;
 
         float closestRatio = 0f; // 0 = fully clear, 1 = right on top of a source
-        float closestDist = float.MaxValue;
 
         foreach (var source in sources)
         {
-            if (!source.gameObject.activeInHierarchy) continue;
+            if (source == null || !source.gameObject.activeInHierarchy) continue;
 
             float dist = Vector3.Distance(target.position, source.transform.position);
-            if (dist < closestDist) closestDist = dist;
 
             if (dist < source.detectRadius)
             {
@@ -105,7 +110,9 @@ public class SuspicionManager : MonoBehaviour
         if (currentSuspicion >= maxSuspicion)
         {
             busted = true;
-            missionManager?.FailMission("Spotted");
+            Debug.Log("Busted!");
+            Busted?.Invoke();
+            missionManager?.FailMission("Busted");
         }
     }
 }

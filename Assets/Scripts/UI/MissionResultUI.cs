@@ -11,7 +11,14 @@ public class MissionResultUI : MonoBehaviour
 
     [SerializeField] private GameObject resultPanel;
     [SerializeField] private TMP_Text resultText;
+
+    [Tooltip("How long success messages stay up")]
     [SerializeField] private float displaySeconds = 3.5f;
+
+    [Tooltip("How long the fail screen stays up before returning to the Hub")]
+    [SerializeField] private float failDisplaySeconds = 5f;
+
+    public bool IsShowingFailure { get; private set; }
 
     private void Awake()
     {
@@ -19,23 +26,38 @@ public class MissionResultUI : MonoBehaviour
         if (resultPanel != null) resultPanel.SetActive(false);
     }
 
-    // onComplete is optional - success messages ignore it (mission just
-    // keeps running), fail messages use it to return to Hub only after
-    // the message has actually been shown.
+    // Success / info messages. onComplete is optional.
     public void ShowMessage(string message, Action onComplete = null)
     {
         StopAllCoroutines();
-        StartCoroutine(ShowRoutine(message, onComplete));
+        StartCoroutine(ShowRoutine(message, displaySeconds, onComplete));
     }
 
-    private IEnumerator ShowRoutine(string message, Action onComplete)
+    // The one shared fail flow for every mission: show the reason,
+    // wait, then drop the player back in the Hub.
+    public void ShowFailure(string reason)
+    {
+        string message = reason == "Busted"
+            ? "BUSTED!"
+            : string.IsNullOrEmpty(reason) ? "MISSION FAILED" : $"MISSION FAILED\n<size=60%>{reason}</size>";
+
+        IsShowingFailure = true;
+        StopAllCoroutines();
+        StartCoroutine(ShowRoutine(message, failDisplaySeconds, () =>
+        {
+            IsShowingFailure = false;
+            GameManager.Instance.ReturnToHub();
+        }));
+    }
+
+    private IEnumerator ShowRoutine(string message, float seconds, Action onComplete)
     {
         if (resultText != null) resultText.text = message;
         if (resultPanel != null) resultPanel.SetActive(true);
 
         // Normal scaled time - gameplay keeps running underneath this,
-        // nothing freezes.
-        yield return new WaitForSeconds(displaySeconds);
+        // nothing freezes (and pausing pauses the countdown too).
+        yield return new WaitForSeconds(seconds);
 
         if (resultPanel != null) resultPanel.SetActive(false);
 

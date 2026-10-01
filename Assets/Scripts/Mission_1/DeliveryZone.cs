@@ -37,6 +37,12 @@ public class DeliveryZone : MonoBehaviour
             return;
         }
 
+        if (!Mission1Manager.Instance.IsTaxiNear(transform.position))
+        {
+            Debug.Log("Park the taxi near the train to unload the cargo");
+            return;
+        }
+
         Mission1Manager.Instance.OnCargoDelivered();
     }
 }

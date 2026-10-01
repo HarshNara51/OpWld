@@ -16,6 +16,12 @@ public class Mission1Manager : MonoBehaviour, IFailableMission
     [Tooltip("Optional - toggles mission-only objects off and reveal objects on when the mission succeeds")]
     [SerializeField] private MissionCleanup cleanup;
 
+    [Header("Taxi rule")]
+    [Tooltip("The taxi - cargo can only be loaded/unloaded when it's parked nearby. Leave empty to allow any vehicle.")]
+    [SerializeField] private Transform taxi;
+    [Tooltip("How close the taxi must be to a pickup point / the train")]
+    [SerializeField] private float taxiRange = 15f;
+
     private int nextPickupIndex;
     private int deliveredCount;
 
@@ -28,6 +34,12 @@ public class Mission1Manager : MonoBehaviour, IFailableMission
 
     // Deliveries only count while the train is waiting at the platform
     public bool IsTrainAtPlatform => train == null || train.IsWaitingAtStop;
+
+    // True if no taxi is assigned, or the taxi is parked within range of the point
+    public bool IsTaxiNear(Vector3 point)
+    {
+        return taxi == null || Vector3.Distance(taxi.position, point) <= taxiRange;
+    }
 
     private void Awake()
     {
@@ -128,6 +140,6 @@ public class Mission1Manager : MonoBehaviour, IFailableMission
         if (train != null) train.Depart(); // e.g. failed by suspicion - train leaves anyway
 
         Debug.Log($"Mission Failed: {reason}");
-        MissionResultUI.Instance.ShowMessage($"Mission Failed\n{reason}", () => GameManager.Instance.ReturnToHub());
+        MissionResultUI.Instance.ShowFailure(reason); // shared fail screen, then back to Hub
     }
 }
