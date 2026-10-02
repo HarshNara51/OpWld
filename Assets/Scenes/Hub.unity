@@ -6733,9 +6733,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f1d9e65ada9f984aa18a39a03d656bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FPSMonitor
-  updateInterval: 0.5
-  goodFps: 50
-  okFps: 30
 --- !u!114 &330585549
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6916,17 +6913,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 75197c6968d0798459c1ee880e017e34, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RoadTerrainConformer
-  roadsParent: {fileID: 690169407}
-  terrain: {fileID: 1720453996}
-  roadWidth: 8
-  shoulderWidth: 2.5
-  falloffWidth: 6
-  heightOffset: -0.15
-  maxVerticalConform: 2
-  samplesPerMeter: 2
-  strength: 1
-  onlyRaiseTerrain: 1
-  smoothing: 0.65
 --- !u!4 &349899826
 Transform:
   m_ObjectHideFlags: 0
@@ -35542,6 +35528,95 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 0}
+--- !u!1001 &5836812148673577529
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 3188226523806751445, guid: c161e95865934d2499c2dce4dfb7552b, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 500
+      objectReference: {fileID: 0}
+    - target: {fileID: 3188226523806751445, guid: c161e95865934d2499c2dce4dfb7552b, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3188226523806751445, guid: c161e95865934d2499c2dce4dfb7552b, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 500
+      objectReference: {fileID: 0}
+    - target: {fileID: 3188226523806751445, guid: c161e95865934d2499c2dce4dfb7552b, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3188226523806751445, guid: c161e95865934d2499c2dce4dfb7552b, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3188226523806751445, guid: c161e95865934d2499c2dce4dfb7552b, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3188226523806751445, guid: c161e95865934d2499c2dce4dfb7552b, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3188226523806751445, guid: c161e95865934d2499c2dce4dfb7552b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3188226523806751445, guid: c161e95865934d2499c2dce4dfb7552b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3188226523806751445, guid: c161e95865934d2499c2dce4dfb7552b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7739285687216022765, guid: c161e95865934d2499c2dce4dfb7552b, type: 3}
+      propertyPath: m_Name
+      value: AirTraffic
+      objectReference: {fileID: 0}
+    - target: {fileID: 8572598277472182089, guid: c161e95865934d2499c2dce4dfb7552b, type: 3}
+      propertyPath: firstFlightDelay
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8572598277472182089, guid: c161e95865934d2499c2dce4dfb7552b, type: 3}
+      propertyPath: 'aircraftPrefabs.Array.data[0]'
+      value: 
+      objectReference: {fileID: 5801799474693486317, guid: 01eab515eb9631442b1732a99b0b94bd, type: 3}
+    - target: {fileID: 8572598277472182089, guid: c161e95865934d2499c2dce4dfb7552b, type: 3}
+      propertyPath: 'aircraftPrefabs.Array.data[1]'
+      value: 
+      objectReference: {fileID: 4266721067179795572, guid: 32016ac2161fafd488e8ca5a3ad89034, type: 3}
+    - target: {fileID: 8572598277472182089, guid: c161e95865934d2499c2dce4dfb7552b, type: 3}
+      propertyPath: 'aircraftPrefabs.Array.data[2]'
+      value: 
+      objectReference: {fileID: 2268828605561356254, guid: 68eb12724359a664f8edd366cf7eecc2, type: 3}
+    - target: {fileID: 8572598277472182089, guid: c161e95865934d2499c2dce4dfb7552b, type: 3}
+      propertyPath: 'aircraftPrefabs.Array.data[3]'
+      value: 
+      objectReference: {fileID: 1305422022533121578, guid: 98a7905cd9fa71a44bc34dd741c4b9bc, type: 3}
+    - target: {fileID: 8572598277472182089, guid: c161e95865934d2499c2dce4dfb7552b, type: 3}
+      propertyPath: 'aircraftPrefabs.Array.data[4]'
+      value: 
+      objectReference: {fileID: 8971500546505895816, guid: 39c3318285acbde489812cc91f1f3320, type: 3}
+    - target: {fileID: 8572598277472182089, guid: c161e95865934d2499c2dce4dfb7552b, type: 3}
+      propertyPath: 'aircraftPrefabs.Array.data[5]'
+      value: 
+      objectReference: {fileID: -6280444776849082300, guid: 59ee948ae5c96e442b6cfba6e083726a, type: 3}
+    - target: {fileID: 8572598277472182089, guid: c161e95865934d2499c2dce4dfb7552b, type: 3}
+      propertyPath: 'aircraftPrefabs.Array.data[6]'
+      value: 
+      objectReference: {fileID: 1850061853795531170, guid: 08c3b798565de66419fcf20ceb8ed10b, type: 3}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: c161e95865934d2499c2dce4dfb7552b, type: 3}
 --- !u!1001 &5872066652649767347
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -36122,3 +36197,4 @@ SceneRoots:
   - {fileID: 1089531508}
   - {fileID: 1679120577}
   - {fileID: 25761134}
+  - {fileID: 5836812148673577529}
