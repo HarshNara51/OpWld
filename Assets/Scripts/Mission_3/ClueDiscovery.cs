@@ -1,32 +1,18 @@
 using UnityEngine;
 
-// Put this on each of the 5 clue gizmos. Order doesn't matter - all
-// 5 are active from the start, unlike Mission 1's sequential cargo.
-public class ClueDiscovery : MonoBehaviour
+// Put this on each of the 5 clues. Order doesn't matter. The clue is
+// photographed with Camera Mode (C, then left click) - type its note
+// in the Inspector. Only counts after the body has been photographed.
+public class ClueDiscovery : PhotoTarget
 {
-    [SerializeField] private KeyCode interactKey = KeyCode.I;
-
-    private bool playerInRange;
-
-    private void OnTriggerEnter(Collider other)
+    protected override bool CanBePhotographed()
     {
-        if (!other.CompareTag("Player")) return;
-        playerInRange = true;
-        Debug.Log($"Press {interactKey} to examine this clue");
+        return Mission3Manager.Instance != null
+               && Mission3Manager.Instance.CurrentState == Mission3Manager.MissionState.Investigating;
     }
 
-    private void OnTriggerExit(Collider other)
+    protected override void HandlePhotographed()
     {
-        if (!other.CompareTag("Player")) return;
-        playerInRange = false;
-    }
-
-    private void Update()
-    {
-        if (playerInRange && Input.GetKeyDown(interactKey))
-        {
-            Mission3Manager.Instance.OnClueFound();
-            gameObject.SetActive(false);
-        }
+        Mission3Manager.Instance.OnClueFound();
     }
 }

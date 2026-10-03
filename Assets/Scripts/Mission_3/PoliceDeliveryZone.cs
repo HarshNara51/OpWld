@@ -22,9 +22,16 @@ public class PoliceDeliveryZone : MonoBehaviour
 
     private void Update()
     {
-        if (playerInRange && Input.GetKeyDown(interactKey))
+        if (!playerInRange || !Input.GetKeyDown(interactKey)) return;
+
+        var state = Mission3Manager.Instance.CurrentState;
+        if (state == Mission3Manager.MissionState.Delivering)
         {
             Mission3Manager.Instance.OnEvidenceDelivered();
+        }
+        else if (state == Mission3Manager.MissionState.Following)
+        {
+            NotePopup.Show("You don't have the photo of the trucks yet. Follow them and take it first.", 4f);
         }
     }
 }

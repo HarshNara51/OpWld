@@ -1951,7 +1951,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 939a70d29fde8a3439953c11fd98bd01, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ClueDiscovery
-  interactKey: 105
+  note: "\"The receiver's off the hook. Someone made a call before they left\u2026
+    the killer checking in with a boss? Or the farmer, trying to call for help?\""
+  maxDistance: 30
+  focusPoint: {fileID: 1988027779}
+  proximityHint: Something here is worth a photo... (press C for camera)
+  onPhotographed:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1001 &120356546
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3612,7 +3619,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 939a70d29fde8a3439953c11fd98bd01, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ClueDiscovery
-  interactKey: 105
+  note: "\"The hose has been ripped off the reel\u2026 stretched and twisted. They
+    could've used it to choke the farmer. Or to tie him down.\""
+  maxDistance: 30
+  focusPoint: {fileID: 1080425975}
+  proximityHint: Something here is worth a photo... (press C for camera)
+  onPhotographed:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1001 &197098791
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6970,7 +6984,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 939a70d29fde8a3439953c11fd98bd01, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ClueDiscovery
-  interactKey: 105
+  note: "\"Pallets stacked beside the tractor, with deep tire marks all around. Whatever
+    they've been shipping out of here is heavy\u2026 and it isn't hay.\""
+  maxDistance: 30
+  focusPoint: {fileID: 3298792486248475491}
+  proximityHint: Something here is worth a photo... (press C for camera)
+  onPhotographed:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!4 &328715480 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2740566186300745089, guid: df296d40643d6ef4a8c91a6f6905d21c, type: 3}
@@ -9775,7 +9796,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 939a70d29fde8a3439953c11fd98bd01, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ClueDiscovery
-  interactKey: 105
+  note: "\"Pried open, right by the front door. They knew exactly what they were
+    looking for\u2026 and they didn't care who heard.\""
+  maxDistance: 30
+  focusPoint: {fileID: 1707047731615631388}
+  proximityHint: Something here is worth a photo... (press C for camera)
+  onPhotographed:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!65 &506329559
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -10957,6 +10985,8 @@ MonoBehaviour:
   leadTruck: {fileID: 888031462}
   hideZone: {fileID: 1350883865}
   suspicion: {fileID: 693721173}
+  followReminderDelay: 12
+  passedScreenDelay: 6
 --- !u!4 &636390396
 Transform:
   m_ObjectHideFlags: 0
@@ -11503,15 +11533,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 471669776683367166, guid: 8e1471e805192fd4e902f7cc7eec8378, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 648.7
+      value: 520.48
       objectReference: {fileID: 0}
     - target: {fileID: 471669776683367166, guid: 8e1471e805192fd4e902f7cc7eec8378, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 0.15
       objectReference: {fileID: 0}
     - target: {fileID: 471669776683367166, guid: 8e1471e805192fd4e902f7cc7eec8378, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 481.7
+      value: 443.3
       objectReference: {fileID: 0}
     - target: {fileID: 471669776683367166, guid: 8e1471e805192fd4e902f7cc7eec8378, type: 3}
       propertyPath: m_LocalRotation.w
@@ -12923,7 +12953,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 048e57b8a0eabbd42868d094e6de7188, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PhotoCaptureZone
-  interactKey: 105
+  note: 
+  maxDistance: 200
+  focusPoint: {fileID: 888031463}
+  proximityHint: Something here is worth a photo... (press C for camera)
+  onPhotographed:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1001 &716817308
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -14315,6 +14351,143 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 7532963781007185331, guid: ce4634a873eb2be42abd2a38723c6362, type: 3}
   m_PrefabInstance: {fileID: 2393063886281202954}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &805060079
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 805060082}
+  - component: {fileID: 805060081}
+  - component: {fileID: 805060080}
+  m_Layer: 0
+  m_Name: TruckTimerText
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &805060080
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 805060079}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_text: New Text
+  m_isRightToLeft: 0
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontSharedMaterials: []
+  m_fontMaterial: {fileID: 0}
+  m_fontMaterials: []
+  m_fontColor32:
+    serializedVersion: 2
+    rgba: 4294967295
+  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+  m_enableVertexGradient: 0
+  m_colorMode: 3
+  m_fontColorGradient:
+    topLeft: {r: 1, g: 1, b: 1, a: 1}
+    topRight: {r: 1, g: 1, b: 1, a: 1}
+    bottomLeft: {r: 1, g: 1, b: 1, a: 1}
+    bottomRight: {r: 1, g: 1, b: 1, a: 1}
+  m_fontColorGradientPreset: {fileID: 0}
+  m_spriteAsset: {fileID: 0}
+  m_tintAllSprites: 0
+  m_StyleSheet: {fileID: 0}
+  m_TextStyleHashCode: -1183493901
+  m_overrideHtmlColors: 0
+  m_faceColor:
+    serializedVersion: 2
+    rgba: 4294967295
+  m_fontSize: 36
+  m_fontSizeBase: 36
+  m_fontWeight: 400
+  m_enableAutoSizing: 0
+  m_fontSizeMin: 18
+  m_fontSizeMax: 72
+  m_fontStyle: 0
+  m_HorizontalAlignment: 1
+  m_VerticalAlignment: 256
+  m_textAlignment: 65535
+  m_characterSpacing: 0
+  m_characterHorizontalScale: 1
+  m_wordSpacing: 0
+  m_lineSpacing: 0
+  m_lineSpacingMax: 0
+  m_paragraphSpacing: 0
+  m_charWidthMaxAdj: 0
+  m_TextWrappingMode: 1
+  m_wordWrappingRatios: 0.4
+  m_overflowMode: 0
+  m_linkedTextComponent: {fileID: 0}
+  parentLinkedComponent: {fileID: 0}
+  m_enableKerning: 0
+  m_ActiveFontFeatures: 6e72656b
+  m_enableExtraPadding: 0
+  checkPaddingRequired: 0
+  m_isRichText: 1
+  m_EmojiFallbackSupport: 1
+  m_parseCtrlCharacters: 1
+  m_isOrthographic: 1
+  m_isCullingEnabled: 0
+  m_horizontalMapping: 0
+  m_verticalMapping: 0
+  m_uvLineOffset: 0
+  m_geometrySortingOrder: 0
+  m_IsTextObjectScaleStatic: 0
+  m_VertexBufferAutoSizeReduction: 0
+  m_useMaxVisibleDescender: 1
+  m_pageToDisplay: 1
+  m_margin: {x: 0, y: 0, z: 0, w: 0}
+  m_isUsingLegacyAnimationComponent: 0
+  m_isVolumetricText: 0
+  m_hasFontAssetChanged: 0
+  m_baseMaterial: {fileID: 0}
+  m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!222 &805060081
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 805060079}
+  m_CullTransparentMesh: 1
+--- !u!224 &805060082
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 805060079}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1115037213}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 1}
+  m_AnchorMax: {x: 0.5, y: 1}
+  m_AnchoredPosition: {x: 0, y: -25}
+  m_SizeDelta: {x: 200, y: 50}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &805465295 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 642287924342879162, guid: 79d0ca8b77e301442afdb49f102e8aed, type: 3}
@@ -15938,7 +16111,24 @@ MonoBehaviour:
         m_CallState: 2
   onReachedEnd:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 636390394}
+        m_TargetAssemblyTypeName: 
+        m_MethodName: 
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!4 &888031463 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1588376939900749628, guid: 9279a09a09a482f4db9064ebf596b7a3, type: 3}
+  m_PrefabInstance: {fileID: 888031460}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &888031466
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -20213,6 +20403,7 @@ RectTransform:
   m_Children:
   - {fileID: 1318873801}
   - {fileID: 1408871730}
+  - {fileID: 805060082}
   m_Father: {fileID: 664436796}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -26039,7 +26230,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 11912656f28c3e246add79e8cc546648, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BodyDiscoveryZone
-  interactKey: 105
+  note: "\"Poor guy. This wasn't a robbery gone wrong\u2026 someone wanted him gone.
+    Look around, there has to be more.\""
+  maxDistance: 30
+  focusPoint: {fileID: 0}
+  proximityHint: Something here is worth a photo... (press C for camera)
+  onPhotographed:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &1492743662
 GameObject:
   m_ObjectHideFlags: 0
@@ -33178,6 +33376,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TruckArrivalCountdown
   durationSeconds: 60
+  timerText: {fileID: 805060080}
 --- !u!4 &1870678635
 Transform:
   m_ObjectHideFlags: 0
@@ -33710,7 +33909,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 939a70d29fde8a3439953c11fd98bd01, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ClueDiscovery
-  interactKey: 105
+  note: "\"Covered in blood. This is the murder weapon. Stuffed in the horse shed
+    in a hurry\u2026 they never expected anyone to come looking.\"\n\n\"That's everything.
+    The trucks will be here any minute. Hide. Now!\""
+  maxDistance: 30
+  focusPoint: {fileID: 7444119725521263938}
+  proximityHint: Something here is worth a photo... (press C for camera)
+  onPhotographed:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1001 &1893599697
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -33,6 +33,24 @@ public class MissionResultUI : MonoBehaviour
         StartCoroutine(ShowRoutine(message, displaySeconds, onComplete));
     }
 
+    // The one shared success flow for every mission: optional wait,
+    // then "MISSION PASSED" (+ optional line). Free roam continues.
+    public void ShowSuccess(string subtitle = null, float delay = 0f)
+    {
+        string message = string.IsNullOrEmpty(subtitle)
+            ? "MISSION PASSED"
+            : $"MISSION PASSED\n<size=60%>{subtitle}</size>";
+
+        StopAllCoroutines();
+        StartCoroutine(SuccessRoutine(message, delay));
+    }
+
+    private IEnumerator SuccessRoutine(string message, float delay)
+    {
+        if (delay > 0f) yield return new WaitForSeconds(delay);
+        yield return ShowRoutine(message, displaySeconds, null);
+    }
+
     // The one shared fail flow for every mission: show the reason,
     // wait, then drop the player back in the Hub.
     public void ShowFailure(string reason)

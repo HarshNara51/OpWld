@@ -39,6 +39,7 @@ public class WeaponFire : MonoBehaviour
     private void Update()
     {
         if (holster == null || !holster.IsWeaponEquipped) return;
+        if (CameraMode.IsActive) return; // left click takes photos in camera mode, never shoots
         if (IsReloading) return;
 
         if (Input.GetKeyDown(reloadKey) && CurrentAmmo < magazineSize)

@@ -1,32 +1,18 @@
 using UnityEngine;
 
-// Put this a bit away from where the trucks permanently stop, so the
-// player can photograph them unloading. Works from on foot or from
-// the car - no need to get out to take the shot.
-public class PhotoCaptureZone : MonoBehaviour
+// The final photo of the trucks. Put this where the trucks end up
+// (or set Focus Point to the lead truck). Only counts while following.
+// Works on foot or from the car.
+public class PhotoCaptureZone : PhotoTarget
 {
-    [SerializeField] private KeyCode interactKey = KeyCode.I;
-
-    private bool playerInRange;
-
-    private void OnTriggerEnter(Collider other)
+    protected override bool CanBePhotographed()
     {
-        if (!other.CompareTag("Player") && !other.CompareTag("PlayerCar")) return;
-        playerInRange = true;
-        Debug.Log($"Press {interactKey} to take a photo");
+        return Mission3Manager.Instance != null
+               && Mission3Manager.Instance.CurrentState == Mission3Manager.MissionState.Following;
     }
 
-    private void OnTriggerExit(Collider other)
+    protected override void HandlePhotographed()
     {
-        if (!other.CompareTag("Player") && !other.CompareTag("PlayerCar")) return;
-        playerInRange = false;
-    }
-
-    private void Update()
-    {
-        if (playerInRange && Input.GetKeyDown(interactKey))
-        {
-            Mission3Manager.Instance.OnPhotoTaken();
-        }
+        Mission3Manager.Instance.OnPhotoTaken();
     }
 }
