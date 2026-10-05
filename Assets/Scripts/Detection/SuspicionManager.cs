@@ -89,13 +89,8 @@ public class SuspicionManager : MonoBehaviour
         {
             if (source == null || !source.gameObject.activeInHierarchy) continue;
 
-            float dist = Vector3.Distance(target.position, source.transform.position);
-
-            if (dist < source.detectRadius)
-            {
-                float ratio = 1f - (dist / source.detectRadius);
-                if (ratio > closestRatio) closestRatio = ratio;
-            }
+            float ratio = source.DetectionRatio(target.position); // distance + vision cone
+            if (ratio > closestRatio) closestRatio = ratio;
         }
 
         if (closestRatio > 0f)
@@ -107,12 +102,32 @@ public class SuspicionManager : MonoBehaviour
             currentSuspicion = Mathf.Max(0f, currentSuspicion - decayRate * Time.deltaTime);
         }
 
-        if (currentSuspicion >= maxSuspicion)
-        {
-            busted = true;
-            Debug.Log("Busted!");
-            Busted?.Invoke();
-            missionManager?.FailMission("Busted");
-        }
+        CheckBusted();
+    }
+
+    // Instant suspicion bump - e.g. a guard catching you, a noisy takedown
+    public void AddSuspicion(float amount)
+    {
+        if (busted || !isActive) return;
+        currentSuspicion = Mathf.Min(maxSuspicion, currentSuspicion + amount);
+        CheckBusted();
+    }
+
+    // Instantly full - e.g. a guard/target caught you red-handed
+    public void ForceBust()
+    {
+        if (busted) return;
+        currentSuspicion = maxSuspicion;
+        CheckBusted();
+    }
+
+    private void CheckBusted()
+    {
+        if (busted || currentSuspicion < maxSuspicion) return;
+
+        busted = true;
+        Debug.Log("Busted!");
+        Busted?.Invoke();
+        missionManager?.FailMission("Busted");
     }
 }
