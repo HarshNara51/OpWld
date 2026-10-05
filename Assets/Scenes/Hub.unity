@@ -6733,6 +6733,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f1d9e65ada9f984aa18a39a03d656bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FPSMonitor
+  updateInterval: 0.5
+  goodFps: 50
+  okFps: 30
 --- !u!114 &330585549
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6748,10 +6751,18 @@ MonoBehaviour:
   target: {fileID: 1011221632}
   targetOffset: {x: 0, y: 1.6, z: 0}
   distance: 4
+  vehicleDistance: 6
   extraOffset: {x: 0, y: 0.3, z: 0}
   mouseSensitivity: 100
   topClamp: -40
   bottomClamp: 70
+  collisionMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  collisionRadius: 0.3
+  wallPadding: 0.1
+  minDistance: 0.6
+  returnSpeed: 6
 --- !u!1001 &336021815
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6913,6 +6924,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 75197c6968d0798459c1ee880e017e34, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RoadTerrainConformer
+  roadsParent: {fileID: 0}
+  terrain: {fileID: 0}
+  roadWidth: 8
+  shoulderWidth: 3
+  falloffWidth: 10
+  heightOffset: -0.15
+  maxVerticalConform: 2.5
+  samplesPerMeter: 2
+  strength: 1
+  onlyRaiseTerrain: 1
+  smoothing: 0.65
 --- !u!4 &349899826
 Transform:
   m_ObjectHideFlags: 0
@@ -15822,11 +15844,26 @@ PrefabInstance:
       propertyPath: m_Name
       value: Free Racing Car
       objectReference: {fileID: 0}
+    - target: {fileID: 3793806181824089567, guid: 133308cdb8794744caaef026bde9e1f0, type: 3}
+      propertyPath: interactionScript
+      value: 
+      objectReference: {fileID: 972158775}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 133308cdb8794744caaef026bde9e1f0, type: 3}
+--- !u!114 &972158775 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1808652447226849792, guid: 133308cdb8794744caaef026bde9e1f0, type: 3}
+  m_PrefabInstance: {fileID: 972158774}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 033c1b41113dc7740956524791aa4189, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::VehicleInteraction
 --- !u!1001 &974873629
 PrefabInstance:
   m_ObjectHideFlags: 0

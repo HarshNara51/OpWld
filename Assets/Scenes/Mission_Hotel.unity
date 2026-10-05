@@ -17254,6 +17254,10 @@ MonoBehaviour:
   exitPoint: {fileID: 603186967}
   interactionRange: 3
   interactKey: 101
+  unlockPuzzle: {fileID: 0}
+  onFirstEnter:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &805465297 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 627556911, guid: 79d0ca8b77e301442afdb49f102e8aed, type: 3}
@@ -32314,11 +32318,26 @@ PrefabInstance:
       propertyPath: m_Name
       value: Free Racing Car
       objectReference: {fileID: 0}
+    - target: {fileID: 3793806181824089567, guid: 133308cdb8794744caaef026bde9e1f0, type: 3}
+      propertyPath: interactionScript
+      value: 
+      objectReference: {fileID: 1697422894}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 133308cdb8794744caaef026bde9e1f0, type: 3}
+--- !u!114 &1697422894 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1808652447226849792, guid: 133308cdb8794744caaef026bde9e1f0, type: 3}
+  m_PrefabInstance: {fileID: 1697422893}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 033c1b41113dc7740956524791aa4189, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::VehicleInteraction
 --- !u!1001 &1697682447
 PrefabInstance:
   m_ObjectHideFlags: 0

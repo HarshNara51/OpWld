@@ -37,6 +37,12 @@ public class LockpickPuzzle : MonoBehaviour, ICarUnlockPuzzle
     [SerializeField] private float pickStrength = 1f;
     [SerializeField] private int picks = 3;
 
+    [Header("Sounds (all optional)")]
+    [Tooltip("Plays when the pick moves INTO the sweet spot - a hint that makes it easier")]
+    [SerializeField] private AudioClip sweetSpotClick;
+    [SerializeField] private AudioClip unlockSound;
+    [SerializeField] private AudioClip pickBreakSound;
+
     public bool IsOpen { get; private set; }
 
     private Action onSolved;
@@ -47,6 +53,7 @@ public class LockpickPuzzle : MonoBehaviour, ICarUnlockPuzzle
     private int picksLeft;
     private float savedTimeScale = 1f;
     private string status = "";
+    private bool wasInSweetSpot;
 
     private void Awake()
     {
@@ -72,8 +79,15 @@ public class LockpickPuzzle : MonoBehaviour, ICarUnlockPuzzle
         UpdateVisuals(0f);
     }
 
+    private static void PlaySound(AudioClip clip)
+    {
+        // UI channel keeps playing even while the world is frozen
+        if (clip != null && AudioManager.Instance != null) AudioManager.Instance.PlayUI(clip);
+    }
+
     private void ResetPick()
     {
+        wasInSweetSpot = false;
         pickAngle = 0f;
         lockAngle = 0f;
         strain = 0f;
@@ -98,6 +112,12 @@ public class LockpickPuzzle : MonoBehaviour, ICarUnlockPuzzle
         {
             // Free to move the pick; the lock springs back
             pickAngle = Mathf.Clamp(pickAngle + Input.GetAxis("Mouse X") * mouseSensitivity, -90f, 90f);
+
+            // Little "click" the moment the pick slides into the sweet spot
+            bool inSweetSpot = Mathf.Abs(pickAngle - sweetSpot) <= sweetSpotSize;
+            if (inSweetSpot && !wasInSweetSpot) PlaySound(sweetSpotClick);
+            wasInSweetSpot = inSweetSpot;
+
             lockAngle = Mathf.MoveTowards(lockAngle, 0f, lockReturnSpeed * dt);
             strain = 0f;
         }
@@ -131,6 +151,7 @@ public class LockpickPuzzle : MonoBehaviour, ICarUnlockPuzzle
 
     private void BreakPick()
     {
+        PlaySound(pickBreakSound);
         picksLeft--;
         ResetPick();
 
@@ -166,6 +187,7 @@ public class LockpickPuzzle : MonoBehaviour, ICarUnlockPuzzle
 
         if (solved)
         {
+            PlaySound(unlockSound);
             NotePopup.Show("Click. You're in.", 2f);
             onSolved?.Invoke();
         }

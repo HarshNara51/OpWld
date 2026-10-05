@@ -31,9 +31,22 @@ public class Mission5Manager : MonoBehaviour, IFailableMission
         CurrentState = MissionState.Success;
         Debug.Log("Car saved!");
         GameManager.Instance.MarkMissionComplete(gameObject.scene.name); // saves progress
-        MissionResultUI.Instance.ShowSuccess("Car saved! It'll be waiting in the garage from now on.");
+        MissionResultUI.Instance.ShowSuccess("Bomb defused! The car is yours now - you'll find it in the garage.");
         GameManager.Instance.UnlockCar2();
         if (cleanup != null) cleanup.ApplySuccessState();
+    }
+
+    // The bomb went off but the player got out in time: the mission is
+    // failed, but no trip back to the Hub - free roam continues.
+    public void OnBombWentOffOutside()
+    {
+        if (CurrentState != MissionState.InProgress) return;
+
+        CurrentState = MissionState.Failed;
+        Debug.Log("Mission Failed: bomb went off (player escaped).");
+        MissionResultUI.Instance.ShowMessage(
+            "MISSION FAILED\n<size=60%>The bomb went off. The car is no longer drivable.\nBetter luck next time!</size>");
+        NotePopup.Show("You got out just in time... but that car's wrecked. Come back and try again anytime.", 5f);
     }
 
     public void FailMission(string reason)

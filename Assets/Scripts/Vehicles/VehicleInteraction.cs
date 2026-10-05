@@ -32,6 +32,8 @@ public class VehicleInteraction : MonoBehaviour
     [Tooltip("Fires once, the first time the player gets in (e.g. start the bomb's reveal timer)")]
     public UnityEvent onFirstEnter;
 
+    private bool disabledForGood;
+    private float nextWreckNoteTime;
     private ICarUnlockPuzzle puzzle;
     private bool unlocked;
     private bool hasEntered;
@@ -59,8 +61,27 @@ public class VehicleInteraction : MonoBehaviour
         if (Current == this) Current = null;
     }
 
+    // Wrecked (e.g. the bomb went off): stops driving and can't be entered again
+    public void DisableForGood()
+    {
+        disabledForGood = true;
+        if (carControllerScript != null) carControllerScript.enabled = false;
+    }
+
     private void Update()
     {
+        if (disabledForGood)
+        {
+            // Trying to get into the wreck: remind the player why nothing happens
+            if (Input.GetKeyDown(interactKey) && Time.time >= nextWreckNoteTime &&
+                player != null && player.gameObject.activeInHierarchy &&
+                Vector3.Distance(player.position, transform.position) <= interactionRange)
+            {
+                nextWreckNoteTime = Time.time + 3f;
+                NotePopup.Show("It's wrecked. This car won't drive again.", 2.5f);
+            }
+            return;
+        }
         if (!Input.GetKeyDown(interactKey)) return;
 
         // Another car already handled this key press this frame
