@@ -1,32 +1,53 @@
 using UnityEngine;
+using UnityEngine.Events;
 
-// Put this on the secluded defuse-spot trigger. Works from on foot
-// or from the car - no need to get out to defuse it.
+// Put this at the secluded defuse spot. Works on foot or from ANY car
+// (including the stolen one) - no tags or colliders needed, it just
+// checks distance. Press the key to start defusing.
 public class DefuseTrigger : MonoBehaviour
 {
     [SerializeField] private KeyCode interactKey = KeyCode.I;
-    [SerializeField] private PuzzleMinigame defusePuzzle;
+    [SerializeField] private float radius = 6f;
 
-    private bool inRange;
+    [Tooltip("Wire to the defuse puzzle's Open")]
+    public UnityEvent onUse;
 
-    private void OnTriggerEnter(Collider other)
+    private Transform player;
+    private bool wasInRange;
+
+    private void Start()
     {
-        if (!other.CompareTag("Player") && !other.CompareTag("PlayerCar")) return;
-        inRange = true;
-        Debug.Log($"Press {interactKey} to defuse the bomb");
-    }
-
-    private void OnTriggerExit(Collider other)
-    {
-        if (!other.CompareTag("Player") && !other.CompareTag("PlayerCar")) return;
-        inRange = false;
+        GameObject p = GameObject.FindGameObjectWithTag("Player");
+        if (p != null) player = p.transform;
     }
 
     private void Update()
     {
-        if (inRange && Input.GetKeyDown(interactKey))
-        {
-            defusePuzzle.Open();
-        }
+        if (Time.timeScale == 0f) return; // a puzzle or pause is open
+
+        bool inRange = IsInRange();
+
+        if (inRange && !wasInRange) Debug.Log($"Press {interactKey} to defuse the bomb");
+        wasInRange = inRange;
+
+        if (inRange && Input.GetKeyDown(interactKey)) onUse.Invoke();
+    }
+
+    private bool IsInRange()
+    {
+        Transform target = null;
+        if (player != null && player.gameObject.activeInHierarchy) target = player;
+        else if (VehicleInteraction.Current != null) target = VehicleInteraction.Current.transform;
+        if (target == null) return false;
+
+        Vector3 offset = target.position - transform.position;
+        offset.y = 0f;
+        return offset.magnitude <= radius;
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(transform.position, radius);
     }
 }

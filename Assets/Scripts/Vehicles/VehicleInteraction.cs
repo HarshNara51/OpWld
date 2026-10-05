@@ -1,9 +1,12 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 // Put this script directly on every drivable car (player car, taxi, ...).
 // Works with any number of cars: only the closest car in range responds
 // to E, and one key press can never enter/exit two cars at once.
+// Optional: lock a car behind a puzzle (lockpick, hotwire...) - the
+// player has to solve it the first time before they can get in.
 public class VehicleInteraction : MonoBehaviour
 {
     // The car the player is driving right now (null when on foot)
@@ -22,6 +25,17 @@ public class VehicleInteraction : MonoBehaviour
     [SerializeField] private float interactionRange = 3f;
     [SerializeField] private KeyCode interactKey = KeyCode.E;
 
+    [Header("Locked car (optional)")]
+    [Tooltip("Leave empty for a normal car. Assign a puzzle (e.g. LockpickPuzzle) to make it locked until solved.")]
+    [SerializeField] private MonoBehaviour unlockPuzzle;
+
+    [Tooltip("Fires once, the first time the player gets in (e.g. start the bomb's reveal timer)")]
+    public UnityEvent onFirstEnter;
+
+    private ICarUnlockPuzzle puzzle;
+    private bool unlocked;
+    private bool hasEntered;
+
     private bool isDriving = false;
 
     public bool IsDriving => isDriving;
@@ -30,6 +44,11 @@ public class VehicleInteraction : MonoBehaviour
     {
         // Make sure the car doesn't respond to input until someone actually gets in
         if (carControllerScript != null) carControllerScript.enabled = false;
+
+        puzzle = unlockPuzzle as ICarUnlockPuzzle;
+        if (unlockPuzzle != null && puzzle == null)
+            Debug.LogWarning($"{name}: Unlock Puzzle doesn't implement ICarUnlockPuzzle.");
+        unlocked = puzzle == null;
     }
 
     private void OnEnable() => all.Add(this);
@@ -59,8 +78,24 @@ public class VehicleInteraction : MonoBehaviour
         float distance = Vector3.Distance(player.position, transform.position);
         if (distance <= interactionRange && IsClosestCarInRange(distance))
         {
+            if (!unlocked)
+            {
+                if (!puzzle.IsOpen)
+                {
+                    lastSwitchFrame = Time.frameCount;
+                    puzzle.Open(OnPuzzleSolved);
+                }
+                return;
+            }
+
             EnterVehicle();
         }
+    }
+
+    private void OnPuzzleSolved()
+    {
+        unlocked = true;
+        if (Current == null && player != null && player.gameObject.activeInHierarchy) EnterVehicle();
     }
 
     // When two cars are parked close together, only the nearest one gets entered
@@ -85,6 +120,12 @@ public class VehicleInteraction : MonoBehaviour
         player.gameObject.SetActive(false);   // hides + disables all player scripts/collider in one go
         carControllerScript.enabled = true;
         cameraOrbit.SetTarget(transform);
+
+        if (!hasEntered)
+        {
+            hasEntered = true;
+            onFirstEnter?.Invoke();
+        }
     }
 
     private void ExitVehicle()
