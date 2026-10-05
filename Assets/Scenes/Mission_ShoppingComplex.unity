@@ -9355,7 +9355,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &383289164
 RectTransform:
   m_ObjectHideFlags: 0
@@ -31143,6 +31143,93 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 1132434798322144994, guid: ad6a7de0faa311347bbe316e4b0bdafc, type: 3}
   m_PrefabInstance: {fileID: 1752129814}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1753731803
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1753731805}
+  - component: {fileID: 1753731804}
+  m_Layer: 0
+  m_Name: BombDefusePuzzle
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1753731804
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1753731803}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e4866ba7eed7a2b4d85d1cea8cf7f347, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BombDefusePuzzle
+  codeLength: 4
+  digitShowTime: 0.7
+  digitGapTime: 0.25
+  wrongCodePenalty: 10
+  wireCount: 5
+  wrongWireExplodes: 1
+  wrongWirePenalty: 20
+  cancelKey: 113
+  panelSprite: {fileID: 0}
+  buttonSprite: {fileID: 0}
+  font: {fileID: 0}
+  keySound: {fileID: 0}
+  codeBeepSound: {fileID: 0}
+  wrongSound: {fileID: 0}
+  wireCutSound: {fileID: 0}
+  defusedSound: {fileID: 0}
+  onSolved:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1978320611}
+        m_TargetAssemblyTypeName: BombSystem, Assembly-CSharp
+        m_MethodName: Defuse
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 108865303}
+        m_TargetAssemblyTypeName: Mission5Manager, Assembly-CSharp
+        m_MethodName: OnCarSaved
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!4 &1753731805
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1753731803}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 51.65211, y: 15.28302, z: 727.00146}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1754267345
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -37758,8 +37845,8 @@ MonoBehaviour:
   onUse:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 383289165}
-        m_TargetAssemblyTypeName: PuzzleMinigame, Assembly-CSharp
+      - m_Target: {fileID: 1753731804}
+        m_TargetAssemblyTypeName: BombDefusePuzzle, Assembly-CSharp
         m_MethodName: Open
         m_Mode: 1
         m_Arguments:
@@ -39115,6 +39202,7 @@ SceneRoots:
   - {fileID: 419157182}
   - {fileID: 758814647}
   - {fileID: 7010458740474724707}
+  - {fileID: 1753731805}
   - {fileID: 1978320612}
   - {fileID: 108865304}
   - {fileID: 2130293696}

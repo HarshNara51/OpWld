@@ -73,6 +73,7 @@ public class LockpickPuzzle : MonoBehaviour, ICarUnlockPuzzle
 
         savedTimeScale = Time.timeScale > 0f ? Time.timeScale : 1f;
         Time.timeScale = 0f; // freeze the world while picking
+        PauseManager.InputBlocked = true;
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
 
@@ -182,6 +183,7 @@ public class LockpickPuzzle : MonoBehaviour, ICarUnlockPuzzle
         if (panel != null) panel.SetActive(false);
 
         Time.timeScale = savedTimeScale;
+        PauseManager.InputBlocked = false;
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
 

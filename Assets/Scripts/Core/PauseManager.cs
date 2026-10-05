@@ -23,6 +23,10 @@ public class PauseManager : MonoBehaviour
 
     private bool isPaused;
 
+    // Set by puzzles (lockpick, bomb) so Esc can't open the pause menu
+    // on top of them - both control time and would fight each other
+    public static bool InputBlocked;
+
     private bool IsCursorFreeScene(string sceneName)
     {
         foreach (var name in cursorFreeScenes)
@@ -57,6 +61,7 @@ public class PauseManager : MonoBehaviour
         // Always start a freshly loaded scene unpaused,
         // so pausing in one scene can't carry into the next.
         isPaused = false;
+        InputBlocked = false;
         Time.timeScale = 1f;
         if (pauseCanvas != null) pauseCanvas.SetActive(false);
 
@@ -69,6 +74,7 @@ public class PauseManager : MonoBehaviour
     {
         // No pause menu on the main menu - Esc does nothing there
         if (IsCursorFreeScene(SceneManager.GetActiveScene().name)) return;
+        if (InputBlocked) return;
 
         if (Input.GetKeyDown(pauseKey))
         {

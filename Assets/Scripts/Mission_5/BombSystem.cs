@@ -34,6 +34,7 @@ public class BombSystem : MonoBehaviour
     private bool armed;
     private bool defused;
     private bool revealStarted;
+    private bool defusing;
 
     public bool IsArmed => armed;
     public float Remaining => remaining;
@@ -68,7 +69,7 @@ public class BombSystem : MonoBehaviour
     {
         if (!armed || defused) return;
 
-        remaining -= Time.deltaTime;
+        remaining -= defusing ? Time.unscaledDeltaTime : Time.deltaTime;
 
         bool inWarningZone = remaining <= warningThreshold;
         if (warningPanel != null) warningPanel.SetActive(inWarningZone);
@@ -98,13 +99,20 @@ public class BombSystem : MonoBehaviour
         // Pulses red in the final stretch
         if (warning)
         {
-            float pulse = (Mathf.Sin(Time.time * 10f) + 1f) * 0.5f;
+            float pulse = (Mathf.Sin(Time.unscaledTime * 10f) + 1f) * 0.5f;
             bombTimerText.color = Color.Lerp(timerColor, warningColor, 0.5f + pulse * 0.5f);
         }
         else
         {
             bombTimerText.color = timerColor;
         }
+    }
+
+    // While the defuse puzzle is open the world is frozen, but the bomb
+    // keeps ticking in real time
+    public void SetDefusing(bool value)
+    {
+        defusing = value;
     }
 
     // Wrong answers in the defuse puzzle cost time
