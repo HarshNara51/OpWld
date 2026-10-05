@@ -7587,10 +7587,18 @@ MonoBehaviour:
   target: {fileID: 1011221632}
   targetOffset: {x: 0, y: 1.6, z: 0}
   distance: 4
+  vehicleDistance: 6
   extraOffset: {x: 0, y: 0.3, z: 0}
   mouseSensitivity: 100
   topClamp: -40
   bottomClamp: 70
+  collisionMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  collisionRadius: 0.3
+  wallPadding: 0.1
+  minDistance: 0.6
+  returnSpeed: 6
 --- !u!1001 &336021815
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7752,13 +7760,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 75197c6968d0798459c1ee880e017e34, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RoadTerrainConformer
-  roadsParent: {fileID: 690169407}
-  terrain: {fileID: 1720453996}
+  roadsParent: {fileID: 0}
+  terrain: {fileID: 0}
   roadWidth: 8
-  shoulderWidth: 2.5
-  falloffWidth: 6
+  shoulderWidth: 3
+  falloffWidth: 10
   heightOffset: -0.15
-  maxVerticalConform: 2
+  maxVerticalConform: 2.5
   samplesPerMeter: 2
   strength: 1
   onlyRaiseTerrain: 1
@@ -8712,7 +8720,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -10372,7 +10380,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 0}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -15673,7 +15681,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 0, b: 0, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -16159,6 +16167,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SuspicionSource
   detectRadius: 2
+  useVisionCone: 0
+  viewAngle: 110
+  rearAwarenessFraction: 0.1
+  rearAwarenessStrength: 0.4
 --- !u!1001 &824925622
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -19425,7 +19437,19 @@ MonoBehaviour:
   maxHealth: 100
   onDeath:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1479625703}
+        m_TargetAssemblyTypeName: Mission4Manager, Assembly-CSharp
+        m_MethodName: FailMission
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: You Died!
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1011221651
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -20612,7 +20636,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -24650,6 +24674,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SuspicionSource
   detectRadius: 2
+  useVisionCone: 0
+  viewAngle: 110
+  rearAwarenessFraction: 0.1
+  rearAwarenessStrength: 0.4
 --- !u!1 &1271330322
 GameObject:
   m_ObjectHideFlags: 0
@@ -24851,6 +24879,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SuspicionSource
   detectRadius: 2
+  useVisionCone: 0
+  viewAngle: 110
+  rearAwarenessFraction: 0.1
+  rearAwarenessStrength: 0.4
 --- !u!1 &1273239377
 GameObject:
   m_ObjectHideFlags: 0
@@ -29785,8 +29817,17 @@ MonoBehaviour:
   groundMask:
     serializedVersion: 2
     m_Bits: 8
+  roadSurfaces: {fileID: 690169407}
   groundSearchHeight: 50
   groundOffset: 0
+  groundSampleAhead: 0
+  groundSampleBehind: 9
+  groundSmoothTime: 0.1
+  cornerRounding: 6
+  steeringSmoothTime: 0.1
+  bodyRoll: 0.8
+  maxBodyRoll: 4
+  hitchedToLeader: 1
   autoStart: 0
   onArrivedAtStop:
     m_PersistentCalls:
@@ -30567,6 +30608,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SuspicionSource
   detectRadius: 2
+  useVisionCone: 0
+  viewAngle: 110
+  rearAwarenessFraction: 0.1
+  rearAwarenessStrength: 0.4
 --- !u!1 &1574417312
 GameObject:
   m_ObjectHideFlags: 0
@@ -30711,8 +30756,17 @@ MonoBehaviour:
   groundMask:
     serializedVersion: 2
     m_Bits: 8
+  roadSurfaces: {fileID: 690169407}
   groundSearchHeight: 50
   groundOffset: 0
+  groundSampleAhead: 2.5
+  groundSampleBehind: 2.5
+  groundSmoothTime: 0.1
+  cornerRounding: 6
+  steeringSmoothTime: 0.1
+  bodyRoll: 0.8
+  maxBodyRoll: 4
+  hitchedToLeader: 0
   autoStart: 0
   onArrivedAtStop:
     m_PersistentCalls:
@@ -39875,7 +39929,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 0.392}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:

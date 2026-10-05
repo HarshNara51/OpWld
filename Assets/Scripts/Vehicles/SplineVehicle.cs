@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.Events;
@@ -41,15 +42,35 @@ public class SplineVehicle : MonoBehaviour
     [Header("Orientation")]
     [Tooltip("On: faces the direction actually moved, smoothed (road vehicles). Off: locks exactly to the spline's direction (trains on rails).")]
     public bool faceMoveDirection = true;
+    [Tooltip("Max turn rate when Snap To Ground is off. Ground vehicles steer with Driving Feel instead.")]
     public float turnSpeedDegrees = 180f;
 
     [Header("Height")]
     [Tooltip("On: raycasts down to the ground (road vehicles). Off: sits exactly on the spline (trains - the spline IS the rails).")]
     public bool snapToGround = true;
     public LayerMask groundMask = ~0;
+    [Tooltip("Optional: parent of the road meshes (e.g. 'Roads'). Their colliders count as ground too, whatever their layer, so vehicles drive ON the road instead of the terrain hidden under it.")]
+    public Transform roadSurfaces;
     public float groundSearchHeight = 50f;
     [Tooltip("Vertical nudge after positioning - use if the model's pivot isn't at its wheels")]
     public float groundOffset = 0f;
+    [Tooltip("Snap To Ground only: how far AHEAD of the pivot the front wheels are, along the spline. Ground is sampled there.")]
+    public float groundSampleAhead = 2.5f;
+    [Tooltip("Snap To Ground only: how far BEHIND the pivot the rear wheels are. A trailer whose pivot is at its hitch uses ~0 ahead and its length behind.")]
+    public float groundSampleBehind = 2.5f;
+    [Tooltip("Seconds to ease height and tilt toward the ground - filters out terrain bumps so the vehicle doesn't bob. Keep small for fast vehicles or they'll lag into slopes.")]
+    public float groundSmoothTime = 0.1f;
+
+    [Header("Driving Feel (Snap To Ground only)")]
+    [Tooltip("Rounds sharp spline corners into smooth arcs, roughly this many metres either side of each corner. 0 = follow the spline exactly.")]
+    public float cornerRounding = 6f;
+    [Tooltip("Seconds to ease the steering - softens the start and end of each turn. Small values (~0.1) avoid the vehicle visibly sliding behind the road.")]
+    public float steeringSmoothTime = 0.1f;
+    [Tooltip("Degrees the body leans outward per m/s² of cornering force. 0 = no lean.")]
+    public float bodyRoll = 0.8f;
+    public float maxBodyRoll = 4f;
+    [Tooltip("Trailers: hangs off the leader's hitch (Follow Gap Distance behind its pivot) and is dragged like a real trailer, pivoting through turns. Leave off for separate vehicles driving in a convoy.")]
+    public bool hitchedToLeader;
 
     [Tooltip("Starts moving automatically on Play. Turn off when a mission manager calls BeginMoving() itself.")]
     public bool autoStart = true;
@@ -73,14 +94,32 @@ public class SplineVehicle : MonoBehaviour
     private float stopKnotDistance;
     private float endKnotDistance;
     private float worldToLocal = 1f;
+    private float worldLength;
     private bool initialized;
     private bool loggedGroundMiss;
+
+    // Ground-follow state (Snap To Ground)
+    private bool groundPlaced;
+    private float smoothY, smoothYVelocity;
+    private float smoothPitch, smoothPitchVelocity;
+    private float yaw, yawVelocity;
+    private float roll, rollVelocity;
+    private Vector3 trailerRear;
+    private Vector3 prevPosition;
+    private float prevYaw;
+    private float lastFrontGroundY, lastRearGroundY;
+    private bool hasFrontGround, hasRearGround;
+    private readonly List<SplineVehicle> trailers = new List<SplineVehicle>();
+    private readonly RaycastHit[] groundHits = new RaycastHit[16];
+
+    private bool IsHitchedTrailer => hitchedToLeader && leader != null && snapToGround;
     private bool moving;
     private Coroutine resumeRoutine;
 
     private void Start()
     {
         Init();
+        if (IsHitchedTrailer) leader.trailers.Add(this);
         if (autoStart) BeginMoving();
     }
 
@@ -92,7 +131,7 @@ public class SplineVehicle : MonoBehaviour
         // Distances here are world units; the spline's own math runs in
         // its local units. The ratio keeps both consistent even if the
         // SplineContainer is scaled.
-        float worldLength = spline.CalculateLength();
+        worldLength = spline.CalculateLength();
         worldToLocal = worldLength > 0f ? spline.Spline.GetLength() / worldLength : 1f;
 
         stopKnotDistance = KnotDistance(stopKnotIndex);
@@ -149,9 +188,18 @@ public class SplineVehicle : MonoBehaviour
     {
         if (spline == null) return;
 
+        if (snapToGround)
+        {
+            // A hitched trailer is placed by its leader, straight after
+            // the leader moves, so it never lags a frame off the hitch.
+            if (IsHitchedTrailer) return;
+            PlaceOnGround(DistanceTravelled);
+            PlaceTrailers();
+            return;
+        }
+
         float t = DistanceToT(DistanceTravelled);
-        Vector3 pos = spline.EvaluatePosition(t);
-        pos = snapToGround ? SnapToGround(pos) : pos + Vector3.up * groundOffset;
+        Vector3 pos = (Vector3)spline.EvaluatePosition(t) + Vector3.up * groundOffset;
 
         if (faceMoveDirection)
         {
@@ -238,19 +286,184 @@ public class SplineVehicle : MonoBehaviour
         Depart();
     }
 
-    private Vector3 SnapToGround(Vector3 pos)
+    // Road vehicles: sits on the ground at its front AND rear wheels and
+    // tilts to match, instead of balancing on one point under the pivot
+    // (which made long vehicles sink into slopes, float over dips and
+    // bob on every terrain bump). The spline only steers - its height
+    // is ignored, so knots dipping under the terrain don't matter.
+    private void PlaceOnGround(float distance)
     {
-        Vector3 rayOrigin = pos + Vector3.up * groundSearchHeight;
-        if (Physics.Raycast(rayOrigin, Vector3.down, out RaycastHit hit, groundSearchHeight * 2f, groundMask))
+        Vector3 center = PathPoint(distance);
+        Vector3 front = PathPoint(distance + groundSampleAhead);
+        Vector3 rear = PathPoint(distance - groundSampleBehind);
+
+        float frontY = GroundHeight(front, ref lastFrontGroundY, ref hasFrontGround);
+        float rearY = GroundHeight(rear, ref lastRearGroundY, ref hasRearGround);
+
+        // Heading and tilt come from the line between the wheels - like
+        // real steering, the nose swings gradually into a bend instead of
+        // snapping to the spline's direction at each point.
+        Vector3 flat = front - rear;
+        flat.y = 0f;
+        float run = flat.magnitude;
+
+        float targetY = rearY + groundOffset;
+        float targetPitch = smoothPitch;
+        float targetYaw = yaw;
+        if (run > 0.01f)
         {
-            pos.y = hit.point.y + groundOffset;
+            // Height under the pivot, along the slope between the axles
+            float pivotFraction = Mathf.Clamp01(Vector3.Distance(new Vector3(rear.x, 0f, rear.z), new Vector3(center.x, 0f, center.z)) / run);
+            targetY = Mathf.Lerp(rearY, frontY, pivotFraction) + groundOffset;
+            targetPitch = -Mathf.Atan2(frontY - rearY, run) * Mathf.Rad2Deg;
+            targetYaw = Mathf.Atan2(flat.x, flat.z) * Mathf.Rad2Deg;
         }
-        else if (!loggedGroundMiss)
+
+        if (!groundPlaced)
+        {
+            // First frame: drop straight into place, no easing in from (0,0,0)
+            smoothY = targetY;
+            smoothPitch = targetPitch;
+            yaw = targetYaw;
+        }
+        else
+        {
+            smoothY = Mathf.SmoothDamp(smoothY, targetY, ref smoothYVelocity, groundSmoothTime);
+            smoothPitch = Mathf.SmoothDampAngle(smoothPitch, targetPitch, ref smoothPitchVelocity, groundSmoothTime);
+            yaw = Mathf.SmoothDampAngle(yaw, targetYaw, ref yawVelocity, steeringSmoothTime);
+        }
+
+        ApplyPose(new Vector3(center.x, smoothY, center.z));
+    }
+
+    // Trailer: the front sits on the leader's hitch; the rear axle is
+    // dragged behind it (it only ever moves toward the hitch), which is
+    // exactly how a real trailer swings and cuts in through a turn.
+    private void PlaceAsTrailer()
+    {
+        Transform cab = leader.transform;
+        Vector3 hitch = cab.position - cab.forward * followGapDistance;
+
+        if (!groundPlaced)
+        {
+            // Start straight in line behind the cab. (Sampling the path
+            // here fails at the spline's start: there's no path behind it,
+            // so the rear lands on the cab and the trailer spins sideways.)
+            Vector3 back = -cab.forward;
+            back.y = 0f;
+            if (back.sqrMagnitude < 0.0001f) back = -Vector3.forward;
+            trailerRear = hitch + back.normalized * groundSampleBehind;
+        }
+
+        Vector3 toHitch = hitch - trailerRear;
+        toHitch.y = 0f;
+        if (toHitch.sqrMagnitude > 0.0001f)
+        {
+            Vector3 dir = toHitch.normalized;
+            trailerRear = hitch - dir * groundSampleBehind;
+            yaw = Mathf.Atan2(dir.x, dir.z) * Mathf.Rad2Deg;
+        }
+
+        float rearY = GroundHeight(trailerRear, ref lastRearGroundY, ref hasRearGround) + groundOffset;
+        float targetPitch = -Mathf.Atan2(hitch.y - rearY, groundSampleBehind) * Mathf.Rad2Deg;
+        smoothPitch = groundPlaced
+            ? Mathf.SmoothDampAngle(smoothPitch, targetPitch, ref smoothPitchVelocity, groundSmoothTime)
+            : targetPitch;
+
+        ApplyPose(hitch);
+    }
+
+    private void PlaceTrailers()
+    {
+        foreach (SplineVehicle trailer in trailers)
+        {
+            trailer.PlaceAsTrailer();
+            trailer.PlaceTrailers();
+        }
+    }
+
+    // Sets the final pose, leaning the body outward in proportion to
+    // how hard it's cornering (speed x turn rate), eased so it settles.
+    private void ApplyPose(Vector3 position)
+    {
+        float dt = Time.deltaTime;
+        if (groundPlaced && dt > 0f)
+        {
+            Vector3 moved = position - prevPosition;
+            moved.y = 0f;
+            float speedNow = moved.magnitude / dt;
+            float yawRate = Mathf.DeltaAngle(prevYaw, yaw) * Mathf.Deg2Rad / dt;
+            float targetRoll = Mathf.Clamp(speedNow * yawRate * bodyRoll, -maxBodyRoll, maxBodyRoll);
+            roll = Mathf.SmoothDamp(roll, targetRoll, ref rollVelocity, 0.3f);
+        }
+
+        groundPlaced = true;
+        prevPosition = position;
+        prevYaw = yaw;
+        transform.SetPositionAndRotation(position, Quaternion.Euler(smoothPitch, yaw, roll));
+    }
+
+    // A point on the path the vehicle actually drives: the spline,
+    // averaged over a short window. Straights are unchanged; sharp or
+    // linear corners become smooth arcs a real vehicle could drive.
+    private Vector3 PathPoint(float distance)
+    {
+        distance = Mathf.Clamp(distance, 0f, worldLength);
+        if (cornerRounding <= 0.01f) return spline.EvaluatePosition(DistanceToT(distance));
+
+        const int samples = 8;
+        Vector3 sum = Vector3.zero;
+        for (int i = 0; i <= samples; i++)
+        {
+            float d = distance + Mathf.Lerp(-cornerRounding, cornerRounding, i / (float)samples);
+            sum += (Vector3)spline.EvaluatePosition(DistanceToT(Mathf.Clamp(d, 0f, worldLength)));
+        }
+        return sum / (samples + 1);
+    }
+
+    // Ground height below a point. If the ray misses (a hole in the
+    // Ground layer), keeps the last height instead of diving to the spline.
+    private float GroundHeight(Vector3 point, ref float lastY, ref bool hasLast)
+    {
+        Vector3 rayOrigin = point + Vector3.up * groundSearchHeight;
+        if (roadSurfaces == null)
+        {
+            if (Physics.Raycast(rayOrigin, Vector3.down, out RaycastHit hit, groundSearchHeight * 2f, groundMask))
+            {
+                lastY = hit.point.y;
+                hasLast = true;
+                return lastY;
+            }
+        }
+        else
+        {
+            // Roads may sit on a different layer than the terrain, so cast
+            // against everything and keep the highest hit that's either
+            // ground or road - never cars, people or the vehicle itself.
+            int count = Physics.RaycastNonAlloc(rayOrigin, Vector3.down, groundHits, groundSearchHeight * 2f, ~0, QueryTriggerInteraction.Ignore);
+            bool found = false;
+            float bestY = float.MinValue;
+            for (int i = 0; i < count; i++)
+            {
+                Collider col = groundHits[i].collider;
+                bool isGround = (groundMask.value & (1 << col.gameObject.layer)) != 0;
+                if (!isGround && !col.transform.IsChildOf(roadSurfaces)) continue;
+                if (groundHits[i].point.y > bestY) { bestY = groundHits[i].point.y; found = true; }
+            }
+            if (found)
+            {
+                lastY = bestY;
+                hasLast = true;
+                return lastY;
+            }
+        }
+
+        if (!loggedGroundMiss)
         {
             loggedGroundMiss = true;
-            Debug.LogWarning($"{name}: ground raycast found nothing near {pos} - the gap between the spline's height and the ground may exceed Ground Search Height, or the Ground layer doesn't cover this spot.");
+            Debug.LogWarning($"{name}: ground raycast found nothing near {point} - the gap between the spline's height and the ground may exceed Ground Search Height, or the Ground layer doesn't cover this spot.");
         }
-        return pos;
+        return hasLast ? lastY : point.y;
     }
 
     private float KnotDistance(int knotIndex)
