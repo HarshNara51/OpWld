@@ -13687,7 +13687,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MissionEntryPoint
   missionSceneName: Mission_GasStation
-  interactKey: 104
+  interactKey: 101
 --- !u!135 &818607097
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -19832,7 +19832,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MissionEntryPoint
   missionSceneName: Mission_Hotel
-  interactKey: 104
+  interactKey: 101
 --- !u!135 &1205211034
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -23793,7 +23793,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MissionEntryPoint
   missionSceneName: Mission_Farm
-  interactKey: 104
+  interactKey: 101
 --- !u!135 &1543448435
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -26445,7 +26445,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MissionEntryPoint
   missionSceneName: Mission_Railway
-  interactKey: 104
+  interactKey: 101
 --- !u!135 &1692505184
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -28441,7 +28441,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MissionEntryPoint
   missionSceneName: Mission_ShoppingComplex
-  interactKey: 104
+  interactKey: 101
 --- !u!135 &1776902077
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -35618,8 +35618,12 @@ PrefabInstance:
       value: AirTraffic
       objectReference: {fileID: 0}
     - target: {fileID: 8572598277472182089, guid: c161e95865934d2499c2dce4dfb7552b, type: 3}
+      propertyPath: pairChance
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8572598277472182089, guid: c161e95865934d2499c2dce4dfb7552b, type: 3}
       propertyPath: firstFlightDelay
-      value: 1
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 8572598277472182089, guid: c161e95865934d2499c2dce4dfb7552b, type: 3}
       propertyPath: 'aircraftPrefabs.Array.data[0]'

@@ -9,7 +9,7 @@ using UnityEngine;
 /// - Tracks the MIN fps seen since the last reset, so you can walk near
 ///   the trees, then check the worst dip that happened along the way
 ///   instead of having to catch it in the moment.
-/// - Press R at any time to reset Min/Max tracking (e.g. right before you
+/// - Press F10 at any time to reset Min/Max tracking (e.g. right before you
 ///   start walking toward the forest, so the Min reading only reflects
 ///   that specific test run).
 /// - Color: green = smooth, yellow = getting rough, red = lag.
@@ -54,7 +54,7 @@ public class FPSMonitor : MonoBehaviour
             if (currentFps > maxFps) maxFps = currentFps;
         }
 
-        if (Input.GetKeyDown(KeyCode.R))
+        if (Input.GetKeyDown(KeyCode.F10))
         {
             minFps = float.MaxValue;
             maxFps = 0f;
@@ -73,7 +73,7 @@ public class FPSMonitor : MonoBehaviour
             $"FPS: {currentFps:F1}\n" +
             $"Frame: {frameMs:F1} ms\n" +
             $"Min: {displayMin:F1}   Max: {maxFps:F1}\n" +
-            $"(Press R to reset Min/Max)";
+            $"(Press F10 to reset Min/Max)";
 
         GUI.Label(new Rect(20, 20, 320, 120), text, style);
     }

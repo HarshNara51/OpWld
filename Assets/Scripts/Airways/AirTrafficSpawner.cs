@@ -2,14 +2,14 @@ using System.Collections;
 using UnityEngine;
 
 // Put this on an empty GameObject at the CENTER of the map, at ground
-// level. Every so often it launches ONE random aircraft from a random
-// point on the big circle around it; the aircraft crosses the sky to
-// roughly the opposite side and disappears there.
+// level. Every so often it launches a random aircraft - sometimes a pair
+// flying in formation - from a point on a big circle around the map,
+// across the sky to roughly the opposite side, where it disappears.
 //
-// Make the radius big (at or beyond the camera's far clip distance) so
-// aircraft appear and vanish far away, like the train in its tunnels.
-// Make this a prefab and drop it only into the scenes that should have
-// air traffic (e.g. not the stormy/snowy ones).
+// Each flight picks a path style: straight, a sweeping arc, or a
+// mid-flight turn (flies off at an angle, then banks toward its exit).
+// Make this a prefab and drop it only into scenes that should have air
+// traffic (e.g. not the stormy/snowy ones).
 public class AirTrafficSpawner : MonoBehaviour
 {
     [Tooltip("Aircraft prefabs - each needs an AircraftFlight on its root")]
@@ -25,15 +25,32 @@ public class AirTrafficSpawner : MonoBehaviour
     [Tooltip("On Play, sets the radius to cover every terrain corner, times this margin. 0 = keep the radius above.")]
     [SerializeField] private float autoRadiusMargin = 1.3f;
 
+    [Header("Timing")]
     [Tooltip("Seconds before the first aircraft appears")]
     [SerializeField] private float firstFlightDelay = 5f;
 
     [Tooltip("Random wait between flights (min, max seconds)")]
     [SerializeField] private Vector2 waitBetweenFlights = new Vector2(20f, 60f);
 
+    [Header("Path style chances (relative weights)")]
+    [SerializeField] private float straightWeight = 1f;
+    [SerializeField] private float arcWeight = 1f;
+    [SerializeField] private float midTurnWeight = 1.5f;
+
+    [Tooltip("How sharp mid-flight turns are (degrees, min/max)")]
+    [SerializeField] private Vector2 turnAngleRange = new Vector2(35f, 75f);
+
     [Tooltip("How far (degrees) the exit point can be from straight across")]
     [Range(0f, 90f)]
-    [SerializeField] private float exitSpread = 50f;
+    [SerializeField] private float exitSpread = 40f;
+
+    [Header("Pairs")]
+    [Tooltip("Chance that a flight is a pair flying in formation (0-1)")]
+    [Range(0f, 1f)][SerializeField] private float pairChance = 0.25f;
+    [Tooltip("Sideways gap between the two aircraft")]
+    [SerializeField] private Vector2 pairSpacing = new Vector2(25f, 45f);
+    [Tooltip("Height difference between the two aircraft")]
+    [SerializeField] private float pairHeightOffset = 12f;
 
     private IEnumerator Start()
     {
@@ -53,16 +70,40 @@ public class AirTrafficSpawner : MonoBehaviour
 
             if (prefab != null)
             {
-                bool done = false;
-                Launch(prefab, () => done = true);
-                yield return new WaitUntil(() => done); // one aircraft at a time
+                int stillFlying = 0;
+                bool pair = Random.value < pairChance;
+
+                BuildPath(prefab, out Vector3 a, out Vector3 b, out Vector3 c, out Vector3 d);
+
+                stillFlying++;
+                Launch(prefab, a, b, c, d, () => stillFlying--);
+
+                if (pair)
+                {
+                    // Same aircraft type, offset sideways and a little higher - a formation
+                    Vector3 side = Vector3.Cross(Vector3.up, (d - a).normalized);
+                    float spacing = Random.Range(pairSpacing.x, pairSpacing.y) * (Random.value < 0.5f ? 1f : -1f);
+                    Vector3 offset = side * spacing + Vector3.up * pairHeightOffset - (d - a).normalized * 15f;
+
+                    stillFlying++;
+                    Launch(prefab, a + offset, b + offset, c + offset, d + offset, () => stillFlying--);
+                }
+
+                yield return new WaitUntil(() => stillFlying <= 0); // one flight (or pair) at a time
             }
 
             yield return new WaitForSeconds(Random.Range(waitBetweenFlights.x, waitBetweenFlights.y));
         }
     }
 
-    private void Launch(AircraftFlight prefab, System.Action onDone)
+    private void Launch(AircraftFlight prefab, Vector3 a, Vector3 b, Vector3 c, Vector3 d, System.Action onDone)
+    {
+        AircraftFlight aircraft = Instantiate(prefab, a, Quaternion.identity, transform);
+        aircraft.Fly(a, b, c, d, onDone);
+    }
+
+    // Picks start/end on the circle and shapes the curve between them
+    private void BuildPath(AircraftFlight prefab, out Vector3 a, out Vector3 b, out Vector3 c, out Vector3 d)
     {
         Vector3 center = transform.position;
         float altitude = Random.Range(prefab.altitudeRange.x, prefab.altitudeRange.y);
@@ -70,16 +111,41 @@ public class AirTrafficSpawner : MonoBehaviour
         float startAngle = Random.Range(0f, 360f);
         float endAngle = startAngle + 180f + Random.Range(-exitSpread, exitSpread);
 
-        Vector3 start = center + Direction(startAngle) * radius + Vector3.up * altitude;
-        Vector3 end = center + Direction(endAngle) * radius + Vector3.up * altitude;
+        a = center + Direction(startAngle) * radius + Vector3.up * altitude;
+        d = center + Direction(endAngle) * radius + Vector3.up * altitude;
 
-        // Push the curve's middle point sideways for a gentle arc
-        Vector3 mid = (start + end) * 0.5f;
-        Vector3 side = Vector3.Cross(Vector3.up, (end - start).normalized);
-        Vector3 control = mid + side * Random.Range(-1f, 1f) * prefab.curviness * radius;
+        Vector3 across = d - a;
+        float length = across.magnitude;
+        Vector3 dir = across / length;
+        Vector3 side = Vector3.Cross(Vector3.up, dir);
 
-        AircraftFlight aircraft = Instantiate(prefab, start, Quaternion.identity, transform);
-        aircraft.Fly(start, control, end, onDone);
+        // Curvier aircraft favour arcs and turns; straight-flyers favour straight lines
+        float straightW = straightWeight * (1.5f - prefab.curviness);
+        float arcW = arcWeight * (0.5f + prefab.curviness);
+        float turnW = midTurnWeight * (0.5f + prefab.curviness);
+        float roll = Random.Range(0f, straightW + arcW + turnW);
+
+        if (roll < straightW)
+        {
+            // Straight across
+            b = a + across / 3f;
+            c = a + across * 2f / 3f;
+        }
+        else if (roll < straightW + arcW)
+        {
+            // Sweeping arc - both handles pushed to the same side
+            float bend = Random.Range(0.2f, 0.45f) * length * (Random.value < 0.5f ? 1f : -1f);
+            b = a + across / 3f + side * bend;
+            c = a + across * 2f / 3f + side * bend;
+        }
+        else
+        {
+            // Mid-flight turn: heads off at an angle, then banks toward the exit
+            float angle = Random.Range(turnAngleRange.x, turnAngleRange.y) * (Random.value < 0.5f ? 1f : -1f);
+            Vector3 offDir = Quaternion.Euler(0f, angle, 0f) * dir;
+            b = a + offDir * length * 0.55f;
+            c = d - dir * length * 0.25f;
+        }
     }
 
     // Finds the combined area of every terrain in the scene, centers on

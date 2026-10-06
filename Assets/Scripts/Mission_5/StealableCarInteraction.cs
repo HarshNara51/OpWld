@@ -14,7 +14,7 @@ public class StealableCarInteraction : MonoBehaviour
 
     [Header("Settings")]
     [SerializeField] private float interactionRange = 3f;
-    [SerializeField] private KeyCode interactKey = KeyCode.E;
+    [SerializeField] private KeyCode interactKey = KeyCode.F;
 
     private bool isDriving;
     private bool hasBeenStolen;

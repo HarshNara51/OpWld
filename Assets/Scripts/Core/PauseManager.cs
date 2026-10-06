@@ -78,6 +78,9 @@ public class PauseManager : MonoBehaviour
 
         if (Input.GetKeyDown(pauseKey))
         {
+            // Esc inside Controls steps back to Settings first
+            if (isPaused && ControlsMenu.CloseOpenPage()) return;
+
             // Esc inside Settings steps back to the pause buttons first
             if (isPaused && settingsPanel != null && settingsPanel.activeSelf)
             {

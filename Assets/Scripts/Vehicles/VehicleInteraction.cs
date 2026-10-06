@@ -23,7 +23,7 @@ public class VehicleInteraction : MonoBehaviour
 
     [Header("Settings")]
     [SerializeField] private float interactionRange = 3f;
-    [SerializeField] private KeyCode interactKey = KeyCode.E;
+    [SerializeField] private KeyCode interactKey = KeyCode.F;
 
     [Header("Locked car (optional)")]
     [Tooltip("Leave empty for a normal car. Assign a puzzle (e.g. LockpickPuzzle) to make it locked until solved.")]

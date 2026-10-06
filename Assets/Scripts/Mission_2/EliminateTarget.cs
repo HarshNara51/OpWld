@@ -6,7 +6,7 @@ using UnityEngine;
 // target - guards just need to go down as obstacles.
 public class EliminateTarget : MonoBehaviour
 {
-    [SerializeField] private KeyCode interactKey = KeyCode.I;
+    [SerializeField] private KeyCode interactKey = KeyCode.E;
     [Tooltip("Check this only on the actual mob leader - leave unchecked on guards")]
     [SerializeField] private bool isMobLeader = true;
 

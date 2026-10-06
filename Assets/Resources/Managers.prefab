@@ -4925,6 +4925,7 @@ GameObject:
   - component: {fileID: 264766124375278090}
   - component: {fileID: 269010376739089805}
   - component: {fileID: 5529404500972527063}
+  - component: {fileID: 2248161350070435422}
   m_Layer: 0
   m_Name: SettingsPanel
   m_TagString: Untagged
@@ -4932,6 +4933,20 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &2248161350070435422
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6937941098217456988}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6e111b4de8324da08ee852a49197f3ba, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Assembly-CSharp::ControlsMenu
+  settingsBackButton: {fileID: 1114357402449369707}
+  controlsButton: {fileID: 0}
 --- !u!224 &264766124375278090
 RectTransform:
   m_ObjectHideFlags: 0

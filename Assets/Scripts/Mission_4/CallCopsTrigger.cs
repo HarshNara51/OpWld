@@ -8,7 +8,7 @@ using UnityEngine;
 // stepping away just pauses progress, doesn't reset it.
 public class CallCopsTrigger : MonoBehaviour
 {
-    [SerializeField] private KeyCode interactKey = KeyCode.I;
+    [SerializeField] private KeyCode interactKey = KeyCode.E;
     [SerializeField] private float holdDuration = 5f;
 
     private bool playerInRange;

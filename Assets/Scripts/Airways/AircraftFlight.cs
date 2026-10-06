@@ -2,8 +2,9 @@ using System;
 using UnityEngine;
 
 // Put this on the ROOT of each aircraft prefab (helicopter, plane).
-// The AirTrafficSpawner tells it where to start and end; it flies a
-// gentle curve between them, banks into turns, then removes itself.
+// The AirTrafficSpawner gives it a path (start, two curve handles, end);
+// it flies along it - straight, arcing, or turning mid-flight - banks
+// into turns, then removes itself at the far side.
 public class AircraftFlight : MonoBehaviour
 {
     [Header("Flight")]
@@ -13,7 +14,7 @@ public class AircraftFlight : MonoBehaviour
     [Tooltip("Height range above the spawner object (min, max)")]
     public Vector2 altitudeRange = new Vector2(120f, 200f);
 
-    [Tooltip("0 = dead straight, 1 = big sweeping curve")]
+    [Tooltip("0 = prefers straight paths, 1 = prefers big curves and turns")]
     [Range(0f, 1f)] public float curviness = 0.3f;
 
     [Header("Attitude")]
@@ -29,7 +30,7 @@ public class AircraftFlight : MonoBehaviour
     [Tooltip("Rotates the model if its nose doesn't point along +Z (try Y = 90, -90 or 180)")]
     public Vector3 modelRotationFix;
 
-    private Vector3 a, b, c;      // start, curve control, end
+    private Vector3 p0, p1, p2, p3;   // cubic Bezier: start, handle, handle, end
     private float length;
     private float t;
     private float roll;
@@ -37,9 +38,9 @@ public class AircraftFlight : MonoBehaviour
     private bool flying;
     private Action onFinished;
 
-    public void Fly(Vector3 start, Vector3 control, Vector3 end, Action finished)
+    public void Fly(Vector3 start, Vector3 handle1, Vector3 handle2, Vector3 end, Action finished)
     {
-        a = start; b = control; c = end;
+        p0 = start; p1 = handle1; p2 = handle2; p3 = end;
         onFinished = finished;
         length = Mathf.Max(1f, ApproxLength());
         t = 0f;
@@ -55,7 +56,9 @@ public class AircraftFlight : MonoBehaviour
     {
         if (!flying) return;
 
-        t += speed * Time.deltaTime / length;
+        // Advance by real distance, so speed stays even through turns
+        float speedFactor = Mathf.Max(0.01f, Tangent(t).magnitude);
+        t += speed * Time.deltaTime / speedFactor;
 
         if (t >= 1f)
         {
@@ -86,25 +89,26 @@ public class AircraftFlight : MonoBehaviour
                              * Quaternion.Euler(modelRotationFix);
     }
 
-    // Quadratic Bezier curve
+    // Cubic Bezier curve
     private Vector3 Point(float u)
     {
         float m = 1f - u;
-        return m * m * a + 2f * m * u * b + u * u * c;
+        return m * m * m * p0 + 3f * m * m * u * p1 + 3f * m * u * u * p2 + u * u * u * p3;
     }
 
     private Vector3 Tangent(float u)
     {
-        return 2f * (1f - u) * (b - a) + 2f * u * (c - b);
+        float m = 1f - u;
+        return 3f * m * m * (p1 - p0) + 6f * m * u * (p2 - p1) + 3f * u * u * (p3 - p2);
     }
 
     private float ApproxLength()
     {
         float total = 0f;
-        Vector3 prev = a;
-        for (int i = 1; i <= 20; i++)
+        Vector3 prev = p0;
+        for (int i = 1; i <= 30; i++)
         {
-            Vector3 p = Point(i / 20f);
+            Vector3 p = Point(i / 30f);
             total += Vector3.Distance(prev, p);
             prev = p;
         }

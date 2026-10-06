@@ -3,7 +3,7 @@ using UnityEngine;
 // Put this at the police station.
 public class PoliceDeliveryZone : MonoBehaviour
 {
-    [SerializeField] private KeyCode interactKey = KeyCode.I;
+    [SerializeField] private KeyCode interactKey = KeyCode.E;
 
     private bool playerInRange;
 

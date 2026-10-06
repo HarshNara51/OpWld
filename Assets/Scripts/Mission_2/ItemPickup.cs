@@ -3,7 +3,7 @@ using UnityEngine;
 // Put this on the item to recover in the bedroom.
 public class ItemPickup : MonoBehaviour
 {
-    [SerializeField] private KeyCode interactKey = KeyCode.I;
+    [SerializeField] private KeyCode interactKey = KeyCode.E;
 
     private bool playerInRange;
 

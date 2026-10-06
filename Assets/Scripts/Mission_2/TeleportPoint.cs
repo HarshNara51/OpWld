@@ -2,12 +2,12 @@ using UnityEngine;
 
 // Put this on a trigger zone (e.g. the hotel's bedroom door, and
 // another one inside the bedroom pointing back). Press the key to
-// teleport the player to Destination. Uses B, matching your gizmo
+// teleport the player to Destination. Uses E, matching your gizmo
 // interaction convention.
 public class TeleportPoint : MonoBehaviour
 {
     [SerializeField] private Transform destination;
-    [SerializeField] private KeyCode interactKey = KeyCode.B;
+    [SerializeField] private KeyCode interactKey = KeyCode.E;
 
     private bool playerInRange;
     private Transform player;

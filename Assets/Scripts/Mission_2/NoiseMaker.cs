@@ -6,7 +6,7 @@ using UnityEngine;
 // investigate along their route.
 public class NoiseMaker : MonoBehaviour
 {
-    [SerializeField] private KeyCode interactKey = KeyCode.I;
+    [SerializeField] private KeyCode interactKey = KeyCode.E;
 
     [Tooltip("Guards who hear this noise and come to check")]
     [SerializeField] private GuardAI[] guardsToAlert;

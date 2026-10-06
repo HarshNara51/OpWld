@@ -13,7 +13,7 @@ public class TruckEMP : MonoBehaviour
     [SerializeField] private Transform car;
 
     [Header("Charging")]
-    [SerializeField] private KeyCode holdKey = KeyCode.F;
+    [SerializeField] private KeyCode holdKey = KeyCode.G;
     [SerializeField] private float range = 15f;
     [Tooltip("Percent per second while charging cleanly - keep this low for a long, tense chase")]
     [SerializeField] private float fillRatePercentPerSecond = 3f;
