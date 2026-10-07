@@ -790,6 +790,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2570502150570604784}
+  - component: {fileID: 1801009391066492859}
+  - component: {fileID: 5543537272690405903}
+  - component: {fileID: 4183780055797592518}
   m_Layer: 0
   m_Name: rcp
   m_TagString: Untagged
@@ -819,6 +822,69 @@ Transform:
   - {fileID: 3972874081568305940}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!95 &1801009391066492859
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2157369906929606089}
+  m_Enabled: 1
+  m_Avatar: {fileID: 9000000, guid: 28f5207b336e7af4dbf11159fb9f16a9, type: 3}
+  m_Controller: {fileID: 0}
+  m_CullingMode: 1
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &5543537272690405903
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2157369906929606089}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c170c0dbe8e98a84084310726d90aaf9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AmbientNPC
+  clips:
+  - {fileID: -203655887218126122, guid: 35b0d7074def86840a77851ed6a5bb84, type: 3}
+  switchClips: 1
+  switchEvery: {x: 8, y: 16}
+  crossfadeTime: 0.6
+  speedRange: {x: 0.92, y: 1.08}
+--- !u!136 &4183780055797592518
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2157369906929606089}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.3
+  m_Height: 1.8
+  m_Direction: 1
+  m_Center: {x: 0, y: 0.9, z: 0}
 --- !u!1 &2242240604235961009
 GameObject:
   m_ObjectHideFlags: 0
