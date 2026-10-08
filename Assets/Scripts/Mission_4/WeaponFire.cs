@@ -83,7 +83,7 @@ public class WeaponFire : MonoBehaviour
             {
                 float headshotDamage = bodyDamage * headshotMultiplier;
                 Debug.Log($"Headshot! ({headshotDamage:F0} damage)");
-                head.Health.TakeDamage(headshotDamage);
+                head.Health.TakeDamage(headshotDamage, headshot: true);
                 return;
             }
 

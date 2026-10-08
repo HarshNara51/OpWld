@@ -21,9 +21,13 @@ public class Mission4Manager : MonoBehaviour, IFailableMission
 
     public int EnemiesDown { get; private set; }
 
+    // True once enough enemies are down and the truck flees - ends the shootout part
+    public bool ShootoutOver => EnemiesDown >= enemiesToEliminate;
+
     private void Awake()
     {
         Instance = this;
+        EnemyCover.CombatActive = false; // static - would otherwise stay true on a replay
     }
 
     // Called by MissionBriefing once the countdown finishes

@@ -18,12 +18,21 @@ public class Health : MonoBehaviour
     public float Percent01 => currentHealth / maxHealth;
     public bool IsDead => isDead;
 
+    // True if the hit that brought health to zero was a headshot -
+    // lets the death animation pick the headshot version.
+    public bool KilledByHeadshot { get; private set; }
+
     private void Awake()
     {
         currentHealth = maxHealth;
     }
 
     public void TakeDamage(float amount)
+    {
+        TakeDamage(amount, false);
+    }
+
+    public void TakeDamage(float amount, bool headshot)
     {
         if (isDead) return;
 
@@ -33,6 +42,7 @@ public class Health : MonoBehaviour
         if (currentHealth <= 0f)
         {
             isDead = true;
+            KilledByHeadshot = headshot;
             Debug.Log($"{name} is down.");
             onDeath?.Invoke();
         }
