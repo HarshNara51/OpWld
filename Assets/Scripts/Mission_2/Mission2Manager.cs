@@ -12,6 +12,10 @@ public class Mission2Manager : MonoBehaviour, IFailableMission
     [Tooltip("Optional - toggles mission-only objects off and reveal objects on when the mission succeeds")]
     [SerializeField] private MissionCleanup cleanup;
 
+    [Header("Objectives (HUD)")]
+    [Tooltip("The guards outside the bedroom - used for the 'Take down the guards (x/2)' objective")]
+    [SerializeField] private GameObject[] guards;
+
     [Header("Escape")]
     [Tooltip("Starts when the item is grabbed. Wire On Midpoint to OnCopsDispatched, On Finished to OnEscapeTimeUp")]
     [SerializeField] private MissionCountdown escapeCountdown;
@@ -27,7 +31,8 @@ public class Mission2Manager : MonoBehaviour, IFailableMission
     [SerializeField] private float safeDistance = 60f;
 
     [TextArea(2, 4)]
-    [SerializeField] private string escapeMessage =
+    [SerializeField]
+    private string escapeMessage =
         "Quick! You've got the item. Get out of the hotel and reach the vantage point before the cops arrive!";
 
     private bool copsDispatched;
@@ -45,6 +50,40 @@ public class Mission2Manager : MonoBehaviour, IFailableMission
     {
         CurrentState = MissionState.InProgress;
         TargetEliminated = false;
+        UpdateObjective();
+    }
+
+    // Keeps the top-left objective line in sync with the mission
+    private void UpdateObjective()
+    {
+        switch (CurrentState)
+        {
+            case MissionState.InProgress:
+                if (!TargetEliminated)
+                {
+                    int total = guards != null ? guards.Length : 0;
+                    int down = 0;
+                    if (guards != null)
+                        foreach (GameObject g in guards) if (g == null || !g.activeInHierarchy) down++;
+
+                    ObjectiveHUD.Set(total > 0 && down < total
+                        ? $"Take down the guards ({down}/{total})"
+                        : "Eliminate the target");
+                }
+                else
+                {
+                    ObjectiveHUD.Set("Grab the item");
+                }
+                break;
+
+            case MissionState.Escaping:
+                ObjectiveHUD.Set("Reach the vantage point");
+                break;
+
+            default:
+                ObjectiveHUD.Clear();
+                break;
+        }
     }
 
     // Called by the mob leader's takedown
@@ -140,6 +179,8 @@ public class Mission2Manager : MonoBehaviour, IFailableMission
     // Once the cops are at the hotel, wandering back near it gets you caught
     private void Update()
     {
+        UpdateObjective(); // cheap; only changes the HUD when the text changes
+
         if (CurrentState == MissionState.Escaping && copsArrived && !PlayerIsFarEnough())
         {
             FailMission("Busted");

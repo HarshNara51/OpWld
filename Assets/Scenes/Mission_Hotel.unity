@@ -53402,6 +53402,11 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 418669490}
   m_Mesh: {fileID: 4350572439703106932, guid: 3dc64a072d00c7948892e4f314e6b960, type: 3}
+--- !u!1 &419164361 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2157369906929606089, guid: dff2acbb4e4893045b8195f947623f90, type: 3}
+  m_PrefabInstance: {fileID: 1819557398}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &419724543
 GameObject:
   m_ObjectHideFlags: 0
@@ -59758,6 +59763,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Mission2Manager
   cleanup: {fileID: 0}
+  guards:
+  - {fileID: 177548931}
+  - {fileID: 90535307}
   escapeCountdown: {fileID: 253778529}
   copCars:
   - {fileID: 660939018}
@@ -143833,6 +143841,27 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 2570502150570604784, guid: dff2acbb4e4893045b8195f947623f90, type: 3}
   m_PrefabInstance: {fileID: 1819557398}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1179456334
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 419164361}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a979dbdbbfb25a34e9808cd94b8fe0ce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TalkTrigger
+  speakerName: Receptionist
+  lines:
+  - Welcome to the Grand! Do you have a reservation?
+  - Good evening. The lounge is to your left, the elevators to your right.
+  - Sir, the upper floor is for registered guests only.
+  radius: 3
+  cooldown: 20
+  facePlayer: 1
+  turnSpeed: 180
 --- !u!1001 &1179915688
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -221682,7 +221711,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 2157369906929606089, guid: dff2acbb4e4893045b8195f947623f90, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1179456334}
   m_SourcePrefab: {fileID: 100100000, guid: dff2acbb4e4893045b8195f947623f90, type: 3}
 --- !u!1001 &1819833929
 PrefabInstance:
