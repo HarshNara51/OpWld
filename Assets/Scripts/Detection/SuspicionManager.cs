@@ -87,7 +87,7 @@ public class SuspicionManager : MonoBehaviour
 
         foreach (var source in sources)
         {
-            if (source == null || !source.gameObject.activeInHierarchy) continue;
+            if (source == null || !source.isActiveAndEnabled) continue; // inactive, or switched off (e.g. a dying guard)
 
             float ratio = source.DetectionRatio(target.position); // distance + vision cone
             if (ratio > closestRatio) closestRatio = ratio;

@@ -222,7 +222,10 @@ public class GuardAI : MonoBehaviour
     public void TakeDown()
     {
         CurrentState = State.Down;
-        gameObject.SetActive(false); // also switches off his SuspicionSource
+
+        // With an NPCDeath he plays his death animation first, then disappears
+        if (TryGetComponent(out NPCDeath death)) death.Die();
+        else gameObject.SetActive(false); // also switches off his SuspicionSource
     }
 
     private Vector3 PathPoint(int index)
