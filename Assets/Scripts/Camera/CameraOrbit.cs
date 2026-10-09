@@ -12,6 +12,15 @@ public class CameraOrbit : MonoBehaviour
     [SerializeField] private float vehicleDistance = 6f;
     [SerializeField] private Vector3 extraOffset = new Vector3(0f, 0.3f, 0f); // small lift above the pivot point
 
+    [Header("Aiming (hold right mouse with the rifle out)")]
+    [SerializeField] private float aimDistance = 2.0f;
+    [Tooltip("Shift towards the right shoulder while aiming (x = right, y = up)")]
+    [SerializeField] private Vector2 aimShoulderOffset = new Vector2(0.6f, -0.4f);
+    [Tooltip("Slight zoom while aiming - field of view in degrees")]
+    [SerializeField] private float aimFieldOfView = 48f;
+    [Tooltip("How fast the camera eases in/out of the aim view (per second)")]
+    [SerializeField] private float aimBlendSpeed = 6f;
+
     [Header("Mouse Look")]
     [SerializeField] private float mouseSensitivity = 100f;
     [SerializeField] private float topClamp = -40f;   // how far up you can look
@@ -32,6 +41,9 @@ public class CameraOrbit : MonoBehaviour
     private float yaw;
     private float pitch;
     private float currentDistance;
+    private float aimBlend; // 0 = normal view, 1 = fully over the shoulder
+    private Camera cam;
+    private float normalFieldOfView;
 
     public void SetTarget(Transform newTarget)
     {
@@ -43,6 +55,15 @@ public class CameraOrbit : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
         yaw = transform.eulerAngles.y;
         currentDistance = distance;
+        cam = GetComponent<Camera>();
+        if (cam != null) normalFieldOfView = cam.fieldOfView;
+
+        // Shared camera prefab: follow the player unless a scene says otherwise
+        if (target == null)
+        {
+            GameObject player = GameObject.FindGameObjectWithTag("Player");
+            if (player != null) target = player.transform;
+        }
     }
 
     private void LateUpdate()
@@ -60,11 +81,17 @@ public class CameraOrbit : MonoBehaviour
 
         Quaternion rotation = Quaternion.Euler(pitch, yaw, 0f);
 
-        float wantedDistance = VehicleInteraction.Current != null ? vehicleDistance : distance;
+        bool aiming = PlayerLocomotion.IsAiming && VehicleInteraction.Current == null;
+        aimBlend = Mathf.MoveTowards(aimBlend, aiming ? 1f : 0f, aimBlendSpeed * Time.deltaTime);
+        float ease = Mathf.SmoothStep(0f, 1f, aimBlend);
+
+        float wantedDistance = VehicleInteraction.Current != null ? vehicleDistance : Mathf.Lerp(distance, aimDistance, ease);
+        if (cam != null) cam.fieldOfView = Mathf.Lerp(normalFieldOfView, aimFieldOfView, ease);
 
         // Cast from the pivot back toward where the camera wants to be.
         // If a wall/terrain/building is in the way, stop just in front of it.
-        Vector3 pivotPosition = target.position + targetOffset;
+        Vector3 shoulder = rotation * new Vector3(aimShoulderOffset.x, aimShoulderOffset.y, 0f) * ease;
+        Vector3 pivotPosition = target.position + targetOffset + shoulder;
         Vector3 backDirection = -(rotation * Vector3.forward);
         float allowedDistance = WallLimitedDistance(pivotPosition, backDirection, wantedDistance);
 

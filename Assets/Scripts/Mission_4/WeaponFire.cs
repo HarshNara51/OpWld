@@ -28,17 +28,24 @@ public class WeaponFire : MonoBehaviour
     public int CurrentAmmo { get; private set; }
     public int MagazineSize => magazineSize;
     public bool IsReloading { get; private set; }
+    public float ReloadSeconds => reloadSeconds;
+
+    // True while shots are going out (the player's firing animation uses this)
+    public bool IsFiring => Time.time - lastShotTime < fireRate + 0.1f;
 
     private float nextFireTime;
+    private float lastShotTime = -10f;
 
     private void Awake()
     {
         CurrentAmmo = magazineSize;
+        if (fireCamera == null) fireCamera = Camera.main;
+        if (holster == null) holster = GetComponent<WeaponHolster>();
     }
 
     private void Update()
     {
-        if (holster == null || !holster.IsWeaponEquipped) return;
+        if (holster == null || !holster.IsRifleEquipped) return; // the knife uses left click for stabbing
         if (CameraMode.IsActive) return; // left click takes photos in camera mode, never shoots
         if (IsReloading) return;
 
@@ -64,6 +71,7 @@ public class WeaponFire : MonoBehaviour
     private void Fire()
     {
         CurrentAmmo--;
+        lastShotTime = Time.time;
 
         // A gunshot alerts everyone regardless of whether it hits -
         // this is the trigger that ends the "deal" formation.

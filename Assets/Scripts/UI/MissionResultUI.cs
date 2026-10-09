@@ -59,9 +59,12 @@ public class MissionResultUI : MonoBehaviour
             ? "BUSTED!"
             : string.IsNullOrEmpty(reason) ? "MISSION FAILED" : $"MISSION FAILED\n<size=60%>{reason}</size>";
 
+        // Player died: let the whole death animation play before the usual wait
+        float seconds = failDisplaySeconds + (PlayerDeath.IsDead ? PlayerDeath.DeathAnimSeconds : 0f);
+
         IsShowingFailure = true;
         StopAllCoroutines();
-        StartCoroutine(ShowRoutine(message, failDisplaySeconds, () =>
+        StartCoroutine(ShowRoutine(message, seconds, () =>
         {
             IsShowingFailure = false;
             GameManager.Instance.ReturnToHub();

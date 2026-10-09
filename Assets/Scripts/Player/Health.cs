@@ -18,6 +18,9 @@ public class Health : MonoBehaviour
     public float Percent01 => currentHealth / maxHealth;
     public bool IsDead => isDead;
 
+    // For scripts (e.g. PlayerDeath) - same moment as On Death
+    public event System.Action Died;
+
     // True if the hit that brought health to zero was a headshot -
     // lets the death animation pick the headshot version.
     public bool KilledByHeadshot { get; private set; }
@@ -44,6 +47,7 @@ public class Health : MonoBehaviour
             isDead = true;
             KilledByHeadshot = headshot;
             Debug.Log($"{name} is down.");
+            Died?.Invoke(); // first, so e.g. PlayerDeath is set before the mission reacts
             onDeath?.Invoke();
         }
     }
@@ -57,6 +61,7 @@ public class Health : MonoBehaviour
         currentHealth = 0f;
         isDead = true;
         Debug.Log($"{name} is down.");
+        Died?.Invoke(); // first, so e.g. PlayerDeath is set before the mission reacts
         onDeath?.Invoke();
     }
 }

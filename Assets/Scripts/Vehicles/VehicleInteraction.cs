@@ -93,8 +93,8 @@ public class VehicleInteraction : MonoBehaviour
             return;
         }
 
-        // Already driving a different car, or player missing/hidden
-        if (Current != null || player == null || !player.gameObject.activeInHierarchy) return;
+        // Already driving a different car, or player missing/hidden/dead
+        if (Current != null || player == null || !player.gameObject.activeInHierarchy || PlayerDeath.IsDead) return;
 
         float distance = Vector3.Distance(player.position, transform.position);
         if (distance <= interactionRange && IsClosestCarInRange(distance))
