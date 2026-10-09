@@ -22,8 +22,6 @@ public class LockpickPuzzle : MonoBehaviour, ICarUnlockPuzzle
     [SerializeField] private TMP_Text infoText;
 
     [Header("Controls")]
-    [SerializeField] private KeyCode turnKey = KeyCode.D;
-    [SerializeField] private KeyCode cancelKey = KeyCode.Q;
     [SerializeField] private float mouseSensitivity = 3f;
 
     [Header("Difficulty")]
@@ -100,13 +98,13 @@ public class LockpickPuzzle : MonoBehaviour, ICarUnlockPuzzle
 
         float dt = Time.unscaledDeltaTime; // world is frozen, so use real time
 
-        if (Input.GetKeyDown(cancelKey))
+        if (GameKeys.Down(GameAction.BackOff))
         {
             Close(false, "You back off from the car.");
             return;
         }
 
-        bool turning = Input.GetKey(turnKey);
+        bool turning = GameKeys.Held(GameAction.TurnLock);
         float jiggle = 0f;
 
         if (!turning)
@@ -172,7 +170,7 @@ public class LockpickPuzzle : MonoBehaviour, ICarUnlockPuzzle
 
         if (infoText != null)
         {
-            infoText.text = $"Mouse: move pick   |   Hold {turnKey}: turn lock   |   {cancelKey}: give up\n" +
+            infoText.text = $"Mouse: move pick   |   Hold {GameKeys.Label(GameAction.TurnLock)}: turn lock   |   {GameKeys.Label(GameAction.BackOff)}: give up\n" +
                             $"Lockpicks: {picksLeft}   {status}";
         }
     }

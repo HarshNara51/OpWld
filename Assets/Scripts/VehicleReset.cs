@@ -7,7 +7,6 @@ using UnityEngine;
 // its velocity. Short cooldown to prevent spam.
 public class VehicleReset : MonoBehaviour
 {
-    [SerializeField] private KeyCode resetKey = KeyCode.R;
 
     [Tooltip("How far ahead the car is moved")]
     [SerializeField] private float forwardDistance = 4f;
@@ -28,7 +27,7 @@ public class VehicleReset : MonoBehaviour
 
     private void Update()
     {
-        if (!Input.GetKeyDown(resetKey) || Time.time < nextAllowedTime) return;
+        if (!GameKeys.Down(GameAction.ResetCar) || Time.time < nextAllowedTime) return;
 
         VehicleInteraction car = VehicleInteraction.Current;
         if (car == null) return; // only works while driving

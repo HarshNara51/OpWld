@@ -37,7 +37,7 @@ public class EliminateTarget : MonoBehaviour
 
         WeaponHolster holster = other.GetComponent<WeaponHolster>();
         if (holster == null || !holster.IsKnifeEquipped)
-            NotePopup.Show("Press 2 to draw your knife.", 2.5f);
+            NotePopup.Show($"Press {GameKeys.Label(GameAction.EquipKnife)} to draw your knife.", 2.5f);
     }
 
     private void OnTriggerExit(Collider other)

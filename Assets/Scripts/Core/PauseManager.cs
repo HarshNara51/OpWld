@@ -23,6 +23,9 @@ public class PauseManager : MonoBehaviour
 
     private bool isPaused;
 
+    // GameKeys ignores gameplay keys while this is true (e.g. rebinding keys in the pause menu)
+    public static bool IsPaused => Instance != null && Instance.isPaused;
+
     // Set by puzzles (lockpick, bomb) so Esc can't open the pause menu
     // on top of them - both control time and would fight each other
     public static bool InputBlocked;

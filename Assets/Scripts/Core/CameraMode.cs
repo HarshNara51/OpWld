@@ -18,10 +18,9 @@ public class CameraMode : MonoBehaviour
 {
     public static CameraMode Instance { get; private set; }
     public static bool IsActive => Instance != null && Instance.active;
-    public KeyCode ToggleKey => toggleKey;
+    public KeyCode ToggleKey => GameKeys.Get(GameAction.PhotoMode);
 
     [Header("Controls")]
-    [SerializeField] private KeyCode toggleKey = KeyCode.P;
     [SerializeField] private float shutterCooldown = 0.6f;
 
     [Header("First-person view")]
@@ -103,7 +102,7 @@ public class CameraMode : MonoBehaviour
             return;
         }
 
-        if (Input.GetKeyDown(toggleKey))
+        if (GameKeys.Down(GameAction.PhotoMode))
         {
             if (active) Close();
             else Open();
@@ -124,7 +123,7 @@ public class CameraMode : MonoBehaviour
             cam.fieldOfView = Mathf.Clamp(cam.fieldOfView - scroll * zoomSpeed, minFov, maxFov);
         }
 
-        if (Input.GetMouseButtonDown(0) && Time.time >= nextShotTime)
+        if (GameKeys.Down(GameAction.TakePicture) && Time.time >= nextShotTime)
         {
             nextShotTime = Time.time + shutterCooldown;
             StartCoroutine(TakePhoto());

@@ -3,7 +3,6 @@ using UnityEngine;
 // Put this on the item to recover in the bedroom.
 public class ItemPickup : MonoBehaviour
 {
-    [SerializeField] private KeyCode interactKey = KeyCode.E;
 
     private bool playerInRange;
 
@@ -11,7 +10,7 @@ public class ItemPickup : MonoBehaviour
     {
         if (!other.CompareTag("Player")) return;
         playerInRange = true;
-        Debug.Log($"Press {interactKey} to grab the item");
+        Debug.Log($"Press {GameKeys.Label(GameAction.Interact)} to grab the item");
     }
 
     private void OnTriggerExit(Collider other)
@@ -22,7 +21,7 @@ public class ItemPickup : MonoBehaviour
 
     private void Update()
     {
-        if (playerInRange && Input.GetKeyDown(interactKey))
+        if (playerInRange && GameKeys.Down(GameAction.Interact))
         {
             Mission2Manager.Instance.OnItemRecovered();
             gameObject.SetActive(false);

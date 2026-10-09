@@ -17,7 +17,6 @@ public class PuzzleMinigame : MonoBehaviour
     [Header("Settings")]
     [SerializeField] private float markerSpeed = 300f; // pixels per second
     [SerializeField] private int requiredHits = 3;
-    [SerializeField] private KeyCode hitKey = KeyCode.Space;
     [SerializeField] private float targetZoneWidth = 60f;
 
     [Tooltip("Called once the player clicks OK after solving - wire this to the car's EnterVehicle for the steal puzzle, or the bomb's Defuse method for the other one")]
@@ -75,7 +74,7 @@ public class PuzzleMinigame : MonoBehaviour
         if (pos < -barHalfWidth) { pos = -barHalfWidth; direction = 1f; }
         marker.anchoredPosition = new Vector2(pos, marker.anchoredPosition.y);
 
-        if (Input.GetKeyDown(hitKey))
+        if (GameKeys.Down(GameAction.TimingHit))
         {
             float distFromZoneCenter = Mathf.Abs(marker.anchoredPosition.x - targetZone.anchoredPosition.x);
             if (distFromZoneCenter <= targetZone.sizeDelta.x / 2f)

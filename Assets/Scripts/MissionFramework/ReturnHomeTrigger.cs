@@ -7,8 +7,6 @@ using UnityEngine;
 // accident while mashing the interact key.
 public class ReturnHomeTrigger : MonoBehaviour
 {
-    [Tooltip("Key the player holds to return to the hub")]
-    public KeyCode interactKey = KeyCode.E;
 
     [Tooltip("Seconds the key must be held")]
     public float holdDuration = 1f;
@@ -20,7 +18,7 @@ public class ReturnHomeTrigger : MonoBehaviour
     {
         if (!other.CompareTag("Player")) return;
         playerInRange = true;
-        Debug.Log($"Hold {interactKey} to return to Hub");
+        Debug.Log($"Hold {GameKeys.Label(GameAction.Interact)} to return to Hub");
     }
 
     private void OnTriggerExit(Collider other)
@@ -32,7 +30,7 @@ public class ReturnHomeTrigger : MonoBehaviour
 
     private void Update()
     {
-        if (!playerInRange || !Input.GetKey(interactKey))
+        if (!playerInRange || !GameKeys.Held(GameAction.Interact))
         {
             heldTime = 0f;
             return;

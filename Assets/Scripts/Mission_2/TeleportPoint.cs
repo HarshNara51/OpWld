@@ -7,7 +7,6 @@ using UnityEngine;
 public class TeleportPoint : MonoBehaviour
 {
     [SerializeField] private Transform destination;
-    [SerializeField] private KeyCode interactKey = KeyCode.E;
 
     private bool playerInRange;
     private Transform player;
@@ -22,7 +21,7 @@ public class TeleportPoint : MonoBehaviour
     {
         if (!other.CompareTag("Player")) return;
         playerInRange = true;
-        Debug.Log($"Press {interactKey} to enter");
+        Debug.Log($"Press {GameKeys.Label(GameAction.Interact)} to enter");
     }
 
     private void OnTriggerExit(Collider other)
@@ -33,7 +32,7 @@ public class TeleportPoint : MonoBehaviour
 
     private void Update()
     {
-        if (playerInRange && Input.GetKeyDown(interactKey) && player != null && destination != null)
+        if (playerInRange && GameKeys.Down(GameAction.Interact) && player != null && destination != null)
         {
             // CharacterController can silently reject a direct position
             // change while enabled - disabling it around the teleport

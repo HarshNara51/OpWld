@@ -6,7 +6,6 @@ using UnityEngine.Events;
 // checks distance. Press the key to start defusing.
 public class DefuseTrigger : MonoBehaviour
 {
-    [SerializeField] private KeyCode interactKey = KeyCode.E;
     [SerializeField] private float radius = 6f;
 
     [Tooltip("Wire to the defuse puzzle's Open")]
@@ -27,10 +26,10 @@ public class DefuseTrigger : MonoBehaviour
 
         bool inRange = IsInRange();
 
-        if (inRange && !wasInRange) Debug.Log($"Press {interactKey} to defuse the bomb");
+        if (inRange && !wasInRange) Debug.Log($"Press {GameKeys.Label(GameAction.Interact)} to defuse the bomb");
         wasInRange = inRange;
 
-        if (inRange && Input.GetKeyDown(interactKey)) onUse.Invoke();
+        if (inRange && GameKeys.Down(GameAction.Interact)) onUse.Invoke();
     }
 
     private bool IsInRange()

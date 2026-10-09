@@ -11,7 +11,6 @@ public class PlayerKnife : MonoBehaviour
     // Other scripts (camera, cars...) can check this
     public static bool IsStabbing { get; private set; }
 
-    [SerializeField] private KeyCode stabKey = KeyCode.Mouse0;
     [SerializeField] private string stabTrigger = "Stab";
 
     [Header("Timing (Stabbing clip, 2.13 s)")]
@@ -61,7 +60,7 @@ public class PlayerKnife : MonoBehaviour
     {
         if (IsStabbing || holster == null || !holster.IsKnifeEquipped) return;
         if (CameraMode.IsActive || Time.timeScale == 0f) return; // photo mode / briefing / pause
-        if (!Input.GetKeyDown(stabKey)) return;
+        if (!GameKeys.Down(GameAction.FireStab)) return;
 
         EliminateTarget target = EliminateTarget.Nearest(transform.position);
         if (target != null)

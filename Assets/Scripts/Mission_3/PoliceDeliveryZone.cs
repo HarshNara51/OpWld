@@ -3,7 +3,6 @@ using UnityEngine;
 // Put this at the police station.
 public class PoliceDeliveryZone : MonoBehaviour
 {
-    [SerializeField] private KeyCode interactKey = KeyCode.E;
 
     private bool playerInRange;
 
@@ -11,7 +10,7 @@ public class PoliceDeliveryZone : MonoBehaviour
     {
         if (!other.CompareTag("Player")) return;
         playerInRange = true;
-        Debug.Log($"Press {interactKey} to deliver the evidence");
+        Debug.Log($"Press {GameKeys.Label(GameAction.Interact)} to deliver the evidence");
     }
 
     private void OnTriggerExit(Collider other)
@@ -22,7 +21,7 @@ public class PoliceDeliveryZone : MonoBehaviour
 
     private void Update()
     {
-        if (!playerInRange || !Input.GetKeyDown(interactKey)) return;
+        if (!playerInRange || !GameKeys.Down(GameAction.Interact)) return;
 
         var state = Mission3Manager.Instance.CurrentState;
         if (state == Mission3Manager.MissionState.Delivering)

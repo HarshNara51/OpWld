@@ -13,7 +13,6 @@ public class TruckEMP : MonoBehaviour
     [SerializeField] private Transform car;
 
     [Header("Charging")]
-    [SerializeField] private KeyCode holdKey = KeyCode.G;
     [SerializeField] private float range = 15f;
     [Tooltip("Percent per second while charging cleanly - keep this low for a long, tense chase")]
     [SerializeField] private float fillRatePercentPerSecond = 3f;
@@ -47,7 +46,7 @@ public class TruckEMP : MonoBehaviour
     {
         if (truck == null || complete) return;
 
-        bool keyHeld = Input.GetKey(holdKey);
+        bool keyHeld = GameKeys.Held(GameAction.EMP);
 
         // A disruption sticks until the key is actually released -
         // just continuing to hold it does nothing to clear it.

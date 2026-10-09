@@ -6,7 +6,6 @@ using UnityEngine;
 // investigate along their route.
 public class NoiseMaker : MonoBehaviour
 {
-    [SerializeField] private KeyCode interactKey = KeyCode.E;
 
     [Tooltip("Guards who hear this noise and come to check")]
     [SerializeField] private GuardAI[] guardsToAlert;
@@ -31,7 +30,7 @@ public class NoiseMaker : MonoBehaviour
     {
         if (!other.CompareTag("Player") || (singleUse && used)) return;
         playerInRange = true;
-        Debug.Log($"Press {interactKey} to make a distraction");
+        Debug.Log($"Press {GameKeys.Label(GameAction.Interact)} to make a distraction");
     }
 
     private void OnTriggerExit(Collider other)
@@ -42,7 +41,7 @@ public class NoiseMaker : MonoBehaviour
 
     private void Update()
     {
-        if (!playerInRange || !Input.GetKeyDown(interactKey)) return;
+        if (!playerInRange || !GameKeys.Down(GameAction.Interact)) return;
         if (singleUse && used) return;
         if (Time.time < nextAllowedTime) return;
 

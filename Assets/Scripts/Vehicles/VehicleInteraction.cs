@@ -23,7 +23,6 @@ public class VehicleInteraction : MonoBehaviour
 
     [Header("Settings")]
     [SerializeField] private float interactionRange = 3f;
-    [SerializeField] private KeyCode interactKey = KeyCode.F;
 
     [Header("Locked car (optional)")]
     [Tooltip("Leave empty for a normal car. Assign a puzzle (e.g. LockpickPuzzle) to make it locked until solved.")]
@@ -73,7 +72,7 @@ public class VehicleInteraction : MonoBehaviour
         if (disabledForGood)
         {
             // Trying to get into the wreck: remind the player why nothing happens
-            if (Input.GetKeyDown(interactKey) && Time.time >= nextWreckNoteTime &&
+            if (GameKeys.Down(GameAction.EnterExitCar) && Time.time >= nextWreckNoteTime &&
                 player != null && player.gameObject.activeInHierarchy &&
                 Vector3.Distance(player.position, transform.position) <= interactionRange)
             {
@@ -82,7 +81,7 @@ public class VehicleInteraction : MonoBehaviour
             }
             return;
         }
-        if (!Input.GetKeyDown(interactKey)) return;
+        if (!GameKeys.Down(GameAction.EnterExitCar)) return;
 
         // Another car already handled this key press this frame
         if (Time.frameCount == lastSwitchFrame) return;

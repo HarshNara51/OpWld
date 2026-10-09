@@ -8,7 +8,6 @@ using UnityEngine;
 // stepping away just pauses progress, doesn't reset it.
 public class CallCopsTrigger : MonoBehaviour
 {
-    [SerializeField] private KeyCode interactKey = KeyCode.E;
     [SerializeField] private float holdDuration = 5f;
 
     private bool playerInRange;
@@ -19,7 +18,7 @@ public class CallCopsTrigger : MonoBehaviour
     {
         if (!other.CompareTag("Player")) return;
         playerInRange = true;
-        Debug.Log($"Hold {interactKey} to call the cops");
+        Debug.Log($"Hold {GameKeys.Label(GameAction.Interact)} to call the cops");
     }
 
     private void OnTriggerExit(Collider other)
@@ -30,7 +29,7 @@ public class CallCopsTrigger : MonoBehaviour
 
     private void Update()
     {
-        if (!playerInRange || !Input.GetKey(interactKey)) return;
+        if (!playerInRange || !GameKeys.Held(GameAction.Interact)) return;
 
         heldTime += Time.deltaTime;
 

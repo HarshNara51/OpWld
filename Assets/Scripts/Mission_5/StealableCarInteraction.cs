@@ -14,7 +14,6 @@ public class StealableCarInteraction : MonoBehaviour
 
     [Header("Settings")]
     [SerializeField] private float interactionRange = 3f;
-    [SerializeField] private KeyCode interactKey = KeyCode.F;
 
     private bool isDriving;
     private bool hasBeenStolen;
@@ -28,13 +27,13 @@ public class StealableCarInteraction : MonoBehaviour
     {
         if (isDriving)
         {
-            if (Input.GetKeyDown(interactKey))
+            if (GameKeys.Down(GameAction.EnterExitCar))
                 ExitVehicle();
             return;
         }
 
         float distance = Vector3.Distance(player.position, transform.position);
-        if (distance <= interactionRange && Input.GetKeyDown(interactKey))
+        if (distance <= interactionRange && GameKeys.Down(GameAction.EnterExitCar))
         {
             if (!hasBeenStolen && stealPuzzle != null)
             {

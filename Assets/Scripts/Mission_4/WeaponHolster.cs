@@ -1,7 +1,7 @@
 using UnityEngine;
 
 // Put this on the player. Assign each weapon GameObject in order -
-// press its key to equip it, press the same key again to holster it.
+// press its key (Rifle / Knife on the Controls page) to equip it, press the same key again to holster it.
 // Pressing a different weapon's key switches directly. Weapons
 // should already be parented to the correct hand socket transform
 // and start inactive in the scene.
@@ -12,7 +12,6 @@ public class WeaponHolster : MonoBehaviour
     [System.Serializable]
     public class WeaponSlot
     {
-        public KeyCode key;
         public WeaponKind kind;
         public GameObject weaponObject;
     }
@@ -46,7 +45,7 @@ public class WeaponHolster : MonoBehaviour
 
         for (int i = 0; i < weapons.Length; i++)
         {
-            if (Input.GetKeyDown(weapons[i].key))
+            if (GameKeys.Down(weapons[i].kind == WeaponKind.Rifle ? GameAction.EquipRifle : GameAction.EquipKnife))
             {
                 ToggleWeapon(i);
                 break;

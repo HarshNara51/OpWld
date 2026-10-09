@@ -134,7 +134,7 @@ public class Mission3Manager : MonoBehaviour, IFailableMission
 
     private static string CameraKey()
     {
-        return CameraMode.Instance != null ? CameraMode.Instance.ToggleKey.ToString() : "P";
+        return GameKeys.Label(GameAction.PhotoMode);
     }
 
     // Called by PhotoCaptureZone when the trucks are photographed

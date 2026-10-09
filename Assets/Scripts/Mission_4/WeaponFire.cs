@@ -12,7 +12,6 @@ public class WeaponFire : MonoBehaviour
     [SerializeField] private WeaponHolster holster;
 
     [Header("Shooting")]
-    [SerializeField] private KeyCode fireKey = KeyCode.Mouse0;
     [SerializeField] private float fireRate = 0.1f; // seconds between shots
     [SerializeField] private float range = 100f;
     [SerializeField] private float bodyDamage = 30f;
@@ -23,7 +22,6 @@ public class WeaponFire : MonoBehaviour
     [Header("Ammo")]
     [SerializeField] private int magazineSize = 30;
     [SerializeField] private float reloadSeconds = 2f;
-    [SerializeField] private KeyCode reloadKey = KeyCode.R;
 
     public int CurrentAmmo { get; private set; }
     public int MagazineSize => magazineSize;
@@ -49,17 +47,17 @@ public class WeaponFire : MonoBehaviour
         if (CameraMode.IsActive) return; // left click takes photos in camera mode, never shoots
         if (IsReloading) return;
 
-        if (Input.GetKeyDown(reloadKey) && CurrentAmmo < magazineSize)
+        if (GameKeys.Down(GameAction.Reload) && CurrentAmmo < magazineSize)
         {
             StartCoroutine(Reload());
             return;
         }
 
-        if (Input.GetKey(fireKey) && Time.time >= nextFireTime)
+        if (GameKeys.Held(GameAction.FireStab) && Time.time >= nextFireTime)
         {
             if (CurrentAmmo <= 0)
             {
-                Debug.Log("Out of ammo - press R to reload");
+                Debug.Log($"Out of ammo - press {GameKeys.Label(GameAction.Reload)} to reload");
                 return;
             }
 

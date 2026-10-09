@@ -4,7 +4,6 @@ using UnityEngine;
 // Requires a trigger Collider and the player tagged "Player".
 public class CargoPickup : MonoBehaviour
 {
-    [SerializeField] private KeyCode interactKey = KeyCode.E;
 
     private bool playerInRange;
 
@@ -12,7 +11,7 @@ public class CargoPickup : MonoBehaviour
     {
         if (!other.CompareTag("Player")) return;
         playerInRange = true;
-        Debug.Log($"Press {interactKey} to pick up cargo");
+        Debug.Log($"Press {GameKeys.Label(GameAction.Interact)} to pick up cargo");
     }
 
     private void OnTriggerExit(Collider other)
@@ -23,7 +22,7 @@ public class CargoPickup : MonoBehaviour
 
     private void Update()
     {
-        if (playerInRange && Input.GetKeyDown(interactKey))
+        if (playerInRange && GameKeys.Down(GameAction.Interact))
         {
             if (!Mission1Manager.Instance.IsTaxiNear(transform.position))
             {

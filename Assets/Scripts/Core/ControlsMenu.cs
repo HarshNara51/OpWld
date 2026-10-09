@@ -1,5 +1,7 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using TMPro;
 
@@ -12,8 +14,10 @@ using TMPro;
 // Esc on the page goes back to Settings (MainMenuController and
 // PauseManager ask CloseOpenPage() first).
 //
-// When controls change, edit the Columns list below - that's the only
-// place the page's text comes from.
+// Keys tied to a GameAction can be changed: click the key, press the new
+// one (Esc cancels). They're saved by GameKeys. "Reset to defaults" puts
+// everything back. When an action is added or moved, edit the Columns
+// list below - that's the only place the page's layout comes from.
 public class ControlsMenu : MonoBehaviour
 {
     [Tooltip("The Settings panel's Back button - its look is copied for the new buttons. Found by name if left empty.")]
@@ -36,9 +40,9 @@ public class ControlsMenu : MonoBehaviour
     {
         public string action;
         public bool hold;
-        public string[] keys; // "/" between keys = "either one"
+        public object[] keys; // GameAction = changeable key, string = fixed label, "/" = "either one"
 
-        public Row(string action, bool hold, string[] keys)
+        public Row(string action, bool hold, object[] keys)
         {
             this.action = action;
             this.hold = hold;
@@ -58,56 +62,58 @@ public class ControlsMenu : MonoBehaviour
         }
     }
 
-    private static Row Press(string action, params string[] keys) => new Row(action, false, keys);
-    private static Row Hold(string action, params string[] keys) => new Row(action, true, keys);
+    private static Row Press(string action, params object[] keys) => new Row(action, false, keys);
+    private static Row Hold(string action, params object[] keys) => new Row(action, true, keys);
 
     private static readonly Section[][] Columns =
     {
         new[]
         {
             new Section("On foot",
-                Press("Move", "W", "A", "S", "D"),
-                Hold("Sprint", "Shift"),
-                Press("Jump", "Space"),
-                Press("Crouch", "C", "/", "Ctrl"),
+                Press("Move", GameAction.MoveForward, GameAction.MoveLeft, GameAction.MoveBack, GameAction.MoveRight),
+                Hold("Sprint", GameAction.Sprint),
+                Press("Jump", GameAction.Jump),
+                Press("Crouch", GameAction.Crouch),
                 Press("Look around", "Mouse")),
             new Section("Vehicles",
-                Press("Enter / exit car", "F"),
-                Press("Accelerate / reverse", "W", "/", "S"),
-                Press("Steer", "A", "/", "D"),
-                Press("Handbrake", "Space"),
-                Press("Reset car", "R"),
-                Press("Summon your car", "V")),
+                Press("Enter / exit car", GameAction.EnterExitCar),
+                Press("Accelerate / reverse", GameAction.Accelerate, "/", GameAction.Reverse),
+                Press("Steer", GameAction.SteerLeft, "/", GameAction.SteerRight),
+                Hold("Handbrake", GameAction.Handbrake),
+                Press("Reset car", GameAction.ResetCar),
+                Press("Summon your car", GameAction.SummonCar)),
         },
         new[]
         {
             new Section("Interact",
-                Press("Interact / pick up / use", "E"),
-                Press("Start mission", "E"),
-                Hold("Return home", "E"),
-                Hold("Call the cops", "E")),
+                Press("Interact / pick up / use", GameAction.Interact),
+                Press("Start mission", GameAction.Interact),
+                Hold("Return home", GameAction.Interact),
+                Hold("Call the cops", GameAction.Interact)),
             new Section("Combat & gadgets",
-                Press("Rifle: equip / holster", "1"),
-                Press("Knife: equip / holster", "2"),
-                Press("Fire / stab", "Left Click"),
-                Press("Reload", "R"),
-                Hold("EMP device", "G")),
+                Press("Rifle: equip / holster", GameAction.EquipRifle),
+                Press("Knife: equip / holster", GameAction.EquipKnife),
+                Hold("Aim", GameAction.Aim),
+                Press("Fire / stab", GameAction.FireStab),
+                Press("Reload", GameAction.Reload),
+                Hold("EMP device", GameAction.EMP)),
         },
         new[]
         {
             new Section("Puzzles",
-                Press("Back off", "Q"),
+                Press("Back off", GameAction.BackOff),
                 Press("Lockpick: move pick", "Mouse"),
-                Hold("Lockpick: turn lock", "D"),
-                Press("Timing: hit the zone", "Space"),
+                Hold("Lockpick: turn lock", GameAction.TurnLock),
+                Press("Timing: hit the zone", GameAction.TimingHit),
                 Press("Bomb: enter code", "0-9", "/", "Click"),
-                Press("Bomb: clear / confirm", "Backspace", "/", "Enter"),
+                Press("Bomb: clear", "Backspace"),
+                Press("Bomb: confirm", "Enter"),
                 Press("Bomb: cut a wire", "Left Click")),
             new Section("General",
                 Press("Pause", "Esc"),
-                Press("Photo mode", "P"),
+                Press("Photo mode", GameAction.PhotoMode),
                 Press("Photo: zoom", "Scroll"),
-                Press("Photo: take picture", "Left Click")),
+                Press("Photo: take picture", GameAction.TakePicture)),
         },
     };
 
@@ -117,6 +123,27 @@ public class ControlsMenu : MonoBehaviour
     private const float ContentHeight = 800f;
 
     private static ControlsMenu openMenu;
+
+    // Every changeable key cap on the page, so labels can be refreshed
+    private struct BoundCap
+    {
+        public GameAction action;
+        public Image image;
+        public TMP_Text label;
+    }
+    private readonly List<BoundCap> boundCaps = new List<BoundCap>();
+
+    // Each row's action label gets whatever width its keys leave free
+    private struct RowParts
+    {
+        public TMP_Text label;
+        public RectTransform keys;
+    }
+    private readonly List<RowParts> rows = new List<RowParts>();
+    private TMP_Text status;
+    private GameAction? listening;   // waiting for a key for this action
+    private int listenStartFrame;
+    private static KeyCode[] allKeys;
 
     private GameObject page;
     private RectTransform content;
@@ -128,7 +155,8 @@ public class ControlsMenu : MonoBehaviour
     public static bool CloseOpenPage()
     {
         if (openMenu == null) return false;
-        openMenu.Close();
+        if (openMenu.listening != null) openMenu.StopListening("Cancelled."); // Esc while waiting for a key = cancel
+        else openMenu.Close();
         return true;
     }
 
@@ -157,12 +185,20 @@ public class ControlsMenu : MonoBehaviour
             controlsButton.onClick.AddListener(Open);
 
         BuildPage(backPos);
+        FitLabels();
         page.SetActive(false);
+        GameKeys.Changed += RefreshKeys;
+    }
+
+    private void OnDestroy()
+    {
+        GameKeys.Changed -= RefreshKeys;
     }
 
     // Settings got hidden (Back, Esc, unpause...) - next time it opens on Settings, not Controls
     private void OnDisable()
     {
+        listening = null;
         if (page != null) page.SetActive(false);
         if (openMenu == this) openMenu = null;
     }
@@ -174,10 +210,13 @@ public class ControlsMenu : MonoBehaviour
         page.transform.SetAsLastSibling();
         openMenu = this;
         FitToScreen();
+        RefreshKeys();
+        SetStatus("Click a key to change it.", false);
     }
 
     public void Close()
     {
+        listening = null;
         if (page != null) page.SetActive(false);
         if (openMenu == this) openMenu = null;
     }
@@ -185,6 +224,91 @@ public class ControlsMenu : MonoBehaviour
     private void LateUpdate()
     {
         if (openMenu == this) FitToScreen();
+    }
+
+    // ================= changing a key =================
+
+    private void StartListening(GameAction action)
+    {
+        listening = action;
+        listenStartFrame = Time.frameCount;
+        // Otherwise Space/Enter would "click" the selected key cap again
+        if (EventSystem.current != null) EventSystem.current.SetSelectedGameObject(null);
+        RefreshKeys();
+        SetStatus($"Press a key for <b>{GameKeys.ActionName(action)}</b>   (Esc to cancel)", true);
+    }
+
+    private void StopListening(string message)
+    {
+        listening = null;
+        RefreshKeys();
+        SetStatus(message, false);
+    }
+
+    // Update still runs in the pause menu (time stopped), so this works there
+    private void Update()
+    {
+        if (listening == null || Time.frameCount == listenStartFrame) return;
+
+        if (allKeys == null)
+        {
+            var list = new List<KeyCode>();
+            foreach (KeyCode k in System.Enum.GetValues(typeof(KeyCode)))
+                if (GameKeys.CanBind(k) && !list.Contains(k)) list.Add(k);
+            allKeys = list.ToArray();
+        }
+
+        foreach (KeyCode k in allKeys)
+        {
+            if (!Input.GetKeyDown(k)) continue;
+
+            GameAction action = listening.Value;
+            listening = null;
+            GameAction? swapped = GameKeys.Set(action, k);
+            string name = GameKeys.ActionName(action);
+            if (swapped != null)
+                SetStatus($"<b>{name}</b> is now {GameKeys.KeyName(k)}.   <b>{GameKeys.ActionName(swapped.Value)}</b> took its old key: {GameKeys.Label(swapped.Value)}.", false);
+            else
+                SetStatus($"<b>{name}</b> is now {GameKeys.KeyName(k)}.", false);
+            RefreshKeys();
+            return;
+        }
+    }
+
+    private void ResetToDefaults()
+    {
+        listening = null;
+        GameKeys.ResetAll();
+        RefreshKeys();
+        SetStatus("All keys are back to their defaults.", false);
+    }
+
+    private void RefreshKeys()
+    {
+        foreach (BoundCap cap in boundCaps)
+        {
+            bool waiting = listening == cap.action;
+            cap.label.text = waiting ? "..." : GameKeys.Label(cap.action);
+            cap.image.color = waiting ? headerColor : Color.white;
+        }
+        FitLabels();
+    }
+
+    // Key caps change width when keys change ("E" -> "Middle Click")
+    private void FitLabels()
+    {
+        foreach (RowParts row in rows)
+        {
+            LayoutRebuilder.ForceRebuildLayoutImmediate(row.keys);
+            row.label.rectTransform.offsetMax = new Vector2(-(row.keys.rect.width + 12f), 0f);
+        }
+    }
+
+    private void SetStatus(string text, bool highlight)
+    {
+        if (status == null) return;
+        status.text = text;
+        status.color = highlight ? headerColor : dimTextColor;
     }
 
     // Shrinks/grows the page to fit the canvas (the pause canvas is constant pixel size)
@@ -203,7 +327,8 @@ public class ControlsMenu : MonoBehaviour
         RectTransform pageRt = (RectTransform)page.transform;
         pageRt.SetParent(transform, false);
         Stretch(pageRt);
-        page.GetComponent<Image>().color = backgroundColor; // also blocks clicks to Settings underneath
+        // Fully opaque, so Settings doesn't show through; also blocks clicks to it
+        page.GetComponent<Image>().color = new Color(backgroundColor.r, backgroundColor.g, backgroundColor.b, 1f);
 
         content = NewRect("Content", pageRt);
         content.anchorMin = content.anchorMax = new Vector2(0.5f, 0.5f);
@@ -213,7 +338,7 @@ public class ControlsMenu : MonoBehaviour
         TMP_Text title = NewText("Title", content, "CONTROLS", 56, FontStyles.Bold, textColor, TextAlignmentOptions.Center);
         TopStrip(title.rectTransform, 0f, 70f);
 
-        TMP_Text subtitle = NewText("Subtitle", content, "Keyboard & mouse", 24, FontStyles.Normal, dimTextColor, TextAlignmentOptions.Center);
+        TMP_Text subtitle = NewText("Subtitle", content, "Keyboard & mouse  -  click a key to change it", 24, FontStyles.Normal, dimTextColor, TextAlignmentOptions.Center);
         TopStrip(subtitle.rectTransform, 72f, 34f);
 
         RectTransform columns = NewRect("Columns", content);
@@ -241,7 +366,19 @@ public class ControlsMenu : MonoBehaviour
             }
         }
 
+        status = NewText("Status", content, "", 24, FontStyles.Normal, dimTextColor, TextAlignmentOptions.Center);
+        status.rectTransform.anchorMin = new Vector2(0f, 0f);
+        status.rectTransform.anchorMax = new Vector2(1f, 0f);
+        status.rectTransform.pivot = new Vector2(0.5f, 1f);
+        status.rectTransform.anchoredPosition = new Vector2(0f, -10f);
+        status.rectTransform.sizeDelta = new Vector2(0f, 36f);
+
         CopyBackButton(pageRt, "ControlsBackButton", "Back", backPos, Close);
+        // Reset sits mirrored on the other side from Back (or beside it if Back is centred)
+        Vector2 resetPos = Mathf.Abs(backPos.x) > 150f ? new Vector2(-backPos.x, backPos.y) : backPos + new Vector2(340f, 0f);
+        Button reset = CopyBackButton(pageRt, "ResetKeysButton", "Reset to defaults", resetPos, ResetToDefaults);
+        TMP_Text resetLabel = reset.GetComponentInChildren<TMP_Text>(true);
+        if (resetLabel != null) resetLabel.enableAutoSizing = true;
     }
 
     private void BuildSection(RectTransform col, Section section)
@@ -268,8 +405,10 @@ public class ControlsMenu : MonoBehaviour
 
         TMP_Text label = NewText("Action", rowRt, row.action, 25, FontStyles.Normal, textColor, TextAlignmentOptions.MidlineLeft);
         Stretch(label.rectTransform);
-        label.rectTransform.offsetMax = new Vector2(-200f, 0f);
         label.overflowMode = TextOverflowModes.Ellipsis;
+        label.enableAutoSizing = true; // long names shrink a little before being cut off
+        label.fontSizeMin = 19f;
+        label.fontSizeMax = 25f;
 
         RectTransform keys = NewRect("Keys", rowRt);
         keys.anchorMin = keys.anchorMax = keys.pivot = new Vector2(1f, 0.5f);
@@ -284,14 +423,17 @@ public class ControlsMenu : MonoBehaviour
 
         if (row.hold) NewText("Hold", keys, "hold", 21, FontStyles.Italic, dimTextColor, TextAlignmentOptions.MidlineRight);
 
-        foreach (string key in row.keys)
+        foreach (object key in row.keys)
         {
-            if (key == "/") NewText("Or", keys, "/", 22, FontStyles.Normal, dimTextColor, TextAlignmentOptions.Center);
-            else BuildKeyCap(keys, key);
+            if (key is GameAction action) BuildKeyCap(keys, GameKeys.Label(action), action);
+            else if ((string)key == "/") NewText("Or", keys, "/", 22, FontStyles.Normal, dimTextColor, TextAlignmentOptions.Center);
+            else BuildKeyCap(keys, (string)key, null);
         }
+
+        rows.Add(new RowParts { label = label, keys = keys });
     }
 
-    private void BuildKeyCap(RectTransform parent, string key)
+    private void BuildKeyCap(RectTransform parent, string key, GameAction? action)
     {
         RectTransform cap = NewRect("Key", parent);
         Image img = cap.gameObject.AddComponent<Image>();
@@ -299,6 +441,24 @@ public class ControlsMenu : MonoBehaviour
         img.type = Image.Type.Sliced;
         img.color = keyColor;
         img.raycastTarget = false;
+
+        if (action != null)
+        {
+            // Changeable: a button. The Button tints the image, so the image itself stays white.
+            img.color = Color.white;
+            img.raycastTarget = true;
+            Button b = cap.gameObject.AddComponent<Button>();
+            b.targetGraphic = img;
+            b.navigation = new Navigation { mode = Navigation.Mode.None };
+            ColorBlock colors = b.colors;
+            colors.normalColor = colors.selectedColor = keyColor;
+            colors.highlightedColor = Color.Lerp(keyColor, headerColor, 0.6f);
+            colors.pressedColor = headerColor;
+            colors.colorMultiplier = 1f;
+            b.colors = colors;
+            GameAction a = action.Value;
+            b.onClick.AddListener(() => StartListening(a));
+        }
 
         HorizontalLayoutGroup h = cap.gameObject.AddComponent<HorizontalLayoutGroup>();
         h.padding = new RectOffset(12, 12, 3, 3);
@@ -310,7 +470,8 @@ public class ControlsMenu : MonoBehaviour
         le.minWidth = 40f;
         le.minHeight = 34f;
 
-        NewText("Label", cap, key, 21, FontStyles.Bold, keyTextColor, TextAlignmentOptions.Center);
+        TMP_Text label = NewText("Label", cap, key, 21, FontStyles.Bold, keyTextColor, TextAlignmentOptions.Center);
+        if (action != null) boundCaps.Add(new BoundCap { action = action.Value, image = img, label = label });
     }
 
     // ================= helpers =================

@@ -4,7 +4,6 @@ using UnityEngine;
 // Requires a trigger Collider and the player tagged "Player".
 public class DeliveryZone : MonoBehaviour
 {
-    [SerializeField] private KeyCode interactKey = KeyCode.E;
 
     private bool playerInRange;
 
@@ -22,7 +21,7 @@ public class DeliveryZone : MonoBehaviour
 
     private void Update()
     {
-        if (!playerInRange || !Input.GetKeyDown(interactKey)) return;
+        if (!playerInRange || !GameKeys.Down(GameAction.Interact)) return;
         if (!Mission1Manager.Instance.IsCarryingCargo) return;
 
         if (Mission1Manager.Instance.HasTrainDeparted)

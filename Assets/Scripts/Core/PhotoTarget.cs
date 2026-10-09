@@ -74,7 +74,7 @@ public class PhotoTarget : MonoBehaviour
         if (!CanBePhotographed()) return;
 
         // {key} (or an old "press C") always shows the real camera key
-        string key = CameraMode.Instance != null ? CameraMode.Instance.ToggleKey.ToString() : "C";
+        string key = GameKeys.Label(GameAction.PhotoMode);
         Debug.Log(proximityHint.Replace("{key}", key).Replace("press C ", $"press {key} "));
     }
 }

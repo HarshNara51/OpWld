@@ -4,8 +4,6 @@ using UnityEngine;
 // Requires: the car tagged "PlayerCar", the player tagged "Player".
 public class VehicleSummon : MonoBehaviour
 {
-    [Tooltip("Key that summons the car")]
-    public KeyCode summonKey = KeyCode.V;
 
     [Tooltip("How far in front of the player the car appears")]
     public float distanceInFront = 4f;
@@ -35,7 +33,7 @@ public class VehicleSummon : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(summonKey))
+        if (GameKeys.Down(GameAction.SummonCar))
         {
             SummonCar();
         }

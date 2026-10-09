@@ -22,8 +22,6 @@ public class PlayerLocomotion : MonoBehaviour
     [SerializeField] private float rotationSpeed = 12f;
 
     [Header("Rifle")]
-    [Tooltip("Hold this to aim: over-the-shoulder camera, face where you aim, strafe")]
-    [SerializeField] private KeyCode aimKey = KeyCode.Mouse1;
     [Tooltip("Walking speed with the rifle out (not aiming)")]
     [SerializeField] private float armedWalkSpeed = 1.8f;
     [Tooltip("Running speed with the rifle out - the Rifle Run clip itself moves at ~4 m/s")]
@@ -82,7 +80,7 @@ public class PlayerLocomotion : MonoBehaviour
     private void Update()
     {
         bool armed = holster != null && holster.IsRifleEquipped;
-        IsAiming = armed && Input.GetKey(aimKey);
+        IsAiming = armed && GameKeys.Held(GameAction.Aim);
         bool firing = armed && weaponFire != null && weaponFire.IsFiring;
         bool aimMode = IsAiming || firing; // shooting from the hip also faces where you shoot
         IsAimMode = aimMode;
@@ -97,8 +95,8 @@ public class PlayerLocomotion : MonoBehaviour
         if (armed && isCrouching) SetCrouch(false); // no rifle crouch animations - stand up when the rifle comes out
         if (MovementLocked && isCrouching) SetCrouch(false); // the knife stab is a standing animation
 
-        // Toggle crouch on key press (LeftControl or C)
-        if (!armed && !MovementLocked && (Input.GetKeyDown(KeyCode.LeftControl) || Input.GetKeyDown(KeyCode.C)))
+        // Toggle crouch on key press
+        if (!armed && !MovementLocked && GameKeys.Down(GameAction.Crouch))
             SetCrouch(!isCrouching);
     }
 
@@ -111,11 +109,11 @@ public class PlayerLocomotion : MonoBehaviour
 
     private void HandleMovementAndRotation(bool armed, bool aimMode, bool firing)
     {
-        float horizontal = MovementLocked ? 0f : Input.GetAxisRaw("Horizontal"); // A/D
-        float vertical = MovementLocked ? 0f : Input.GetAxisRaw("Vertical");     // W/S
+        float horizontal = MovementLocked ? 0f : GameKeys.Axis(GameAction.MoveLeft, GameAction.MoveRight);
+        float vertical = MovementLocked ? 0f : GameKeys.Axis(GameAction.MoveBack, GameAction.MoveForward);
         Vector3 inputDir = new Vector3(horizontal, 0f, vertical).normalized;
 
-        isRunning = Input.GetKey(KeyCode.LeftShift) && !isCrouching && !aimMode;
+        isRunning = GameKeys.Held(GameAction.Sprint) && !isCrouching && !aimMode;
 
         float currentSpeed = 0f;
         Vector3 moveDir = Vector3.zero;
@@ -194,7 +192,7 @@ public class PlayerLocomotion : MonoBehaviour
         if (isGrounded && velocity.y < 0f)
             velocity.y = -2f; // keeps the controller firmly grounded instead of floating
 
-        if (isGrounded && Input.GetButtonDown("Jump") && !isCrouching && !MovementLocked)
+        if (isGrounded && GameKeys.Down(GameAction.Jump) && !isCrouching && !MovementLocked)
         {
             velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
             lastJumpTime = Time.time;

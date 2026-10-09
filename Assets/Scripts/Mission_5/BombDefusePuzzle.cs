@@ -36,9 +36,6 @@ public class BombDefusePuzzle : MonoBehaviour
     [Tooltip("Only used if Wrong Wire Explodes is off")]
     [SerializeField] private float wrongWirePenalty = 20f;
 
-    [Header("Controls")]
-    [SerializeField] private KeyCode cancelKey = KeyCode.Q;
-
     [Header("Look (optional - swap in fancy art later)")]
     [SerializeField] private Sprite panelSprite;
     [SerializeField] private Sprite buttonSprite;
@@ -167,7 +164,7 @@ public class BombDefusePuzzle : MonoBehaviour
             led.color = lit ? LedColors[ledIndex] : LedColors[ledIndex] * 0.25f;
         }
 
-        if (stage != Stage.Done && Input.GetKeyDown(cancelKey))
+        if (stage != Stage.Done && GameKeys.Down(GameAction.BackOff))
         {
             Close();
             NotePopup.Show("You back off from the bomb... the clock's still ticking!", 3f);
@@ -203,7 +200,7 @@ public class BombDefusePuzzle : MonoBehaviour
         keypadGroup.SetActive(true);
         wiresGroup.SetActive(false);
         titleText.text = "STEP 1 / 2  -  Memorize the code, then enter it";
-        hintText.text = $"Type with the keypad or number keys   |   Backspace: clear   |   Enter: confirm   |   {cancelKey}: back off";
+        hintText.text = $"Type with the keypad or number keys   |   Backspace: clear   |   Enter: confirm   |   {GameKeys.Label(GameAction.BackOff)}: back off";
 
         StartCoroutine(ShowCode(0.8f));
     }
@@ -285,7 +282,7 @@ public class BombDefusePuzzle : MonoBehaviour
         stage = Stage.Wires;
         keypadGroup.SetActive(false);
         wiresGroup.SetActive(true);
-        hintText.text = $"Click a wire to cut it   |   {cancelKey}: back off";
+        hintText.text = $"Click a wire to cut it   |   {GameKeys.Label(GameAction.BackOff)}: back off";
         round = 1;
         ledIndex = -1;
         GenerateRules();
@@ -410,7 +407,7 @@ public class BombDefusePuzzle : MonoBehaviour
         else
         {
             if (BombSystem.Instance != null) BombSystem.Instance.ApplyPenalty(wrongWirePenalty);
-            hintText.text = $"<color=#ff6666>Wrong wire!  -{wrongWirePenalty:0}s</color>   |   Click a wire to cut it   |   {cancelKey}: back off";
+            hintText.text = $"<color=#ff6666>Wrong wire!  -{wrongWirePenalty:0}s</color>   |   Click a wire to cut it   |   {GameKeys.Label(GameAction.BackOff)}: back off";
         }
     }
 

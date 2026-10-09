@@ -8,8 +8,6 @@ public class MissionEntryPoint : MonoBehaviour
     [Tooltip("Exact scene name to load, e.g. Mission1_Railway")]
     public string missionSceneName;
 
-    [Tooltip("Key the player presses to enter the mission")]
-    public KeyCode interactKey = KeyCode.E;
 
     private bool playerInRange;
 
@@ -17,7 +15,7 @@ public class MissionEntryPoint : MonoBehaviour
     {
         if (!other.CompareTag("Player")) return;
         playerInRange = true;
-        Debug.Log($"Press {interactKey} to start {missionSceneName}");
+        Debug.Log($"Press {GameKeys.Label(GameAction.Interact)} to start {missionSceneName}");
     }
 
     private void OnTriggerExit(Collider other)
@@ -28,7 +26,7 @@ public class MissionEntryPoint : MonoBehaviour
 
     private void Update()
     {
-        if (playerInRange && Input.GetKeyDown(interactKey))
+        if (playerInRange && GameKeys.Down(GameAction.Interact))
         {
             GameManager.Instance.LoadMission(missionSceneName);
         }
