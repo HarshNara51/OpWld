@@ -13499,7 +13499,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MissionEntryPoint
   missionSceneName: Mission_GasStation
-  interactKey: 101
 --- !u!135 &818607097
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -15663,19 +15662,47 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 3311311803080157842, guid: 133308cdb8794744caaef026bde9e1f0, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 972158777}
   m_SourcePrefab: {fileID: 100100000, guid: 133308cdb8794744caaef026bde9e1f0, type: 3}
 --- !u!114 &972158775 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1808652447226849792, guid: 133308cdb8794744caaef026bde9e1f0, type: 3}
   m_PrefabInstance: {fileID: 972158774}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 972158776}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 033c1b41113dc7740956524791aa4189, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::VehicleInteraction
+--- !u!1 &972158776 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3311311803080157842, guid: 133308cdb8794744caaef026bde9e1f0, type: 3}
+  m_PrefabInstance: {fileID: 972158774}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &972158777
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 972158776}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 22225bbda1e190b43883209274d1291c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::VehicleHealth
+  maxHealth: 100
+  minImpactSpeed: 6
+  damagePerImpactSpeed: 2.5
+  canBeWrecked: 1
+  lightSmoke: {fileID: 0}
+  heavySmoke: {fileID: 0}
+  lightSmokeBelow: 0.35
+  heavySmokeBelow: 0.15
 --- !u!1001 &974873629
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -18586,6 +18613,37 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 6734416886239973458, guid: c96ff260a7cfeee4683e52152406ccf4, type: 3}
   m_PrefabInstance: {fileID: 1119803677}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1123964654
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1123964655}
+  m_Layer: 0
+  m_Name: StreetLights_and_Signs
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1123964655
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1123964654}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 446.02, y: 21.22697, z: 322.85028}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1124149812
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -19587,7 +19645,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MissionEntryPoint
   missionSceneName: Mission_Hotel
-  interactKey: 101
 --- !u!135 &1205211034
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -23548,7 +23605,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MissionEntryPoint
   missionSceneName: Mission_Farm
-  interactKey: 101
 --- !u!135 &1543448435
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -26200,7 +26256,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MissionEntryPoint
   missionSceneName: Mission_Railway
-  interactKey: 101
 --- !u!135 &1692505184
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -28257,7 +28312,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MissionEntryPoint
   missionSceneName: Mission_ShoppingComplex
-  interactKey: 101
 --- !u!135 &1776902077
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -36060,3 +36114,4 @@ SceneRoots:
   - {fileID: 1679120577}
   - {fileID: 25761134}
   - {fileID: 5836812148673577529}
+  - {fileID: 1123964655}

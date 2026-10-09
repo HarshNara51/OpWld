@@ -67,6 +67,18 @@ public class VehicleInteraction : MonoBehaviour
         if (carControllerScript != null) carControllerScript.enabled = false;
     }
 
+    // Repaired / towed back: drivable again
+    public void Restore()
+    {
+        disabledForGood = false;
+    }
+
+    // Kicks the player out (e.g. the car just got wrecked)
+    public void ForceExit()
+    {
+        if (isDriving) ExitVehicle();
+    }
+
     private void Update()
     {
         if (disabledForGood)
