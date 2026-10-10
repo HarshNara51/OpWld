@@ -48,6 +48,7 @@ GameObject:
   - component: {fileID: 627556911}
   - component: {fileID: 3741254513817496329}
   - component: {fileID: 5973536063314131792}
+  - component: {fileID: 5509599641281275834}
   m_Layer: 0
   m_Name: Prometheus
   m_TagString: PlayerCar
@@ -184,14 +185,32 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 22225bbda1e190b43883209274d1291c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::VehicleHealth
-  maxHealth: 100
-  minImpactSpeed: 6
-  damagePerImpactSpeed: 2.5
+  maxHealth: 200
+  minImpactSpeed: 10
+  damagePerImpactSpeed: 1.5
   canBeWrecked: 1
   lightSmoke: {fileID: 5889711303307750889}
   heavySmoke: {fileID: 108166269548087144}
   lightSmokeBelow: 0.35
   heavySmokeBelow: 0.15
+--- !u!114 &5509599641281275834
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 642287924342879162}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 68fc1a902b1811a4180a2499d4d989fb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::VehicleFuel
+  tankSize: 100
+  fuelPerKm: 5
+  highSpeedMultiplier: 1.5
+  topSpeedKmh: 120
+  infiniteFuel: 0
+  carController: {fileID: 0}
 --- !u!1 &934883528070179459
 GameObject:
   m_ObjectHideFlags: 0

@@ -69,6 +69,8 @@ public class SplineVehicle : MonoBehaviour
     [Tooltip("Degrees the body leans outward per m/s² of cornering force. 0 = no lean.")]
     public float bodyRoll = 0.8f;
     public float maxBodyRoll = 4f;
+    [Tooltip("How many seconds BEFORE a bend the front wheels start turning in (needs a WheelSpinner with Steer Wheels on this vehicle)")]
+    public float steerLeadTime = 1.5f;
     [Tooltip("Trailers: hangs off the leader's hitch (Follow Gap Distance behind its pivot) and is dragged like a real trailer, pivoting through turns. Leave off for separate vehicles driving in a convoy.")]
     public bool hitchedToLeader;
 
@@ -86,6 +88,9 @@ public class SplineVehicle : MonoBehaviour
         leader != null ? Mathf.Max(0f, leader.DistanceTravelled - followGapDistance) : ownDistance;
 
     public float CurrentSpeed => currentSpeed;
+
+    // Followers don't track their own speed - the convoy moves at the leader's
+    private float ConvoySpeed => leader != null ? leader.ConvoySpeed : currentSpeed;
     public bool IsWaitingAtStop => leader != null ? leader.IsWaitingAtStop : state == State.PausedAtStop;
 
     private State state = State.DrivingToStop;
@@ -113,6 +118,7 @@ public class SplineVehicle : MonoBehaviour
     private readonly RaycastHit[] groundHits = new RaycastHit[16];
 
     private bool IsHitchedTrailer => hitchedToLeader && leader != null && snapToGround;
+    private WheelSpinner wheelSpinner;
     private bool moving;
     private Coroutine resumeRoutine;
 
@@ -136,6 +142,13 @@ public class SplineVehicle : MonoBehaviour
 
         stopKnotDistance = KnotDistance(stopKnotIndex);
         endKnotDistance = KnotDistance(endKnotIndex);
+
+        wheelSpinner = GetComponent<WheelSpinner>();
+        if (wheelSpinner != null)
+        {
+            wheelSpinner.Setup();
+            if (!wheelSpinner.HasSteering) wheelSpinner = null; // spin-only (e.g. trailer) - nothing to steer
+        }
     }
 
     public void BeginMoving()
@@ -334,6 +347,33 @@ public class SplineVehicle : MonoBehaviour
         }
 
         ApplyPose(new Vector3(center.x, smoothY, center.z));
+        SteerWheels(distance);
+    }
+
+    // Front wheels: turn in steerLeadTime seconds before a bend, and stay
+    // turned until the front axle is through it (whichever bend is sharper)
+    private void SteerWheels(float distance)
+    {
+        if (wheelSpinner == null) return;
+
+        float frontAt = distance + wheelSpinner.FrontAxleZ;
+        float now = PathCurvature(frontAt);
+        float ahead = PathCurvature(frontAt + ConvoySpeed * steerLeadTime);
+        wheelSpinner.SetSteerCurvature(Mathf.Abs(ahead) > Mathf.Abs(now) ? ahead : now);
+    }
+
+    // How sharply the driven path bends here: 1 / turning radius, positive = right
+    private float PathCurvature(float distance)
+    {
+        const float window = 2f;
+        Vector3 a = PathPoint(distance - window);
+        Vector3 b = PathPoint(distance);
+        Vector3 c = PathPoint(distance + window);
+        Vector3 inDir = b - a, outDir = c - b;
+        inDir.y = 0f;
+        outDir.y = 0f;
+        if (inDir.sqrMagnitude < 0.0001f || outDir.sqrMagnitude < 0.0001f) return 0f;
+        return Vector3.SignedAngle(inDir, outDir, Vector3.up) * Mathf.Deg2Rad / window;
     }
 
     // Trailer: the front sits on the leader's hitch; the rear axle is
