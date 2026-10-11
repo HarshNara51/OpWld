@@ -587,6 +587,7 @@ GameObject:
   - component: {fileID: 3793806181824089567}
   - component: {fileID: 577152581709024593}
   - component: {fileID: 6521451294517009058}
+  - component: {fileID: 6988209922452437643}
   m_Layer: 0
   m_Name: Free Racing Car
   m_TagString: Untagged
@@ -777,6 +778,53 @@ MonoBehaviour:
   topSpeedKmh: 120
   infiniteFuel: 0
   carController: {fileID: 0}
+--- !u!114 &6988209922452437643
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3311311803080157842}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9941bc6ba33b74b4a8cb5beb6478ae5a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CarPaint
+  allowRespray: 1
+  includeFactoryPaint: 1
+  paintJobs:
+  - body: {r: 0.7529412, g: 0.0627451, b: 0.0627451, a: 1}
+    keepStripes: 0
+    stripes: {r: 0.9490196, g: 0.9490196, b: 0.9490196, a: 1}
+    paintWheels: 0
+    wheels: {r: 0.1, g: 0.1, b: 0.1, a: 1}
+  - body: {r: 0.078431375, g: 0.21960784, b: 0.65882355, a: 1}
+    keepStripes: 0
+    stripes: {r: 0.9490196, g: 0.9490196, b: 0.9490196, a: 1}
+    paintWheels: 0
+    wheels: {r: 0.1, g: 0.1, b: 0.1, a: 1}
+  - body: {r: 0.92156863, g: 0.92156863, b: 0.92156863, a: 1}
+    keepStripes: 0
+    stripes: {r: 0.07058824, g: 0.07058824, b: 0.07058824, a: 1}
+    paintWheels: 1
+    wheels: {r: 0.07058824, g: 0.07058824, b: 0.07058824, a: 1}
+  - body: {r: 0.07058824, g: 0.07058824, b: 0.078431375, a: 1}
+    keepStripes: 0
+    stripes: {r: 0.9490196, g: 0.41568628, b: 0.050980393, a: 1}
+    paintWheels: 1
+    wheels: {r: 0.9490196, g: 0.41568628, b: 0.050980393, a: 1}
+  - body: {r: 0.18039216, g: 0.54509807, b: 0.22745098, a: 1}
+    keepStripes: 1
+    stripes: {r: 1, g: 1, b: 1, a: 1}
+    paintWheels: 0
+    wheels: {r: 0.1, g: 0.1, b: 0.1, a: 1}
+  saveId: 
+  paintHue: -1
+  hueTolerance: 18
+  minSaturation: 0.35
+  maxStripeWidth: 0.1
+  wheelRenderers: []
+  rimMinBrightness: 0.3
 --- !u!1 &3962000127133956386
 GameObject:
   m_ObjectHideFlags: 0
