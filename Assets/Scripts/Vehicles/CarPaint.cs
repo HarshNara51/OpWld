@@ -82,6 +82,7 @@ public class CarPaint : MonoBehaviour
     };
 
     private const int Factory = -1;
+    private const string SavedKeysKey = "CarPaintJob_AllKeys"; // every car that has a saved paint job
 
     public bool AllowRespray => allowRespray;
 
@@ -139,6 +140,24 @@ public class CarPaint : MonoBehaviour
         if (wheelTex != null) SafeDestroy(wheelTex);
     }
 
+    // Every car back to its factory paint (New Game). Cars already in the scene keep their look until reloaded.
+    public static void ResetAllSaved()
+    {
+        foreach (string key in PlayerPrefs.GetString(SavedKeysKey, "").Split('|'))
+            if (key.Length > 0) PlayerPrefs.DeleteKey(key);
+        PlayerPrefs.DeleteKey(SavedKeysKey);
+        PlayerPrefs.Save();
+    }
+
+#if UNITY_EDITOR
+    [UnityEditor.MenuItem("Tools/Car Paint/Reset Saved Paint (factory colours)")]
+    private static void ResetSavedMenu()
+    {
+        ResetAllSaved();
+        Debug.Log("Car Paint: saved paint jobs cleared - every car starts in its factory paint next time you press Play.");
+    }
+#endif
+
     // ================= respray =================
 
     // A different paint job at random, saved for every scene. False if it can't be painted.
@@ -156,6 +175,9 @@ public class CarPaint : MonoBehaviour
         if (!Apply(pick)) return false;
 
         PlayerPrefs.SetInt(Key, pick);
+        string keys = PlayerPrefs.GetString(SavedKeysKey, "");
+        if (Array.IndexOf(keys.Split('|'), Key) < 0)
+            PlayerPrefs.SetString(SavedKeysKey, keys.Length == 0 ? Key : keys + "|" + Key);
         PlayerPrefs.Save();
         return true;
     }

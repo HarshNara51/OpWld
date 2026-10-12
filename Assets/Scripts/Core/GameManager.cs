@@ -83,6 +83,7 @@ public class GameManager : MonoBehaviour
     {
         isCar2Unlocked = false;
         PlayerPrefs.DeleteKey(Car2Key);
+        CarPaint.ResetAllSaved(); // cars back to factory paint
 
         foreach (string mission in missionSceneNames)
         {

@@ -33353,7 +33353,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 4285682351972126021, guid: db5bee4b186a27e4c902bb9e1f339c76, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1819940842}
   m_SourcePrefab: {fileID: 100100000, guid: db5bee4b186a27e4c902bb9e1f339c76, type: 3}
 --- !u!4 &1491601835 stripped
 Transform:
@@ -41923,6 +41926,40 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 7532963781007185331, guid: ce4634a873eb2be42abd2a38723c6362, type: 3}
   m_PrefabInstance: {fileID: 1908430166}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1819940839 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4285682351972126021, guid: db5bee4b186a27e4c902bb9e1f339c76, type: 3}
+  m_PrefabInstance: {fileID: 1491601834}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1819940842
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1819940839}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 474bcb49853aa07438625e644c072ee6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.RenderPipelines.Universal.Runtime::UnityEngine.Rendering.Universal.UniversalAdditionalLightData
+  m_UsePipelineSettings: 1
+  m_AdditionalLightsShadowResolutionTier: 2
+  m_CustomShadowLayers: 0
+  m_LightCookieSize: {x: 1, y: 1}
+  m_LightCookieOffset: {x: 0, y: 0}
+  m_SoftShadowQuality: 0
+  m_RenderingLayersMask:
+    serializedVersion: 0
+    m_Bits: 1
+  m_ShadowRenderingLayersMask:
+    serializedVersion: 0
+    m_Bits: 1
+  m_Version: 4
+  m_LightLayerMask: 1
+  m_ShadowLayerMask: 1
+  m_RenderingLayers: 1
+  m_ShadowRenderingLayers: 1
 --- !u!1001 &1819949330
 PrefabInstance:
   m_ObjectHideFlags: 0

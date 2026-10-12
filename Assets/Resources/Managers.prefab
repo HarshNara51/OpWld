@@ -5439,6 +5439,7 @@ GameObject:
   - component: {fileID: 5191407134794590990}
   - component: {fileID: 5660617732698265946}
   - component: {fileID: 5284474939128753381}
+  - component: {fileID: 6859476975955277811}
   m_Layer: 0
   m_Name: Managers
   m_TagString: Untagged
@@ -5496,7 +5497,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4485e1c0a2ce36f4e928d152febc03fb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::VehicleSummon
-  summonKey: 118
   distanceInFront: 4
   groundMask:
     serializedVersion: 2
@@ -5592,7 +5592,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba36d9dbd5e62284cb28641b2fbbfa1b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::VehicleReset
-  resetKey: 114
   forwardDistance: 4
   liftHeight: 1
   wallClearance: 2.5
@@ -5627,7 +5626,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d6d200993e18aeb4f9359cd43b522b0d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CameraMode
-  toggleKey: 112
   shutterCooldown: 0.6
   firstPersonView: 1
   eyeHeight: 1.4
@@ -5649,6 +5647,57 @@ MonoBehaviour:
   shutterSound: {fileID: 0}
   blockedScenes:
   - MainMenu
+--- !u!114 &6859476975955277811
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7198674379158672777}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3fefa61256bec854d8729745b6b896bb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SpeedometerHUD
+  dashboard: {fileID: 1204720155, guid: 5fba37a30c1c02e4f92b0345553f0087, type: 3}
+  speedNeedle: {fileID: -177643303, guid: 5fba37a30c1c02e4f92b0345553f0087, type: 3}
+  rpmNeedle: {fileID: -14033342, guid: 5fba37a30c1c02e4f92b0345553f0087, type: 3}
+  fuelNeedle: {fileID: -1864409254, guid: 5fba37a30c1c02e4f92b0345553f0087, type: 3}
+  lowFuelIcon: {fileID: 0}
+  dashboardWidth: 620
+  screenMargin: {x: 30, y: 30}
+  speedCenter: {x: 0.5227, y: 0.5545}
+  rpmCenter: {x: 0.1929, y: 0.4816}
+  fuelCenter: {x: 0.8169, y: 0.4797}
+  lowFuelIconPosition: {x: 0.78, y: 0.3}
+  speedNeedleScale: 0.49
+  rpmNeedleScale: 0.33
+  fuelNeedleScale: 0.37
+  lowFuelIconSize: 40
+  speedNeedlePivot: {x: -1, y: -1}
+  rpmNeedlePivot: {x: -1, y: -1}
+  fuelNeedlePivot: {x: -1, y: -1}
+  tuningMode: 0
+  testSpeed: 0
+  testRpm: 0
+  testFuel: 0
+  useMph: 1
+  dialMaxSpeed: 260
+  speedAngleAtZero: 192.5
+  speedAngleAtMax: -52
+  rpmAngleAtZero: 210.6
+  rpmAngleAtMax: 6.5
+  gears: 5
+  idleRpm: 0.12
+  fuelAngleEmpty: -40.9
+  fuelAngleFull: 74.9
+  lowFuelBelow: 0.15
+  showDigitalSpeed: 0
+  digitalSpeedPosition: {x: 0.52, y: 0.33}
+  digitalSpeedSize: 30
+  showHealthBar: 1
+  font: {fileID: 0}
+  smoothing: 6
 --- !u!1 &7444813242124802622
 GameObject:
   m_ObjectHideFlags: 0

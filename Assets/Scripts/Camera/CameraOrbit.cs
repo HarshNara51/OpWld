@@ -86,7 +86,8 @@ public class CameraOrbit : MonoBehaviour
         float ease = Mathf.SmoothStep(0f, 1f, aimBlend);
 
         float wantedDistance = VehicleInteraction.Current != null ? vehicleDistance : Mathf.Lerp(distance, aimDistance, ease);
-        if (cam != null) cam.fieldOfView = Mathf.Lerp(normalFieldOfView, aimFieldOfView, ease);
+        // Photo mode owns the field of view (scroll zoom) while it's open
+        if (cam != null && !CameraMode.IsActive) cam.fieldOfView = Mathf.Lerp(normalFieldOfView, aimFieldOfView, ease);
 
         // Cast from the pivot back toward where the camera wants to be.
         // If a wall/terrain/building is in the way, stop just in front of it.
