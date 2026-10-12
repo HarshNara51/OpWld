@@ -122,10 +122,7 @@ public class TrafficSpawner : MonoBehaviour
         if (ignoreMissionInEditor) return true;
 #endif
         GameManager gm = GameManager.Instance;
-        if (gm == null) return true;
-        string scene = gameObject.scene.name;
-        if (Array.IndexOf(gm.missionSceneNames, scene) < 0) return true; // Hub etc.
-        return gm.IsMissionComplete(scene);
+        return gm == null || !gm.IsInUnfinishedMission(gameObject.scene.name);
     }
 
     private void SpawnAtEdge()

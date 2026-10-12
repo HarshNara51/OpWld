@@ -8,8 +8,12 @@ using UnityEngine.Events;
 //
 // Mission-specific clues (ClueDiscovery, BodyDiscoveryZone, ...)
 // build on this and add their own rules for when a shot counts.
-public class PhotoTarget : MonoBehaviour
+public class PhotoTarget : MonoBehaviour, IGizmoVisibility
 {
+    // Its VFX marker shows only while this can actually be photographed
+    // (e.g. clues only after the body, the trucks only while following)
+    public bool ShowGizmo => !Photographed && CanBePhotographed();
+
     public static readonly List<PhotoTarget> All = new List<PhotoTarget>();
 
     [Header("Photo")]

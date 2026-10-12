@@ -59,6 +59,13 @@ public class TowPhone : MonoBehaviour
 
     private void Call()
     {
+        // No tow service while a mission is on (refuel/repair by hand still work)
+        if (GameManager.Instance != null && GameManager.Instance.IsInUnfinishedMission(gameObject.scene.name))
+        {
+            NotePopup.Show("<b>Tow service:</b> \"Sorry pal, all our trucks are busy right now. Try again later!\"", 3.5f);
+            return;
+        }
+
         // The truck is already out (e.g. called from another pump's phone)
         if (towTruck != null && towTruck.IsBusy)
         {

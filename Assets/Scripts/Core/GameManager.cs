@@ -101,6 +101,12 @@ public class GameManager : MonoBehaviour
         Debug.Log($"Saved: {missionSceneName} completed");
     }
 
+    // True in a mission's own scene until that mission is passed (the Hub never counts)
+    public bool IsInUnfinishedMission(string sceneName)
+    {
+        return System.Array.IndexOf(missionSceneNames, sceneName) >= 0 && !IsMissionComplete(sceneName);
+    }
+
     public bool IsMissionComplete(string missionSceneName)
     {
         return PlayerPrefs.GetInt(MissionDonePrefix + missionSceneName, 0) == 1;

@@ -48,6 +48,8 @@ public class Mission4Manager : MonoBehaviour, IFailableMission
         if (EnemiesDown >= enemiesToEliminate)
         {
             Debug.Log("Remaining enemies are fleeing - get to your car!");
+            NotePopup.Show("The rest of the gang is getting away in the truck! Get in your car and follow it. " +
+                           $"Once you're close enough, hold {GameKeys.Label(GameAction.EMP)} to fire the EMP and disable the truck.");
             if (truck != null) truck.BeginMoving();
             if (empBarPanel != null) empBarPanel.SetActive(true);
         }
