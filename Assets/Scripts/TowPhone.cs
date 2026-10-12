@@ -48,14 +48,22 @@ public class TowPhone : MonoBehaviour
 
         if (near && !wasNear)
         {
-            Debug.Log(service == Service.Repair
-                ? $"Press {callKey} to call the tow truck (repair)"
-                : $"Press {callKey} to call the tow truck (fuel)");
+            NotePopup.Prompt(this, service == Service.Repair
+                ? $"Press {NotePopup.Key(callKey.ToString())} to call a tow truck to <b>repair</b> your car"
+                : $"Press {NotePopup.Key(callKey.ToString())} to call a tow truck to <b>refuel</b> your car");
         }
+        if (!near && wasNear) NotePopup.ClearPrompt(this);
         wasNear = near;
 
-        if (near && Input.GetKeyDown(callKey)) Call();
+        if (near && Input.GetKeyDown(callKey))
+        {
+            NotePopup.ClearPrompt(this);
+            wasNear = false; // shows the prompt again afterwards if still here
+            Call();
+        }
     }
+
+    private void OnDisable() => NotePopup.ClearPrompt(this);
 
     private void Call()
     {

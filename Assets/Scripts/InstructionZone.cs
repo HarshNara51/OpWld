@@ -20,6 +20,6 @@ public class InstructionZone : MonoBehaviour
         if (showOnlyOnce && shown) return;
 
         shown = true;
-        Debug.Log(message);
+        NotePopup.Show(message);
     }
 }

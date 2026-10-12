@@ -11,13 +11,14 @@ public class CargoPickup : MonoBehaviour
     {
         if (!other.CompareTag("Player")) return;
         playerInRange = true;
-        Debug.Log($"Press {GameKeys.Label(GameAction.Interact)} to pick up cargo");
+        NotePopup.Prompt(this, $"Press {NotePopup.Key(GameAction.Interact)} to pick up the cargo");
     }
 
     private void OnTriggerExit(Collider other)
     {
         if (!other.CompareTag("Player")) return;
         playerInRange = false;
+        NotePopup.ClearPrompt(this);
     }
 
     private void Update()
@@ -26,7 +27,7 @@ public class CargoPickup : MonoBehaviour
         {
             if (!Mission1Manager.Instance.IsTaxiNear(transform.position))
             {
-                Debug.Log("Bring the taxi here to load the cargo");
+                NotePopup.Show("Bring the taxi here first - the cargo goes in the boot.", 3f);
                 return;
             }
 
@@ -34,4 +35,7 @@ public class CargoPickup : MonoBehaviour
             gameObject.SetActive(false);
         }
     }
+
+    // Switched off (used up, picked up...) - take the prompt away with it
+    private void OnDisable() => NotePopup.ClearPrompt(this);
 }

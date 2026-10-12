@@ -12,19 +12,19 @@ public class CallCopsTrigger : MonoBehaviour
 
     private bool playerInRange;
     private float heldTime;
-    private int lastLoggedSecond = -1; // TEMP DIAGNOSTIC - remove once a real UI bar exists, if wanted
 
     private void OnTriggerEnter(Collider other)
     {
         if (!other.CompareTag("Player")) return;
         playerInRange = true;
-        Debug.Log($"Hold {GameKeys.Label(GameAction.Interact)} to call the cops");
+        NotePopup.Prompt(this, $"Hold {NotePopup.Key(GameAction.Interact)} to call the cops");
     }
 
     private void OnTriggerExit(Collider other)
     {
         if (!other.CompareTag("Player")) return;
         playerInRange = false;
+        NotePopup.ClearPrompt(this);
     }
 
     private void Update()
@@ -34,12 +34,8 @@ public class CallCopsTrigger : MonoBehaviour
         heldTime += Time.deltaTime;
 
         // TEMP DIAGNOSTIC - remove once a real UI bar exists, if wanted
-        int second = Mathf.FloorToInt(heldTime);
-        if (second > lastLoggedSecond)
-        {
-            lastLoggedSecond = second;
-            Debug.Log($"Calling cops: {second}/{holdDuration}s");
-        }
+        int second = Mathf.Min(Mathf.FloorToInt(heldTime), Mathf.FloorToInt(holdDuration));
+        NotePopup.Prompt(this, $"Calling the cops... keep holding {NotePopup.Key(GameAction.Interact)} ({second}/{holdDuration:0}s)");
 
         if (heldTime >= holdDuration)
         {
@@ -47,4 +43,7 @@ public class CallCopsTrigger : MonoBehaviour
             gameObject.SetActive(false);
         }
     }
+
+    // Switched off (used up, picked up...) - take the prompt away with it
+    private void OnDisable() => NotePopup.ClearPrompt(this);
 }

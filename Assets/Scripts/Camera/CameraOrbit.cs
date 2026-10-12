@@ -26,6 +26,14 @@ public class CameraOrbit : MonoBehaviour
     [SerializeField] private float topClamp = -40f;   // how far up you can look
     [SerializeField] private float bottomClamp = 70f; // how far down you can look
 
+    [Header("Driving: swing back behind the car")]
+    [Tooltip("Seconds without moving the mouse before the camera swings back behind the car (0 = never)")]
+    [SerializeField] private float recenterDelay = 3.5f;
+    [Tooltip("How long the swing takes (seconds) - bigger is softer")]
+    [SerializeField] private float recenterSmoothTime = 0.6f;
+    [Tooltip("Only while the car is driving forward faster than this (m/s) - parked, you can still look around")]
+    [SerializeField] private float recenterMinSpeed = 2f;
+
     [Header("Collision (stops the camera going through walls/terrain)")]
     [Tooltip("Layers the camera bumps into. Defaults to everything.")]
     [SerializeField] private LayerMask collisionMask = ~0;
@@ -44,6 +52,8 @@ public class CameraOrbit : MonoBehaviour
     private float aimBlend; // 0 = normal view, 1 = fully over the shoulder
     private Camera cam;
     private float normalFieldOfView;
+    private float idleTime;      // seconds since the mouse last moved
+    private float recenterVelocity;
 
     public void SetTarget(Transform newTarget)
     {
@@ -79,6 +89,8 @@ public class CameraOrbit : MonoBehaviour
         pitch -= mouseY;
         pitch = Mathf.Clamp(pitch, topClamp, bottomClamp);
 
+        RecenterBehindCar(mouseX, mouseY);
+
         Quaternion rotation = Quaternion.Euler(pitch, yaw, 0f);
 
         bool aiming = PlayerLocomotion.IsAiming && VehicleInteraction.Current == null;
@@ -102,6 +114,38 @@ public class CameraOrbit : MonoBehaviour
 
         transform.position = pivotPosition + backDirection * currentDistance + extraOffset;
         transform.rotation = rotation;
+    }
+
+    // GTA-style: leave the mouse alone while driving and the camera swings back
+    // behind the car, then follows it through turns until you look around again
+    private void RecenterBehindCar(float mouseX, float mouseY)
+    {
+        VehicleInteraction car = VehicleInteraction.Current;
+        bool mouseMoved = Mathf.Abs(mouseX) > 0.01f || Mathf.Abs(mouseY) > 0.01f;
+        if (car == null || mouseMoved || recenterDelay <= 0f || CameraMode.IsActive)
+        {
+            idleTime = 0f;
+            recenterVelocity = 0f;
+            return;
+        }
+
+        idleTime += Time.deltaTime;
+        if (idleTime < recenterDelay) return;
+
+        // Only while actually driving forward (not parked, not reversing)
+        Rigidbody rb = car.GetComponent<Rigidbody>();
+        float forwardSpeed = rb != null ? Vector3.Dot(rb.linearVelocity, car.transform.forward) : 0f;
+        if (forwardSpeed < recenterMinSpeed)
+        {
+            recenterVelocity = 0f;
+            return;
+        }
+
+        Vector3 forward = car.transform.forward;
+        forward.y = 0f;
+        if (forward.sqrMagnitude < 0.001f) return;
+        float behind = Quaternion.LookRotation(forward).eulerAngles.y;
+        yaw = Mathf.SmoothDampAngle(yaw, behind, ref recenterVelocity, recenterSmoothTime);
     }
 
     private float WallLimitedDistance(Vector3 pivot, Vector3 direction, float wanted)

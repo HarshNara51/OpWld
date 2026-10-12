@@ -15,13 +15,14 @@ public class MissionEntryPoint : MonoBehaviour
     {
         if (!other.CompareTag("Player")) return;
         playerInRange = true;
-        Debug.Log($"Press {GameKeys.Label(GameAction.Interact)} to start {missionSceneName}");
+        NotePopup.Prompt(this, $"Press {NotePopup.Key(GameAction.Interact)} to start the mission: <b>{GizmoLabel.MissionName(missionSceneName)}</b>");
     }
 
     private void OnTriggerExit(Collider other)
     {
         if (!other.CompareTag("Player")) return;
         playerInRange = false;
+        NotePopup.ClearPrompt(this);
     }
 
     private void Update()
@@ -31,4 +32,7 @@ public class MissionEntryPoint : MonoBehaviour
             GameManager.Instance.LoadMission(missionSceneName);
         }
     }
+
+    // Switched off (used up, picked up...) - take the prompt away with it
+    private void OnDisable() => NotePopup.ClearPrompt(this);
 }

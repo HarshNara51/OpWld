@@ -29,7 +29,7 @@ public class PhotoTarget : MonoBehaviour, IGizmoVisibility
     [Tooltip("Other objects that count as part of the subject, so they never 'block' the shot (e.g. the second truck of a convoy)")]
     public Transform[] alsoPartOfSubject = new Transform[0];
 
-    [Tooltip("Printed when the player walks into this object's trigger (if it has one). Leave empty for none.")]
+    [Tooltip("Shown as a prompt while the player is inside this object's trigger (if it has one). {key} = the camera key. Leave empty for none.")]
     public string proximityHint = "Something here is worth a photo... (press {key} for camera)";
 
     [Tooltip("Optional extra things to happen when photographed")]
@@ -38,7 +38,11 @@ public class PhotoTarget : MonoBehaviour, IGizmoVisibility
     public bool Photographed { get; private set; }
 
     protected virtual void OnEnable() => All.Add(this);
-    protected virtual void OnDisable() => All.Remove(this);
+    protected virtual void OnDisable()
+    {
+        All.Remove(this);
+        NotePopup.ClearPrompt(this);
+    }
 
     // The exact point the camera checks against
     // (the middle of the model, not its pivot - a vehicle's pivot can sit at or
@@ -84,6 +88,7 @@ public class PhotoTarget : MonoBehaviour, IGizmoVisibility
         if (Photographed || !CanBePhotographed()) return false;
 
         Photographed = true;
+        NotePopup.ClearPrompt(this);
         NotePopup.Show(note);   // the clue's own note first...
         HandlePhotographed();   // ...then any mission messages queue after it
         onPhotographed?.Invoke();
@@ -97,7 +102,13 @@ public class PhotoTarget : MonoBehaviour, IGizmoVisibility
         if (!CanBePhotographed()) return;
 
         // {key} (or an old "press C") always shows the real camera key
-        string key = GameKeys.Label(GameAction.PhotoMode);
-        Debug.Log(proximityHint.Replace("{key}", key).Replace("press C ", $"press {key} "));
+        string key = NotePopup.Key(GameAction.PhotoMode);
+        NotePopup.Prompt(this, proximityHint.Replace("{key}", key).Replace("press C ", $"press {key} "));
+    }
+
+    protected virtual void OnTriggerExit(Collider other)
+    {
+        if (!other.CompareTag("Player") && !other.CompareTag("PlayerCar")) return;
+        NotePopup.ClearPrompt(this);
     }
 }

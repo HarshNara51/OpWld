@@ -26,7 +26,8 @@ public class DefuseTrigger : MonoBehaviour
 
         bool inRange = IsInRange();
 
-        if (inRange && !wasInRange) Debug.Log($"Press {GameKeys.Label(GameAction.Interact)} to defuse the bomb");
+        if (inRange && !wasInRange) NotePopup.Prompt(this, $"Press {NotePopup.Key(GameAction.Interact)} to defuse the bomb");
+        if (!inRange && wasInRange) NotePopup.ClearPrompt(this);
         wasInRange = inRange;
 
         if (inRange && GameKeys.Down(GameAction.Interact)) onUse.Invoke();
@@ -42,6 +43,12 @@ public class DefuseTrigger : MonoBehaviour
         Vector3 offset = target.position - transform.position;
         offset.y = 0f;
         return offset.magnitude <= radius;
+    }
+
+    private void OnDisable()
+    {
+        NotePopup.ClearPrompt(this);
+        wasInRange = false;
     }
 
     private void OnDrawGizmosSelected()

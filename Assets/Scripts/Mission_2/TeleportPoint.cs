@@ -21,13 +21,14 @@ public class TeleportPoint : MonoBehaviour
     {
         if (!other.CompareTag("Player")) return;
         playerInRange = true;
-        Debug.Log($"Press {GameKeys.Label(GameAction.Interact)} to enter");
+        NotePopup.Prompt(this, $"Press {NotePopup.Key(GameAction.Interact)} to {(name.ToLowerInvariant().Contains("exit") ? "leave" : "go in")}");
     }
 
     private void OnTriggerExit(Collider other)
     {
         if (!other.CompareTag("Player")) return;
         playerInRange = false;
+        NotePopup.ClearPrompt(this);
     }
 
     private void Update()
@@ -46,6 +47,10 @@ public class TeleportPoint : MonoBehaviour
             if (cc != null) cc.enabled = true;
 
             playerInRange = false; // don't instantly re-trigger if the destination sits near another one
+            NotePopup.ClearPrompt(this);
         }
     }
+
+    // Switched off (used up, picked up...) - take the prompt away with it
+    private void OnDisable() => NotePopup.ClearPrompt(this);
 }

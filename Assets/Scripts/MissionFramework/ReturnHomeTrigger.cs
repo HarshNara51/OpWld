@@ -18,7 +18,7 @@ public class ReturnHomeTrigger : MonoBehaviour
     {
         if (!other.CompareTag("Player")) return;
         playerInRange = true;
-        Debug.Log($"Hold {GameKeys.Label(GameAction.Interact)} to return to Hub");
+        NotePopup.Prompt(this, $"Hold {NotePopup.Key(GameAction.Interact)} to return home");
     }
 
     private void OnTriggerExit(Collider other)
@@ -26,6 +26,7 @@ public class ReturnHomeTrigger : MonoBehaviour
         if (!other.CompareTag("Player")) return;
         playerInRange = false;
         heldTime = 0f;
+        NotePopup.ClearPrompt(this);
     }
 
     private void Update()
@@ -43,4 +44,7 @@ public class ReturnHomeTrigger : MonoBehaviour
             GameManager.Instance.ReturnToHub();
         }
     }
+
+    // Switched off (used up, picked up...) - take the prompt away with it
+    private void OnDisable() => NotePopup.ClearPrompt(this);
 }

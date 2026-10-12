@@ -11,12 +11,15 @@ public class DeliveryZone : MonoBehaviour
     {
         if (!other.CompareTag("Player")) return;
         playerInRange = true;
+        if (Mission1Manager.Instance != null && Mission1Manager.Instance.IsCarryingCargo)
+            NotePopup.Prompt(this, $"Press {NotePopup.Key(GameAction.Interact)} to unload the cargo onto the train");
     }
 
     private void OnTriggerExit(Collider other)
     {
         if (!other.CompareTag("Player")) return;
         playerInRange = false;
+        NotePopup.ClearPrompt(this);
     }
 
     private void Update()
@@ -26,22 +29,25 @@ public class DeliveryZone : MonoBehaviour
 
         if (Mission1Manager.Instance.HasTrainDeparted)
         {
-            Debug.Log("Train is moving, not able to deliver");
+            NotePopup.Show("Too late - the train is already moving.", 3f);
             return;
         }
 
         if (!Mission1Manager.Instance.IsTrainAtPlatform)
         {
-            Debug.Log("Train hasn't arrived yet");
+            NotePopup.Show("The train hasn't arrived yet. Wait for it.", 3f);
             return;
         }
 
         if (!Mission1Manager.Instance.IsTaxiNear(transform.position))
         {
-            Debug.Log("Park the taxi near the train to unload the cargo");
+            NotePopup.Show("Park the taxi next to the train to unload the cargo.", 3f);
             return;
         }
 
         Mission1Manager.Instance.OnCargoDelivered();
     }
+
+    // Switched off (used up, picked up...) - take the prompt away with it
+    private void OnDisable() => NotePopup.ClearPrompt(this);
 }

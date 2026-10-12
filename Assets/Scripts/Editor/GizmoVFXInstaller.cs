@@ -89,6 +89,7 @@ public static class GizmoVFXInstaller
 
             int removed = RemovePlaceholders(t.gameObject, scene);
             AddMarker(t, kind, prefabs[kind.name]);
+            AddLabel(t, kind);
             log.Add($"{t.name} ({kind.name}{(removed > 0 ? $", -{removed} placeholder" : "")})");
         }
 
@@ -131,6 +132,90 @@ public static class GizmoVFXInstaller
         GameObject saved = PrefabUtility.SaveAsPrefabAsset(root, path);
         Object.DestroyImmediate(root);
         return saved;
+    }
+
+    // ================= hologram labels =================
+
+    // Colour (the marker's VFX colour), height above the marker, how far it shows
+    private static readonly Dictionary<string, (Color color, float height, float range)> LabelStyle = new Dictionary<string, (Color, float, float)>
+    {
+        { "Mission",     (new Color(1f, 0.83f, 0.38f), 3.4f, 150f) },
+        { "Destination", (new Color(0.38f, 0.78f, 1f), 2.8f, 80f) },
+        { "Pickup",      (new Color(1f, 0.8f, 0.32f), 2.6f, 45f) },
+        { "Door",        (new Color(0.78f, 0.95f, 1f), 2.5f, 25f) },
+        { "Clue",        (new Color(0.42f, 1f, 0.58f), 1.2f, 18f) },
+        { "Zone",        (new Color(1f, 0.5f, 0.88f), 2.4f, 60f) },
+        { "Hide",        (new Color(0.58f, 0.82f, 1f), 2.0f, 40f) },
+        { "Bomb",        (new Color(0.55f, 0.92f, 1f), 2.2f, 40f) },
+        { "Service",     (new Color(0.45f, 0.72f, 1f), 1.6f, 20f) },
+        { "Respray",     (new Color(0.45f, 0.72f, 1f), 3.2f, 45f) },
+        { "Noise",       (new Color(0.48f, 0.72f, 1f), 0.9f, 12f) },
+    };
+
+    private static void AddLabel(Transform gizmo, Kind kind)
+    {
+        GizmoLabel label = gizmo.GetComponent<GizmoLabel>();
+        bool fresh = label == null;
+        if (fresh) label = Undo.AddComponent<GizmoLabel>(gizmo.gameObject);
+        else Undo.RecordObject(label, "Install gizmo label");
+
+        // Keep a title someone typed in; fill everything on a new label
+        if (fresh || string.IsNullOrEmpty(label.title))
+        {
+            var (title, sub) = LabelText(gizmo, kind);
+            label.title = title;
+            label.subtitle = sub;
+        }
+        if (LabelStyle.TryGetValue(kind.name, out var style))
+        {
+            label.color = style.color;
+            label.height = style.height;
+            label.showDistance = style.range;
+        }
+        Bounds zone = TriggerBounds(gizmo);
+        label.useDistance = Mathf.Max(zone.extents.x, zone.extents.z) + 0.8f;
+        EditorUtility.SetDirty(label);
+    }
+
+    private static (string title, string sub) LabelText(Transform g, Kind kind)
+    {
+        string n = g.name;
+        bool Has(string script) => g.GetComponent(script) != null;
+        switch (kind.name)
+        {
+            case "Mission":
+            {
+                var entry = g.GetComponent<MissionEntryPoint>();
+                string digits = new string(n.Where(char.IsDigit).ToArray());
+                return (GizmoLabel.MissionName(entry != null ? entry.missionSceneName : n), digits.Length > 0 ? "Mission " + digits : "Mission");
+            }
+            case "Destination":
+                if (Has("ReturnHomeTrigger")) return ("Return Home", "Leave mission");
+                if (Has("CallCopsTrigger")) return ("Call the Cops", "Hold to call");
+                return (GizmoLabel.Nicify(n), "Go here");
+            case "Pickup":
+                return Has("ItemPickup") ? ("Stolen Item", "Recover") : (GizmoLabel.Nicify(n), "Pick up");
+            case "Door":
+                return (GizmoLabel.Nicify(n.Replace("Bedrooom", "Bedroom")), n.ToLowerInvariant().Contains("exit") ? "Exit" : "Enter");
+            case "Clue":
+                if (Has("BodyDiscoveryZone")) return ("Something's Wrong", "Photograph");
+                if (Has("PhotoCaptureZone")) return ("Photo Spot", "Photograph the trucks");
+                return ("Clue", "Photograph");
+            case "Zone":
+                if (Has("DeliveryZone")) return ("Cargo Drop-off", "Deliver");
+                if (Has("PoliceDeliveryZone")) return ("Police Station", "Deliver evidence");
+                return (n.Contains("CarPark") ? "Park Here" : GizmoLabel.Nicify(n.Replace("Trigger", "")), "");
+            case "Hide": return ("Hide Here", "Stay out of sight");
+            case "Bomb": return ("Bomb", "Defuse");
+            case "Service":
+                if (Has("FuelStation")) return ("Fuel", "Hold to refuel");
+                var phone = g.GetComponent<TowPhone>();
+                bool refuel = phone != null && new SerializedObject(phone).FindProperty("service").enumValueIndex == 1;
+                return ("Tow Truck", refuel ? "Fuel delivery" : "Repair");
+            case "Respray": return ("Respray", "Drive in");
+            case "Noise": return ("Radio", "Distraction");
+        }
+        return (GizmoLabel.Nicify(n), "");
     }
 
     private static void AddMarker(Transform gizmo, Kind kind, GameObject prefab)

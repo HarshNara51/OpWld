@@ -23,33 +23,30 @@ public class FuelStation : MonoBehaviour
     private void Update()
     {
         VehicleFuel car = FindCarInRange();
-
-        if (car != carInRange)
+        carInRange = car;
+        if (car == null)
         {
-            carInRange = car;
-            if (car != null)
-                Debug.Log($"Gas station: hold {refuelKey} to refuel ({Mathf.RoundToInt(car.Fuel01 * 100)}% in the tank).");
+            NotePopup.ClearPrompt(this);
+            wasRefuelling = false;
+            return;
         }
 
-        bool refuelling = car != null && Input.GetKey(refuelKey) && car.Fuel01 < 1f && IsStopped(car);
-
-        if (car != null && Input.GetKeyDown(refuelKey) && !IsStopped(car))
-            Debug.Log("Gas station: stop the car first.");
-
-        if (refuelling)
-        {
-            car.AddFuel(refuelRate * Time.deltaTime);
-            if (car.Fuel01 >= 1f) Debug.Log("Gas station: tank full!");
-        }
-        else if (wasRefuelling && car != null && car.Fuel01 < 1f)
-        {
-            Debug.Log($"Gas station: stopped at {Mathf.RoundToInt(car.Fuel01 * 100)}%.");
-        }
-
+        bool stopped = IsStopped(car);
+        bool refuelling = Input.GetKey(refuelKey) && car.Fuel01 < 1f && stopped;
+        if (refuelling) car.AddFuel(refuelRate * Time.deltaTime);
         wasRefuelling = refuelling;
+
+        // One prompt that always says what's going on
+        int percent = Mathf.RoundToInt(car.Fuel01 * 100);
+        string text = car.Fuel01 >= 0.999f ? "Tank full!"
+                    : !stopped ? "Stop the car to refuel."
+                    : refuelling ? $"Refuelling... {percent}%"
+                    : $"Hold {NotePopup.Key(refuelKey.ToString())} to refuel ({percent}% in the tank)";
+        NotePopup.Prompt(this, "<b>Gas station:</b> " + text);
     }
 
-    // The car being driven, or - if on foot - the nearest car with fuel in range
+    private void OnDisable() => NotePopup.ClearPrompt(this);
+
     private VehicleFuel FindCarInRange()
     {
         if (VehicleInteraction.Current != null)

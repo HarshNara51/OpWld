@@ -10,13 +10,14 @@ public class ItemPickup : MonoBehaviour
     {
         if (!other.CompareTag("Player")) return;
         playerInRange = true;
-        Debug.Log($"Press {GameKeys.Label(GameAction.Interact)} to grab the item");
+        NotePopup.Prompt(this, $"Press {NotePopup.Key(GameAction.Interact)} to grab the item");
     }
 
     private void OnTriggerExit(Collider other)
     {
         if (!other.CompareTag("Player")) return;
         playerInRange = false;
+        NotePopup.ClearPrompt(this);
     }
 
     private void Update()
@@ -27,4 +28,7 @@ public class ItemPickup : MonoBehaviour
             gameObject.SetActive(false);
         }
     }
+
+    // Switched off (used up, picked up...) - take the prompt away with it
+    private void OnDisable() => NotePopup.ClearPrompt(this);
 }

@@ -10,13 +10,14 @@ public class PoliceDeliveryZone : MonoBehaviour
     {
         if (!other.CompareTag("Player")) return;
         playerInRange = true;
-        Debug.Log($"Press {GameKeys.Label(GameAction.Interact)} to deliver the evidence");
+        NotePopup.Prompt(this, $"Press {NotePopup.Key(GameAction.Interact)} to hand over the evidence");
     }
 
     private void OnTriggerExit(Collider other)
     {
         if (!other.CompareTag("Player")) return;
         playerInRange = false;
+        NotePopup.ClearPrompt(this);
     }
 
     private void Update()
@@ -33,4 +34,7 @@ public class PoliceDeliveryZone : MonoBehaviour
             NotePopup.Show("You don't have the photo of the trucks yet. Follow them and take it first.", 4f);
         }
     }
+
+    // Switched off (used up, picked up...) - take the prompt away with it
+    private void OnDisable() => NotePopup.ClearPrompt(this);
 }
