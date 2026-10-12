@@ -19,8 +19,11 @@ public class PhotoTarget : MonoBehaviour
     [Tooltip("How far away the camera can be and still count the shot")]
     public float maxDistance = 30f;
 
-    [Tooltip("What the camera must aim at. Empty = the center of this object's model")]
+    [Tooltip("What the camera must aim at (the middle of its model). Empty = the center of this object's model")]
     public Transform focusPoint;
+
+    [Tooltip("Other objects that count as part of the subject, so they never 'block' the shot (e.g. the second truck of a convoy)")]
+    public Transform[] alsoPartOfSubject = new Transform[0];
 
     [Tooltip("Printed when the player walks into this object's trigger (if it has one). Leave empty for none.")]
     public string proximityHint = "Something here is worth a photo... (press {key} for camera)";
@@ -34,19 +37,35 @@ public class PhotoTarget : MonoBehaviour
     protected virtual void OnDisable() => All.Remove(this);
 
     // The exact point the camera checks against
+    // (the middle of the model, not its pivot - a vehicle's pivot can sit at or
+    // even under the road, where every line of sight hits the ground first)
     public Vector3 FocusPosition
     {
         get
         {
-            if (focusPoint != null) return focusPoint.position;
+            Transform model = focusPoint != null ? focusPoint : transform;
 
-            Renderer[] renderers = GetComponentsInChildren<Renderer>();
-            if (renderers.Length == 0) return transform.position;
-
-            Bounds bounds = renderers[0].bounds;
-            for (int i = 1; i < renderers.Length; i++) bounds.Encapsulate(renderers[i].bounds);
-            return bounds.center;
+            // Meshes only - not the gizmo's VFX marker or other particles
+            bool found = false;
+            Bounds bounds = default;
+            foreach (Renderer r in model.GetComponentsInChildren<Renderer>())
+            {
+                if (!(r is MeshRenderer) && !(r is SkinnedMeshRenderer)) continue;
+                if (!found) { bounds = r.bounds; found = true; }
+                else bounds.Encapsulate(r.bounds);
+            }
+            return found ? bounds.center : model.position;
         }
+    }
+
+    // True if this collider belongs to the subject (so it can't block the shot)
+    public bool IsPartOfSubject(Transform t)
+    {
+        if (t.IsChildOf(transform)) return true;
+        if (focusPoint != null && t.IsChildOf(focusPoint)) return true;
+        foreach (Transform extra in alsoPartOfSubject)
+            if (extra != null && t.IsChildOf(extra)) return true;
+        return false;
     }
 
     // Override: can this shot count right now? (e.g. only during a mission phase)

@@ -31,6 +31,10 @@ public class NPCDeath : MonoBehaviour
     [SerializeField] private float endLift = 0f;
     [SerializeField] private float headshotEndLift = 0.15f;
 
+    [Header("Blood")]
+    [Tooltip("Blood spray + a pool under the body (effects in Resources/VFX)")]
+    [SerializeField] private bool bleed = true;
+
     public bool IsDying { get; private set; }
     private float lift;
 
@@ -66,6 +70,7 @@ public class NPCDeath : MonoBehaviour
             }
         }
         animator.SetTrigger(dieTrigger);
+        if (bleed) Blood.OnDeath(this, animator);
         StartCoroutine(DisappearAfterDeath(animator));
     }
 

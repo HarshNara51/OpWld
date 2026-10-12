@@ -71,6 +71,8 @@ public class WeaponFire : MonoBehaviour
         CurrentAmmo--;
         lastShotTime = Time.time;
 
+        if (holster.CurrentWeapon != null) MuzzleFlash.Play(MuzzleFlash.Find(holster.CurrentWeapon.transform));
+
         // A gunshot alerts everyone regardless of whether it hits -
         // this is the trigger that ends the "deal" formation.
         if (!EnemyCover.CombatActive)

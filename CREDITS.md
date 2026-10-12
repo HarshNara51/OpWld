@@ -88,7 +88,9 @@ just don't share the raw files.
 | `Imports/PretoriusLab` | Industry Props | Pretorius Lab |
 | `Imports/Single_detailed_truck` | Single Detailed Truck | VIS Games |
 | `Imports/Truck_LowPoly` | Truck low poly | SR Studios Kerala |
-| `Imports/VFX` | Free Quick Effects Vol 1 | Gabriel Aguiar Prod |
+| `Imports/VFX` | Free Quick Effects Vol 1 (gizmo markers, car smoke) | Gabriel Aguiar Prod |
+| `Hovl Studio` | Magic Effects FREE (gizmo markers) | Hovl Studio |
+| `Vefects/Free Blood VFX` | Free Blood VFX (enemy deaths) | Vefects |
 | `Imports/asset_free_Ukraine_cars` | Ukraine free cars (traffic) | KOS-store |
 | `Imports/Stylized Vehicles Pack Free` | Stylized Vehicles Pack - FREE (traffic) | Alex Lenk |
 | `Imports/Low Poly Soviet Car Pack` | Low Poly Soviet Cars Pack (traffic) | Vitaly Tyavin |

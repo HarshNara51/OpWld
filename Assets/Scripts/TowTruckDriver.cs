@@ -97,10 +97,15 @@ public class TowTruckDriver : MonoBehaviour
         Init();
         driving = true; // set BEFORE activating, so Awake doesn't hide us again
 
-        // Show only the dummy that matches the car being delivered
+        // Show only the dummy that matches the car being delivered, in the
+        // car's current colour (it may have been resprayed)
         if (carDummies != null)
             foreach (CarDummy d in carDummies)
-                if (d.dummy != null) d.dummy.SetActive(d.car == forCar);
+            {
+                if (d.dummy == null) continue;
+                d.dummy.SetActive(d.car == forCar);
+                if (d.car == forCar && d.car != null && d.car.TryGetComponent(out CarPaint paint)) paint.CopyPaintTo(d.dummy);
+            }
 
         distance = 0f;
         currentSpeed = 0f;

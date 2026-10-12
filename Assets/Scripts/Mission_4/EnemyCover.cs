@@ -58,6 +58,7 @@ public class EnemyCover : MonoBehaviour
 
     private Transform player;
     private Health playerHealth;
+    private Transform muzzle; // barrel tip of the rifle in hand, for the muzzle flash
     private bool facePlayer;   // false while running to cover (faces where he's running)
     private float nextFireTime;
 
@@ -210,6 +211,8 @@ public class EnemyCover : MonoBehaviour
                 // Accuracy falls off with distance - long range is safer, not free
                 float t = Mathf.InverseLerp(closeRange, fireRange, dist);
                 bool lands = Random.value < Mathf.Lerp(closeRangeHitChance, longRangeHitChance, t);
+                if (muzzle == null) muzzle = MuzzleFlash.Find(transform);
+                MuzzleFlash.Play(muzzle);
                 Debug.Log($"{name} shoots at player ({dist:F0} m) - {(lands ? "hit" : "miss")}");
                 if (lands && playerHealth != null) playerHealth.TakeDamage(damage);
             }

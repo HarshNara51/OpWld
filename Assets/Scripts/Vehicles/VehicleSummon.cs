@@ -16,19 +16,31 @@ public class VehicleSummon : MonoBehaviour
     private Transform player;
     private Camera playerCamera;
 
-    private void Start()
+    // This lives on the Managers object, which carries over between scenes,
+    // so the car/player/camera are looked up again whenever they're gone
+    // (a new scene was loaded) instead of only once at the start.
+    private void FindSceneObjects()
     {
-        GameObject carObj = GameObject.FindGameObjectWithTag("PlayerCar");
-        if (carObj != null)
+        if (car == null)
         {
-            car = carObj.transform;
-            carRigidbody = carObj.GetComponent<Rigidbody>();
+            carRigidbody = null;
+            foreach (GameObject carObj in GameObject.FindGameObjectsWithTag("PlayerCar"))
+            {
+                // The real car, not a look-alike dummy (e.g. on the tow truck)
+                if (carObj.GetComponent<VehicleInteraction>() == null) continue;
+                car = carObj.transform;
+                carRigidbody = carObj.GetComponent<Rigidbody>();
+                break;
+            }
         }
 
-        GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
-        if (playerObj != null) player = playerObj.transform;
+        if (player == null)
+        {
+            GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
+            player = playerObj != null ? playerObj.transform : null;
+        }
 
-        playerCamera = Camera.main;
+        if (playerCamera == null) playerCamera = Camera.main;
     }
 
     private void Update()
@@ -41,6 +53,7 @@ public class VehicleSummon : MonoBehaviour
 
     private void SummonCar()
     {
+        FindSceneObjects();
         if (car == null || player == null || playerCamera == null) return;
 
         // Don't summon while the player is already driving it.

@@ -794,17 +794,26 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TowTruckDriver
   spline: {fileID: 0}
-  speed: 12
-  acceleration: 6
+  speed: 6
+  acceleration: 3
   brakingDistance: 15
   snapToGround: 1
   groundMask:
     serializedVersion: 2
     m_Bits: 4294967295
   groundOffset: 0
+  steerLeadTime: 1.5
   carDummies:
   - car: {fileID: 0}
     dummy: {fileID: 3252658619929781491}
+  - car: {fileID: 0}
+    dummy: {fileID: 0}
+  - car: {fileID: 0}
+    dummy: {fileID: 0}
+  - car: {fileID: 0}
+    dummy: {fileID: 0}
+  - car: {fileID: 0}
+    dummy: {fileID: 0}
 --- !u!1 &8520608429797359632
 GameObject:
   m_ObjectHideFlags: 0

@@ -335,7 +335,7 @@ public class CameraMode : MonoBehaviour
         foreach (RaycastHit hit in Physics.RaycastAll(origin, toFocus.normalized, distance, ~0, QueryTriggerInteraction.Ignore))
         {
             Transform h = hit.transform;
-            if (h.IsChildOf(target.transform)) continue;                 // the subject itself
+            if (target.IsPartOfSubject(h)) continue;                     // the subject itself
             if (h.CompareTag("Player") || h.CompareTag("PlayerCar")) continue;
             if (subject != null && h.IsChildOf(subject)) continue;        // the player/car we're shooting from
             if (distance - hit.distance <= lineOfSightTolerance) continue; // right next to the subject

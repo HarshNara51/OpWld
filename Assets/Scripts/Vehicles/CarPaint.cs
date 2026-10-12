@@ -198,6 +198,51 @@ public class CarPaint : MonoBehaviour
         return true;
     }
 
+    // Gives a look-alike (e.g. the dummy on the tow truck's bed) this car's
+    // current paint. Parts are matched by mesh + material, or by material
+    // alone if the look-alike's meshes were merged.
+    public void CopyPaintTo(GameObject target)
+    {
+        if (target == null) return;
+
+        var source = new List<(Renderer renderer, Mesh mesh, Material mat, int slot)>();
+        foreach (Renderer r in GetComponentsInChildren<Renderer>(true))
+        {
+            if (!(r is MeshRenderer) && !(r is SkinnedMeshRenderer)) continue;
+            Mesh mesh = MeshOf(r);
+            Material[] mats = r.sharedMaterials;
+            for (int i = 0; i < mats.Length; i++) source.Add((r, mesh, mats[i], i));
+        }
+
+        var copy = new MaterialPropertyBlock();
+        foreach (Renderer t in target.GetComponentsInChildren<Renderer>(true))
+        {
+            if (!(t is MeshRenderer) && !(t is SkinnedMeshRenderer)) continue;
+            Mesh mesh = MeshOf(t);
+            Material[] mats = t.sharedMaterials;
+            for (int i = 0; i < mats.Length; i++)
+            {
+                int best = -1;
+                for (int k = 0; k < source.Count && best < 0; k++)
+                    if (source[k].mesh == mesh && source[k].mat == mats[i] && source[k].slot == i) best = k;
+                for (int k = 0; k < source.Count && best < 0; k++)
+                    if (source[k].mat == mats[i] && !IsWheel(source[k].renderer)) best = k; // body paint over wheel paint
+                for (int k = 0; k < source.Count && best < 0; k++)
+                    if (source[k].mat == mats[i]) best = k;
+
+                copy.Clear();
+                if (best >= 0) source[best].renderer.GetPropertyBlock(copy, source[best].slot);
+                t.SetPropertyBlock(copy, i);
+            }
+        }
+    }
+
+    private static Mesh MeshOf(Renderer r)
+    {
+        if (r is SkinnedMeshRenderer smr) return smr.sharedMesh;
+        return r.TryGetComponent(out MeshFilter mf) ? mf.sharedMesh : null;
+    }
+
     private bool Apply(int job)
     {
         if (!Prepare()) return false;
