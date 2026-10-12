@@ -20,6 +20,10 @@ using UnityEngine.SceneManagement;
 // Wheels (parts named Wheel/Tire/Tyre/Rim) can get a rim colour of their
 // own: the light greys of the wheel turn into it, the tyre stays black.
 // Glass, tyres and lights stay as they are.
+// Two other ways, picked automatically:
+//  - Paint Textures filled (a car pack's own colour textures): the shop
+//    swaps between those instead of the Paint Jobs.
+//  - Body material with no texture (plain colour): the colour is tinted.
 //
 // The chosen job is SAVED per car (by name), so the car keeps it in every
 // scene and after restarting the game.
@@ -49,6 +53,10 @@ public class CarPaint : MonoBehaviour
 
     [Tooltip("The shop picks one of these at random. Empty = default colour list.")]
     [SerializeField] private PaintJob[] paintJobs = new PaintJob[0];
+
+    [Tooltip("Optional: ready-made colour textures for the body (e.g. the car pack's own colour versions). " +
+             "When set, the shop picks one of these instead of the Paint Jobs.")]
+    [SerializeField] private Texture2D[] paintTextures = new Texture2D[0];
 
     [Tooltip("Save key - leave empty to use the car's name (same car = same name in every scene)")]
     [SerializeField] private string saveId = "";
@@ -88,6 +96,14 @@ public class CarPaint : MonoBehaviour
 
     private string Key => "CarPaintJob_" + (string.IsNullOrEmpty(saveId) ? CleanName(name) : saveId);
     private PaintJob[] Jobs => paintJobs != null && paintJobs.Length > 0 ? paintJobs : DefaultJobs;
+    private bool UseTextures => paintTextures != null && paintTextures.Length > 0;
+    private int JobCount => UseTextures ? paintTextures.Length : Jobs.Length;
+
+    // How the car gets painted: recolour its texture, swap in a ready-made
+    // texture, or (body material without a texture) tint the material colour
+    private enum Mode { Recolor, Textures, Tint }
+    private Mode mode;
+    private string colorProperty;
 
     private readonly List<(Renderer renderer, int slot)> bodySlots = new List<(Renderer, int)>();
     private readonly List<(Renderer renderer, int slot)> wheelSlots = new List<(Renderer, int)>();
@@ -131,7 +147,7 @@ public class CarPaint : MonoBehaviour
     private void Start()
     {
         int saved = PlayerPrefs.GetInt(Key, Factory);
-        if (saved != Factory && saved < Jobs.Length) Apply(saved);
+        if (saved != Factory && saved < JobCount) Apply(saved);
     }
 
     private void OnDestroy()
@@ -167,7 +183,7 @@ public class CarPaint : MonoBehaviour
 
         var choices = new List<int>();
         if (includeFactoryPaint) choices.Add(Factory);
-        for (int i = 0; i < Jobs.Length; i++) choices.Add(i);
+        for (int i = 0; i < JobCount; i++) choices.Add(i);
         choices.Remove(current);
         if (choices.Count == 0) return false;
 
@@ -191,6 +207,20 @@ public class CarPaint : MonoBehaviour
         {
             SetTexture(bodySlots, null);
             SetTexture(wheelSlots, null);
+            return true;
+        }
+
+        if (mode == Mode.Textures)
+        {
+            SetTexture(bodySlots, paintTextures[job]);
+            return true;
+        }
+
+        if (mode == Mode.Tint)
+        {
+            SetColor(bodySlots, Jobs[job].body);
+            if (Jobs[job].paintWheels) SetColor(wheelSlots, Jobs[job].wheels);
+            else SetTexture(wheelSlots, null);
             return true;
         }
 
@@ -235,6 +265,18 @@ public class CarPaint : MonoBehaviour
             r.GetPropertyBlock(block, slot);
             if (tex != null) block.SetTexture(texProperty, tex);
             else block.Clear();
+            r.SetPropertyBlock(block, slot);
+        }
+    }
+
+    private void SetColor(List<(Renderer renderer, int slot)> slots, Color color)
+    {
+        if (block == null) block = new MaterialPropertyBlock();
+        foreach (var (r, slot) in slots)
+        {
+            if (r == null) continue;
+            r.GetPropertyBlock(block, slot);
+            block.SetColor(colorProperty, color);
             r.SetPropertyBlock(block, slot);
         }
     }
@@ -305,8 +347,8 @@ public class CarPaint : MonoBehaviour
         if (paintMat == null) return Fail("no paint material");
 
         originalTex = paintMat.mainTexture as Texture2D;
-        if (originalTex == null) return Fail($"paint material '{paintMat.name}' has no texture");
         texProperty = paintMat.HasProperty("_BaseMap") ? "_BaseMap" : "_MainTex";
+        colorProperty = paintMat.HasProperty("_BaseColor") ? "_BaseColor" : "_Color";
 
         // Every part using the same material gets the new texture; wheels can get their own
         bodySlots.Clear();
@@ -318,6 +360,14 @@ public class CarPaint : MonoBehaviour
             for (int i = 0; i < mats.Length; i++)
                 if (mats[i] == paintMat) list.Add((r, i));
         }
+
+        if (UseTextures || originalTex == null)
+        {
+            mode = UseTextures ? Mode.Textures : Mode.Tint;
+            ready = true;
+            return true;
+        }
+        mode = Mode.Recolor;
 
         sourcePixels = ReadPixels(originalTex);
         if (!FindPaint()) return Fail("couldn't find a paint colour in the texture");
@@ -517,7 +567,7 @@ public class CarPaint : MonoBehaviour
         Forget();
         if (!Prepare()) return;
         int first = includeFactoryPaint ? Factory : 0;
-        previewIndex = previewIndex < first || previewIndex + 1 >= Jobs.Length ? first : previewIndex + 1;
+        previewIndex = previewIndex < first || previewIndex + 1 >= JobCount ? first : previewIndex + 1;
         Apply(previewIndex);
         Debug.Log(previewIndex == Factory
             ? $"{name}: previewing factory paint"
@@ -549,7 +599,7 @@ public class CarPaint : MonoBehaviour
         {
             if (this == null || previewIndex == -2) return;
             Forget();
-            if (previewIndex >= Jobs.Length) previewIndex = includeFactoryPaint ? Factory : 0;
+            if (previewIndex >= JobCount) previewIndex = includeFactoryPaint ? Factory : 0;
             Apply(previewIndex);
         };
     }

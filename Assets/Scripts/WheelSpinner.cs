@@ -65,6 +65,17 @@ public class WheelSpinner : MonoBehaviour
         Setup();
     }
 
+    // For vehicles set up from code (e.g. traffic cars spawned at runtime)
+    public void Configure(Transform[] allWheels, Transform[] steering)
+    {
+        wheels = allWheels;
+        steerWheels = steering;
+        ready = false;
+        Setup();
+        lastPosition = transform.position;
+        lastForward = transform.forward;
+    }
+
     public void Setup()
     {
         if (ready || wheels == null) return;

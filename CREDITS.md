@@ -89,7 +89,11 @@ just don't share the raw files.
 | `Imports/Single_detailed_truck` | Single Detailed Truck | VIS Games |
 | `Imports/Truck_LowPoly` | Truck low poly | SR Studios Kerala |
 | `Imports/VFX` | Free Quick Effects Vol 1 | Gabriel Aguiar Prod |
-| `Imports/asset_free_Ukraine_cars` | Ukraine free cars | KOS-store |
+| `Imports/asset_free_Ukraine_cars` | Ukraine free cars (traffic) | KOS-store |
+| `Imports/Stylized Vehicles Pack Free` | Stylized Vehicles Pack - FREE (traffic) | Alex Lenk |
+| `Imports/Low Poly Soviet Car Pack` | Low Poly Soviet Cars Pack (traffic) | Vitaly Tyavin |
+| `Imports/ICONIC - Sports Car FREE Vol.01` | ICONIC Low Poly Sports Car FREE Vol.01 (player car "Champion") | Bonq |
+| `Imports/Unity Technologies/CarsAssetPack` | Cars asset pack (player cars Car2, Car3) - **check** where it came from (not in the Asset Store cache) | Unity Technologies? |
 | `AssetsStore/Garage_props` | Garage Props Set | Abandoned World |
 | `Visual Design Cafe` | Nature Renderer 6 Free | Visual Design Cafe |
 | `TextMesh Pro`, URP, Input System | Unity packages | Unity Technologies |

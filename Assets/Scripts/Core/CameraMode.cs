@@ -213,6 +213,43 @@ public class CameraMode : MonoBehaviour
         }
     }
 
+    // In a build: a Photos folder next to the .exe. If that isn't writable
+    // (e.g. game installed in Program Files), or in the Editor: AppData
+    // (Application.persistentDataPath).
+    private string photoFolder;
+
+    private string GetPhotoFolder()
+    {
+        if (photoFolder != null) return photoFolder;
+
+        if (!Application.isEditor)
+        {
+            // dataPath is "<Game>_Data" - its parent is the folder with the .exe
+            string exeFolder = Path.Combine(Directory.GetParent(Application.dataPath).FullName, folderName);
+            if (IsWritable(exeFolder)) return photoFolder = exeFolder;
+        }
+
+        string fallback = Path.Combine(Application.persistentDataPath, folderName);
+        Directory.CreateDirectory(fallback);
+        return photoFolder = fallback;
+    }
+
+    private static bool IsWritable(string folder)
+    {
+        try
+        {
+            Directory.CreateDirectory(folder);
+            string test = Path.Combine(folder, ".write_test");
+            File.WriteAllText(test, "");
+            File.Delete(test);
+            return true;
+        }
+        catch (Exception)
+        {
+            return false;
+        }
+    }
+
     private IEnumerator TakePhoto()
     {
         // Decide what's in the shot at the moment of the click
@@ -223,8 +260,7 @@ public class CameraMode : MonoBehaviour
         {
             if (frameOverlay != null) frameOverlay.SetActive(false);
 
-            string folder = Path.Combine(Application.persistentDataPath, folderName);
-            Directory.CreateDirectory(folder);
+            string folder = GetPhotoFolder();
             string file = Path.Combine(folder, $"Photo_{DateTime.Now:yyyyMMdd_HHmmss_fff}.png");
             ScreenCapture.CaptureScreenshot(file);
 
