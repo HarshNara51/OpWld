@@ -3,60 +3,52 @@ using UnityEngine;
 public class CameraOrbit : MonoBehaviour
 {
     [Header("Follow Target")]
-    [SerializeField] private Transform target;                              // Drag the mannequin here
-    [SerializeField] private Vector3 targetOffset = new Vector3(0f, 1.6f, 0f); // roughly chest/head height
+    [SerializeField] private Transform target;                              
+    [SerializeField] private Vector3 targetOffset = new Vector3(0f, 1.6f, 0f); 
 
     [Header("Orbit Distance")]
     [SerializeField] private float distance = 4f;
     [Tooltip("Distance used while driving - cars are bigger than the player")]
     [SerializeField] private float vehicleDistance = 6f;
-    [SerializeField] private Vector3 extraOffset = new Vector3(0f, 0.3f, 0f); // small lift above the pivot point
+    [SerializeField] private Vector3 extraOffset = new Vector3(0f, 0.3f, 0f); 
 
-    [Header("Aiming (hold right mouse with the rifle out)")]
-    [SerializeField] private float aimDistance = 2.0f;
-    [Tooltip("Shift towards the right shoulder while aiming (x = right, y = up)")]
-    [SerializeField] private Vector2 aimShoulderOffset = new Vector2(0.6f, -0.4f);
-    [Tooltip("Slight zoom while aiming - field of view in degrees")]
-    [SerializeField] private float aimFieldOfView = 48f;
+    [Header("Aiming (GTA V Style)")]
+    [Tooltip("Tighter distance for an over-the-shoulder feel")]
+    [SerializeField] private float aimDistance = 1.2f; 
+    [Tooltip("Shift towards the right shoulder (x = right, y = up)")]
+    [SerializeField] private Vector2 aimShoulderOffset = new Vector2(0.8f, 0.2f); // Changed Y to positive to look OVER the shoulder
+    [Tooltip("Tighter zoom while aiming - field of view in degrees")]
+    [SerializeField] private float aimFieldOfView = 35f; 
     [Tooltip("How fast the camera eases in/out of the aim view (per second)")]
-    [SerializeField] private float aimBlendSpeed = 6f;
+    [SerializeField] private float aimBlendSpeed = 12f; // Doubled the speed for a snappier, GTA V-like transition
 
     [Header("Mouse Look")]
     [SerializeField] private float mouseSensitivity = 100f;
-    [SerializeField] private float topClamp = -40f;   // how far up you can look
-    [SerializeField] private float bottomClamp = 70f; // how far down you can look
+    [SerializeField] private float topClamp = -40f;   
+    [SerializeField] private float bottomClamp = 70f; 
 
     [Header("Driving: swing back behind the car")]
-    [Tooltip("Seconds the view must stay well off (mouse untouched) before the camera swings back behind the car (0 = never)")]
     [SerializeField] private float recenterDelay = 5f;
-    [Tooltip("'Well off' = more than this many degrees from straight behind the car - smaller turns never move the camera")]
     [SerializeField] private float recenterAngle = 30f;
-    [Tooltip("How long the swing takes (seconds) - bigger is softer")]
     [SerializeField] private float recenterSmoothTime = 0.8f;
-    [Tooltip("Only while the car is driving forward faster than this (m/s) - parked, you can still look around")]
     [SerializeField] private float recenterMinSpeed = 2f;
 
     [Header("Collision (stops the camera going through walls/terrain)")]
-    [Tooltip("Layers the camera bumps into. Defaults to everything.")]
     [SerializeField] private LayerMask collisionMask = ~0;
-    [Tooltip("Size of the camera's 'bubble' - bigger keeps it further from walls")]
     [SerializeField] private float collisionRadius = 0.3f;
-    [Tooltip("Gap kept between the camera and whatever it hit")]
     [SerializeField] private float wallPadding = 0.1f;
-    [Tooltip("Closest the camera may get to the pivot")]
     [SerializeField] private float minDistance = 0.6f;
-    [Tooltip("How fast the camera slides back out once the wall is gone")]
     [SerializeField] private float returnSpeed = 6f;
 
     private float yaw;
     private float pitch;
     private float currentDistance;
-    private float aimBlend; // 0 = normal view, 1 = fully over the shoulder
+    private float aimBlend; 
     private Camera cam;
     private float normalFieldOfView;
-    private float idleTime;      // seconds the view has been well off, mouse untouched
+    private float idleTime;      
     private float recenterVelocity;
-    private bool recentering;    // in the middle of one swing back
+    private bool recentering;    
 
     public void SetTarget(Transform newTarget)
     {
@@ -71,7 +63,6 @@ public class CameraOrbit : MonoBehaviour
         cam = GetComponent<Camera>();
         if (cam != null) normalFieldOfView = cam.fieldOfView;
 
-        // Shared camera prefab: follow the player unless a scene says otherwise
         if (target == null)
         {
             GameObject player = GameObject.FindGameObjectWithTag("Player");
@@ -83,8 +74,6 @@ public class CameraOrbit : MonoBehaviour
     {
         if (target == null) return;
 
-        // Mouse input drives yaw/pitch directly - this NEVER reads the mannequin's rotation,
-        // so there's no feedback loop no matter how the character's body turns.
         float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity * Time.deltaTime;
         float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity * Time.deltaTime;
 
@@ -96,22 +85,25 @@ public class CameraOrbit : MonoBehaviour
 
         Quaternion rotation = Quaternion.Euler(pitch, yaw, 0f);
 
+        // Aiming Logic
         bool aiming = PlayerLocomotion.IsAiming && VehicleInteraction.Current == null;
+        
+        // Use a slightly different easing approach if you want it to feel even punchier, but SmoothStep works great here.
         aimBlend = Mathf.MoveTowards(aimBlend, aiming ? 1f : 0f, aimBlendSpeed * Time.deltaTime);
         float ease = Mathf.SmoothStep(0f, 1f, aimBlend);
 
         float wantedDistance = VehicleInteraction.Current != null ? vehicleDistance : Mathf.Lerp(distance, aimDistance, ease);
-        // Photo mode owns the field of view (scroll zoom) while it's open
-        if (cam != null && !CameraMode.IsActive) cam.fieldOfView = Mathf.Lerp(normalFieldOfView, aimFieldOfView, ease);
+        
+        if (cam != null && !CameraMode.IsActive) 
+        {
+            cam.fieldOfView = Mathf.Lerp(normalFieldOfView, aimFieldOfView, ease);
+        }
 
-        // Cast from the pivot back toward where the camera wants to be.
-        // If a wall/terrain/building is in the way, stop just in front of it.
         Vector3 shoulder = rotation * new Vector3(aimShoulderOffset.x, aimShoulderOffset.y, 0f) * ease;
         Vector3 pivotPosition = target.position + targetOffset + shoulder;
         Vector3 backDirection = -(rotation * Vector3.forward);
         float allowedDistance = WallLimitedDistance(pivotPosition, backDirection, wantedDistance);
 
-        // Snap in instantly (never clip), ease back out smoothly
         if (allowedDistance < currentDistance) currentDistance = allowedDistance;
         else currentDistance = Mathf.MoveTowards(currentDistance, allowedDistance, returnSpeed * Time.deltaTime);
 
@@ -119,9 +111,6 @@ public class CameraOrbit : MonoBehaviour
         transform.rotation = rotation;
     }
 
-    // While driving: if the view has been well off from behind the car for a
-    // while (and you haven't touched the mouse), it swings back ONCE, calmly,
-    // then stays put again - it never chases the car through every turn.
     private void RecenterBehindCar(float mouseX, float mouseY)
     {
         VehicleInteraction car = VehicleInteraction.Current;
@@ -141,11 +130,10 @@ public class CameraOrbit : MonoBehaviour
         if (recentering)
         {
             yaw = Mathf.SmoothDampAngle(yaw, behind, ref recenterVelocity, recenterSmoothTime);
-            if (off < 2f) StopRecentering(); // done - leave the camera alone again
+            if (off < 2f) StopRecentering(); 
             return;
         }
 
-        // Only counts while driving forward (not parked, not reversing) and the view is well off
         Rigidbody rb = car.GetComponent<Rigidbody>();
         float forwardSpeed = rb != null ? Vector3.Dot(rb.linearVelocity, car.transform.forward) : 0f;
         if (forwardSpeed < recenterMinSpeed || off < recenterAngle)
@@ -173,11 +161,9 @@ public class CameraOrbit : MonoBehaviour
                                                   collisionMask, QueryTriggerInteraction.Ignore);
         foreach (RaycastHit hit in hits)
         {
-            // Ignore the player / car we're following
             if (hit.transform.IsChildOf(target)) continue;
             if (hit.collider.CompareTag("Player")) continue;
 
-            // distance 0 = the sphere started overlapping something; skip those
             if (hit.distance <= 0f) continue;
 
             float d = hit.distance - wallPadding;
