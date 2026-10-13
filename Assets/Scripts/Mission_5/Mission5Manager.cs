@@ -44,8 +44,7 @@ public class Mission5Manager : MonoBehaviour, IFailableMission
 
         CurrentState = MissionState.Failed;
         Debug.Log("Mission Failed: bomb went off (player escaped).");
-        MissionResultUI.Instance.ShowMessage(
-            "MISSION FAILED\n<size=60%>The bomb went off. The car is no longer drivable.\nBetter luck next time!</size>");
+        MissionResultUI.Instance.ShowFailureStay("The bomb went off. The car is no longer drivable.\nBetter luck next time!");
         NotePopup.Show("You got out just in time... but that car's wrecked. Come back and try again anytime.", 5f);
     }
 

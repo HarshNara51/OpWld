@@ -27,10 +27,12 @@ public class CameraOrbit : MonoBehaviour
     [SerializeField] private float bottomClamp = 70f; // how far down you can look
 
     [Header("Driving: swing back behind the car")]
-    [Tooltip("Seconds without moving the mouse before the camera swings back behind the car (0 = never)")]
-    [SerializeField] private float recenterDelay = 3.5f;
+    [Tooltip("Seconds the view must stay well off (mouse untouched) before the camera swings back behind the car (0 = never)")]
+    [SerializeField] private float recenterDelay = 5f;
+    [Tooltip("'Well off' = more than this many degrees from straight behind the car - smaller turns never move the camera")]
+    [SerializeField] private float recenterAngle = 30f;
     [Tooltip("How long the swing takes (seconds) - bigger is softer")]
-    [SerializeField] private float recenterSmoothTime = 0.6f;
+    [SerializeField] private float recenterSmoothTime = 0.8f;
     [Tooltip("Only while the car is driving forward faster than this (m/s) - parked, you can still look around")]
     [SerializeField] private float recenterMinSpeed = 2f;
 
@@ -52,8 +54,9 @@ public class CameraOrbit : MonoBehaviour
     private float aimBlend; // 0 = normal view, 1 = fully over the shoulder
     private Camera cam;
     private float normalFieldOfView;
-    private float idleTime;      // seconds since the mouse last moved
+    private float idleTime;      // seconds the view has been well off, mouse untouched
     private float recenterVelocity;
+    private bool recentering;    // in the middle of one swing back
 
     public void SetTarget(Transform newTarget)
     {
@@ -116,28 +119,16 @@ public class CameraOrbit : MonoBehaviour
         transform.rotation = rotation;
     }
 
-    // GTA-style: leave the mouse alone while driving and the camera swings back
-    // behind the car, then follows it through turns until you look around again
+    // While driving: if the view has been well off from behind the car for a
+    // while (and you haven't touched the mouse), it swings back ONCE, calmly,
+    // then stays put again - it never chases the car through every turn.
     private void RecenterBehindCar(float mouseX, float mouseY)
     {
         VehicleInteraction car = VehicleInteraction.Current;
         bool mouseMoved = Mathf.Abs(mouseX) > 0.01f || Mathf.Abs(mouseY) > 0.01f;
         if (car == null || mouseMoved || recenterDelay <= 0f || CameraMode.IsActive)
         {
-            idleTime = 0f;
-            recenterVelocity = 0f;
-            return;
-        }
-
-        idleTime += Time.deltaTime;
-        if (idleTime < recenterDelay) return;
-
-        // Only while actually driving forward (not parked, not reversing)
-        Rigidbody rb = car.GetComponent<Rigidbody>();
-        float forwardSpeed = rb != null ? Vector3.Dot(rb.linearVelocity, car.transform.forward) : 0f;
-        if (forwardSpeed < recenterMinSpeed)
-        {
-            recenterVelocity = 0f;
+            StopRecentering();
             return;
         }
 
@@ -145,7 +136,33 @@ public class CameraOrbit : MonoBehaviour
         forward.y = 0f;
         if (forward.sqrMagnitude < 0.001f) return;
         float behind = Quaternion.LookRotation(forward).eulerAngles.y;
-        yaw = Mathf.SmoothDampAngle(yaw, behind, ref recenterVelocity, recenterSmoothTime);
+        float off = Mathf.Abs(Mathf.DeltaAngle(yaw, behind));
+
+        if (recentering)
+        {
+            yaw = Mathf.SmoothDampAngle(yaw, behind, ref recenterVelocity, recenterSmoothTime);
+            if (off < 2f) StopRecentering(); // done - leave the camera alone again
+            return;
+        }
+
+        // Only counts while driving forward (not parked, not reversing) and the view is well off
+        Rigidbody rb = car.GetComponent<Rigidbody>();
+        float forwardSpeed = rb != null ? Vector3.Dot(rb.linearVelocity, car.transform.forward) : 0f;
+        if (forwardSpeed < recenterMinSpeed || off < recenterAngle)
+        {
+            idleTime = 0f;
+            return;
+        }
+
+        idleTime += Time.deltaTime;
+        if (idleTime >= recenterDelay) recentering = true;
+    }
+
+    private void StopRecentering()
+    {
+        recentering = false;
+        idleTime = 0f;
+        recenterVelocity = 0f;
     }
 
     private float WallLimitedDistance(Vector3 pivot, Vector3 direction, float wanted)

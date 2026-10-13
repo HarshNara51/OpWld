@@ -48,6 +48,8 @@ public class GraphicsButton : MonoBehaviour
 
     private void UpdateLabel(GraphicsQualityManager.Preset preset)
     {
-        if (label != null) label.text = "Graphics: " + preset;
+        if (label == null) return;
+        // A picture button already says "GRAPHICS" - the label beside it just shows the level
+        label.text = TryGetComponent(out MenuButtonArt _) ? preset.ToString().ToUpperInvariant() : "Graphics: " + preset;
     }
 }

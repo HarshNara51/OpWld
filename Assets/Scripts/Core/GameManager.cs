@@ -70,13 +70,13 @@ public class GameManager : MonoBehaviour
         ResetProgress();
         PlayerPrefs.SetInt(SaveExistsKey, 1);
         PlayerPrefs.Save();
-        SceneManager.LoadScene(hubSceneName);
+        ScreenFader.Instance.LoadScene(hubSceneName);
     }
 
     // Progress is already loaded in Awake, so continuing = going to the Hub
     public void ContinueGame()
     {
-        SceneManager.LoadScene(hubSceneName);
+        ScreenFader.Instance.LoadScene(hubSceneName);
     }
 
     private void ResetProgress()
@@ -124,16 +124,16 @@ public class GameManager : MonoBehaviour
 
     public void LoadMission(string missionSceneName)
     {
-        SceneManager.LoadScene(missionSceneName);
+        ScreenFader.Instance.LoadScene(missionSceneName);
     }
 
     public void ReturnToHub()
     {
-        SceneManager.LoadScene(hubSceneName);
+        ScreenFader.Instance.LoadScene(hubSceneName);
     }
 
     public void LoadMainMenu()
     {
-        SceneManager.LoadScene(mainMenuSceneName);
+        ScreenFader.Instance.LoadScene(mainMenuSceneName);
     }
 }

@@ -176,6 +176,8 @@ public class ControlsMenu : MonoBehaviour
         TMP_Text backLabel = settingsBackButton.GetComponentInChildren<TMP_Text>(true);
         font = backLabel != null && backLabel.font != null ? backLabel.font : TMP_Settings.defaultFontAsset;
         keySprite = settingsBackButton.image != null ? settingsBackButton.image.sprite : null;
+        // A picture Back button: key caps use its old plain look, not the "BACK" picture
+        if (settingsBackButton.TryGetComponent(out MenuButtonArt backArt) && backArt.PlainSprite != null) keySprite = backArt.PlainSprite;
 
         Vector2 backPos = ((RectTransform)settingsBackButton.transform).anchoredPosition;
 
@@ -486,6 +488,9 @@ public class ControlsMenu : MonoBehaviour
         Button b = go.GetComponent<Button>();
         b.onClick = new Button.ButtonClickedEvent(); // drop the copied Back wiring
         b.onClick.AddListener(onClick);
+
+        // A copy of a picture Back button that says something else: plain look with its own text
+        if (label != "Back" && go.TryGetComponent(out MenuButtonArt art)) art.RemoveArt();
 
         TMP_Text t = go.GetComponentInChildren<TMP_Text>(true);
         if (t != null) t.text = label;

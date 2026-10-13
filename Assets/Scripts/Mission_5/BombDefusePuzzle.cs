@@ -445,7 +445,8 @@ public class BombDefusePuzzle : MonoBehaviour
 
     private void BuildUI()
     {
-        root = new GameObject("BombDefuseUI", typeof(RectTransform), typeof(Canvas), typeof(CanvasScaler), typeof(GraphicRaycaster));
+        // NoClickFade: keypad and wire buttons shouldn't blink the screen black
+        root = new GameObject("BombDefuseUI", typeof(RectTransform), typeof(Canvas), typeof(CanvasScaler), typeof(GraphicRaycaster), typeof(NoClickFade));
         root.transform.SetParent(transform, false);
 
         Canvas canvas = root.GetComponent<Canvas>();

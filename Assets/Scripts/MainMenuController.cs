@@ -3,8 +3,8 @@ using UnityEngine.UI;
 using TMPro;
 
 // Put this on an empty GameObject in the MainMenu scene.
-// Flow: Title ("Press any key") > Main (Play / Settings / Quit)
-//       > Mode (Continue / New Game / Back) > Hub
+// Flow: Title ("Press any key") > Main (Continue / New Game / Settings / Quit) > Hub
+// (The old Play > Mode screen is still supported if a scene uses it.)
 // All screens are panels under one Canvas - this just switches
 // which panel is visible.
 public class MainMenuController : MonoBehaviour
@@ -20,8 +20,8 @@ public class MainMenuController : MonoBehaviour
     [SerializeField] private TMP_Text pressAnyKeyText;
     [SerializeField] private float pulseSpeed = 2f;
 
-    [Header("Mode screen")]
-    [Tooltip("Greyed out when there's no save yet")]
+    [Header("Continue")]
+    [Tooltip("Greyed out when there's no save yet (first time the game is played)")]
     [SerializeField] private Button continueButton;
 
     // Static: survives scene loads, so coming back from the game via
@@ -66,13 +66,13 @@ public class MainMenuController : MonoBehaviour
 
     // ---------- Main screen ----------
 
-    public void OnPlayPressed()
+    public void OnPlayPressed() => Show(modePanel);
+
+    // Continue only works once there's a save (a game was started before, even in an earlier session)
+    private void RefreshContinue()
     {
-        if (continueButton != null)
-        {
+        if (continueButton != null && GameManager.Instance != null)
             continueButton.interactable = GameManager.Instance.HasSaveData;
-        }
-        Show(modePanel);
     }
 
     public void OnSettingsPressed() => Show(settingsPanel);
@@ -99,6 +99,7 @@ public class MainMenuController : MonoBehaviour
 
     private void Show(GameObject panel)
     {
+        RefreshContinue();
         if (titlePanel != null) titlePanel.SetActive(panel == titlePanel);
         if (mainPanel != null) mainPanel.SetActive(panel == mainPanel);
         if (modePanel != null) modePanel.SetActive(panel == modePanel);

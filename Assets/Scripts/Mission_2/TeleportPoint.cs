@@ -33,22 +33,31 @@ public class TeleportPoint : MonoBehaviour
 
     private void Update()
     {
-        if (playerInRange && GameKeys.Down(GameAction.Interact) && player != null && destination != null)
+        if (playerInRange && GameKeys.Down(GameAction.Interact) && player != null && destination != null
+            && !ScreenFader.Instance.IsFading)
         {
-            // CharacterController can silently reject a direct position
-            // change while enabled - disabling it around the teleport
-            // is the standard, reliable way around that.
-            CharacterController cc = player.GetComponent<CharacterController>();
-            if (cc != null) cc.enabled = false;
-
-            player.position = destination.position;
-            player.rotation = destination.rotation;
-
-            if (cc != null) cc.enabled = true;
-
             playerInRange = false; // don't instantly re-trigger if the destination sits near another one
             NotePopup.ClearPrompt(this);
+
+            // Fade to black, move the player while the screen is dark, fade back in
+            ScreenFader.Instance.FadeOutIn(onBlack: MovePlayer, fadeTime: 0.35f, holdTime: 0.25f);
         }
+    }
+
+    private void MovePlayer()
+    {
+        if (player == null || destination == null) return;
+
+        // CharacterController can silently reject a direct position
+        // change while enabled - disabling it around the teleport
+        // is the standard, reliable way around that.
+        CharacterController cc = player.GetComponent<CharacterController>();
+        if (cc != null) cc.enabled = false;
+
+        player.position = destination.position;
+        player.rotation = destination.rotation;
+
+        if (cc != null) cc.enabled = true;
     }
 
     // Switched off (used up, picked up...) - take the prompt away with it
