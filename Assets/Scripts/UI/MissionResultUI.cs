@@ -32,6 +32,8 @@ public class MissionResultUI : MonoBehaviour
     [SerializeField] private Sprite bustedSprite;
     [Tooltip("Shown instead of the failed image when anyone but the cops spots you")]
     [SerializeField] private Sprite spottedSprite;
+    [Tooltip("Shown instead of the failed image when the fail reason is \"You Died!\" (Gas Station's player death). Same drop-in animation and back to the Hub.")]
+    [SerializeField] private Sprite youDiedSprite;
 
     [Header("Timing")]
     [Tooltip("How long success messages stay up")]
@@ -181,6 +183,8 @@ public class MissionResultUI : MonoBehaviour
             else { SetArt(null); message = "SPOTTED!"; }
             return Style.Spotted;
         }
+
+        if (reason == "You Died!" && youDiedSprite != null) { SetArt(youDiedSprite); message = ""; return Style.Failed; }
 
         if (missionFailedSprite != null) { SetArt(missionFailedSprite); message = reason ?? ""; }
         else
