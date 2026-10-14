@@ -13,6 +13,9 @@ using TMPro;
 //   PASSED  - springs up from small with a bounce, gentle zoom, then
 //             floats up and fades.
 //   FAILED  - drops in from above with a heavy thud, then sinks away.
+//   SPOTTED - whips in sideways, green alarm flash + glitch flicker, a
+//             heartbeat pulse while it holds, then switches off like an
+//             old TV. Light slow-mo, no grey (that's BUSTED's thing).
 public class MissionResultUI : MonoBehaviour
 {
     public static MissionResultUI Instance { get; private set; }
@@ -27,6 +30,8 @@ public class MissionResultUI : MonoBehaviour
     [SerializeField] private Sprite missionFailedSprite;
     [Tooltip("Shown instead of the failed image when the cops catch you")]
     [SerializeField] private Sprite bustedSprite;
+    [Tooltip("Shown instead of the failed image when anyone but the cops spots you")]
+    [SerializeField] private Sprite spottedSprite;
 
     [Header("Timing")]
     [Tooltip("How long success messages stay up")]
@@ -44,9 +49,13 @@ public class MissionResultUI : MonoBehaviour
     [Tooltip("Name of the scene object holding the grey Volume. Looked up each time a scene loads.")]
     [SerializeField] private string bustedGreyVolumeName = "BustedGreyVolume";
 
+    [Header("Spotted extras")]
+    [Range(0.05f, 1f)][SerializeField] private float spottedSlowMotionScale = 0.6f;
+    [SerializeField] private Color spottedFlashColor = new Color(0.35f, 1f, 0.2f, 0.45f);
+
     public bool IsShowingFailure { get; private set; }
 
-    private enum Style { Plain, Busted, Passed, Failed }
+    private enum Style { Plain, Busted, Passed, Failed, Spotted }
 
     private CanvasGroup group;
     private Image flash;
@@ -166,6 +175,13 @@ public class MissionResultUI : MonoBehaviour
             return Style.Busted;
         }
 
+        if (reason == "Spotted")
+        {
+            if (spottedSprite != null) { SetArt(spottedSprite); message = ""; }
+            else { SetArt(null); message = "SPOTTED!"; }
+            return Style.Spotted;
+        }
+
         if (missionFailedSprite != null) { SetArt(missionFailedSprite); message = reason ?? ""; }
         else
         {
@@ -201,8 +217,8 @@ public class MissionResultUI : MonoBehaviour
         ResetVisuals();
         if (resultPanel != null) resultPanel.SetActive(true);
 
-        bool slowMo = style == Style.Busted && bustedSlowMotion;
-        if (slowMo) Time.timeScale = slowMotionScale;
+        bool slowMo = (style == Style.Busted || style == Style.Spotted) && bustedSlowMotion;
+        if (slowMo) Time.timeScale = style == Style.Spotted ? spottedSlowMotionScale : slowMotionScale;
 
         float inTime = AnimateInDuration(style);
         float outTime = 0.4f;
@@ -226,6 +242,7 @@ public class MissionResultUI : MonoBehaviour
             case Style.Busted: return 0.55f;
             case Style.Passed: return 0.6f;
             case Style.Failed: return 0.7f;
+            case Style.Spotted: return 0.6f;
             default: return 0.25f;
         }
     }
@@ -233,7 +250,7 @@ public class MissionResultUI : MonoBehaviour
     private void ResetVisuals()
     {
         if (group != null) group.alpha = 1f;
-        if (flash != null) flash.color = new Color(1f, 1f, 1f, 0f);
+        if (flash != null) flash.color = Color.clear;
         if (imageRect != null) { imageRect.anchoredPosition = imageHome; imageRect.localScale = Vector3.one; imageRect.localRotation = Quaternion.identity; }
         if (textRect != null) { textRect.anchoredPosition = textHome; textRect.localScale = Vector3.one; }
         SetTextAlpha(0f);
@@ -297,6 +314,35 @@ public class MissionResultUI : MonoBehaviour
                     break;
                 }
 
+            case Style.Spotted:
+                {
+                    // Whips in from the left, stretched by its own speed
+                    yield return Tween(0.22f, t =>
+                    {
+                        float e = EaseOut(t);
+                        SetImage(new Vector2(Mathf.Lerp(-1500f, 0f, e), 0f), 1f, Mathf.Lerp(-6f, 0f, e), Mathf.Clamp01(t * 4f));
+                        SetImageScale(new Vector2(Mathf.Lerp(1.7f, 1f, e), Mathf.Lerp(0.6f, 1f, e)));
+                    });
+
+                    // ALARM: green flash, a small kick, then a glitchy flicker while it settles
+                    if (flash != null) flash.color = spottedFlashColor;
+                    CameraShake shake = FindAnyObjectByType<CameraShake>();
+                    if (shake != null) shake.Shake(0.2f, 0.18f);
+
+                    yield return Tween(0.38f, t =>
+                    {
+                        bool glitch = t < 0.45f && Mathf.Repeat(t * 22f, 1f) < 0.3f; // a few hard blinks
+                        float jitterX = glitch ? UnityEngine.Random.Range(-40f, 40f) * (1f - t) : 0f;
+                        float wobble = 1f + 0.08f * Mathf.Sin(t * Mathf.PI * 3f) * (1f - t); // springy settle
+                        SetImage(new Vector2(jitterX, 0f), 1f, 0f, glitch ? 0.35f : 1f);
+                        SetImageScale(new Vector2(wobble, 2f - wobble));
+                        if (flash != null) flash.color = Color.Lerp(spottedFlashColor, Color.clear, t);
+                        SetTextAlpha(t);
+                    });
+                    SetImageScale(Vector2.one);
+                    break;
+                }
+
             default:
                 yield return Tween(0.25f, t => { SetImage(Vector2.zero, 1f, 0f, t); SetText(Vector2.zero, t); });
                 break;
@@ -305,6 +351,17 @@ public class MissionResultUI : MonoBehaviour
 
     private IEnumerator Hold(Style style, float seconds)
     {
+        if (style == Style.Spotted)
+        {
+            // Heartbeat: two quick thumps a second
+            yield return Tween(seconds, t =>
+            {
+                float beat = Mathf.Pow(Mathf.Abs(Mathf.Sin(t * seconds * Mathf.PI * 1.2f)), 12f);
+                if (imageRect != null) imageRect.localScale = Vector3.one * (1f + 0.06f * beat);
+            });
+            yield break;
+        }
+
         float zoomTo = style == Style.Busted ? 1.12f : style == Style.Passed ? 1.05f : 1.03f;
         yield return Tween(seconds, t =>
         {
@@ -347,6 +404,19 @@ public class MissionResultUI : MonoBehaviour
                 });
                 break;
 
+            case Style.Spotted:
+                // Switches off like an old TV: squashes to a bright line, then the line shrinks away
+                yield return Tween(0.4f, t =>
+                {
+                    float squash = Mathf.Clamp01(t / 0.5f), shrink = Mathf.Clamp01((t - 0.5f) / 0.5f);
+                    SetImageScale(new Vector2(Mathf.Lerp(1f, 1.3f, squash) * (1f - shrink), Mathf.Lerp(1f, 0.04f, squash * squash)));
+                    SetImageAlpha(1f - shrink * shrink);
+                    SetTextAlpha(1f - t);
+                    if (flash != null) flash.color = new Color(spottedFlashColor.r, spottedFlashColor.g, spottedFlashColor.b, 0.15f * squash * (1f - shrink));
+                });
+                if (flash != null) flash.color = Color.clear;
+                break;
+
             default:
                 yield return Tween(0.4f, t => { SetImageAlpha(1f - t); SetTextAlpha(1f - t); });
                 break;
@@ -374,6 +444,12 @@ public class MissionResultUI : MonoBehaviour
         imageRect.localScale = Vector3.one * scale;
         imageRect.localRotation = Quaternion.Euler(0f, 0f, rotation);
         SetImageAlpha(alpha);
+    }
+
+    // Squash/stretch (SetImage only does an even scale)
+    private void SetImageScale(Vector2 scale)
+    {
+        if (imageRect != null) imageRect.localScale = new Vector3(scale.x, scale.y, 1f);
     }
 
     private void SetText(Vector2 offset, float alpha)

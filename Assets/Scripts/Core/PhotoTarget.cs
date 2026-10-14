@@ -82,10 +82,16 @@ public class PhotoTarget : MonoBehaviour, IGizmoVisibility
     // Override: what happens when it counts
     protected virtual void HandlePhotographed() { }
 
+    // Override: why the shot can't count YET, told to the player (e.g. "park
+    // your car first"). Null = nothing in the way.
+    protected virtual string NotYetReason() => null;
+
     // Called by CameraMode. Returns true if the shot counted.
     public bool TryPhotograph()
     {
         if (Photographed || !CanBePhotographed()) return false;
+        string notYet = NotYetReason();
+        if (notYet != null) { NotePopup.Show(notYet, 4f); return false; }
 
         Photographed = true;
         NotePopup.ClearPrompt(this);
@@ -102,6 +108,8 @@ public class PhotoTarget : MonoBehaviour, IGizmoVisibility
         if (!CanBePhotographed()) return;
 
         // {key} (or an old "press C") always shows the real camera key
+        string notYet = NotYetReason();
+        if (notYet != null) { NotePopup.Prompt(this, notYet); return; }
         string key = NotePopup.Key(GameAction.PhotoMode);
         NotePopup.Prompt(this, proximityHint.Replace("{key}", key).Replace("press C ", $"press {key} "));
     }

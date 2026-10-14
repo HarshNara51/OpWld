@@ -25,9 +25,18 @@ public class Health : MonoBehaviour
     // lets the death animation pick the headshot version.
     public bool KilledByHeadshot { get; private set; }
 
+    [Tooltip("Show a health bar over this one's head (never shown for the player)")]
+    [SerializeField] private bool showHealthBar = true;
+
     private void Awake()
     {
         currentHealth = maxHealth;
+    }
+
+    private void Start()
+    {
+        bool isPlayer = CompareTag("Player") || GetComponentInParent<PlayerDeath>() != null;
+        if (showHealthBar && !isPlayer) EnemyHealthBars.Register(this);
     }
 
     public void TakeDamage(float amount)

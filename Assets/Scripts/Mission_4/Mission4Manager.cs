@@ -19,7 +19,17 @@ public class Mission4Manager : MonoBehaviour, IFailableMission
     [Tooltip("Optional - toggles mission-only objects off and reveal objects on when the mission succeeds")]
     [SerializeField] private MissionCleanup cleanup;
 
+    [Header("Guidance")]
+    [Tooltip("Shown the moment the gang scatters for cover (the first shot)")]
+    [TextArea(2, 4)]
+    [SerializeField] private string takeCoverNote = "They're scattering for cover! Get behind the trash cans at the Hide Here marker and shoot from there.";
+    [Tooltip("Shown right after, about the mission area ring")]
+    [TextArea(2, 4)]
+    [SerializeField] private string missionAreaNote = "Stay inside the red ring on the ground. Leave the mission area and the job is blown.";
+
     public int EnemiesDown { get; private set; }
+
+    private bool combatNoted;
 
     // True once enough enemies are down and the truck flees - ends the shootout part
     public bool ShootoutOver => EnemiesDown >= enemiesToEliminate;
@@ -35,6 +45,15 @@ public class Mission4Manager : MonoBehaviour, IFailableMission
     {
         CurrentState = MissionState.InProgress;
         EnemiesDown = 0;
+    }
+
+    // First shot fired: tell the player where to take cover and where the fight's limits are
+    private void Update()
+    {
+        if (combatNoted || CurrentState != MissionState.InProgress || !EnemyCover.CombatActive) return;
+        combatNoted = true;
+        if (!string.IsNullOrEmpty(takeCoverNote)) NotePopup.Show(takeCoverNote, 6f);
+        if (!string.IsNullOrEmpty(missionAreaNote)) NotePopup.Show(missionAreaNote, 5f); // queues after
     }
 
     // Wire this to every fighting enemy's Health > On Death

@@ -2516,7 +2516,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2231802802068915576
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3391,6 +3391,7 @@ GameObject:
   - component: {fileID: 8124841189418193305}
   - component: {fileID: 5500327273206696093}
   - component: {fileID: 3078429999664393233}
+  - component: {fileID: 7044196022264187156}
   m_Layer: 0
   m_Name: returnhome
   m_TagString: Untagged
@@ -3416,7 +3417,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: -560, y: -10}
-  m_SizeDelta: {x: 400, y: 84}
+  m_SizeDelta: {x: 404.0404, y: 105.0505}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8124841189418193305
 CanvasRenderer:
@@ -3446,9 +3447,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
-  m_Type: 1
-  m_PreserveAspect: 0
+  m_Sprite: {fileID: 21300000, guid: 16e153ebce37a9f448e1abdb7de033e8, type: 3}
+  m_Type: 0
+  m_PreserveAspect: 1
   m_FillCenter: 1
   m_FillMethod: 4
   m_FillAmount: 1
@@ -3475,7 +3476,7 @@ MonoBehaviour:
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}
     m_SelectOnRight: {fileID: 0}
-  m_Transition: 1
+  m_Transition: 2
   m_Colors:
     m_NormalColor: {r: 0.11, g: 0.13, b: 0.12, a: 0.88}
     m_HighlightedColor: {r: 0.62, g: 0.09, b: 0.08, a: 0.95}
@@ -3485,8 +3486,8 @@ MonoBehaviour:
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
-    m_HighlightedSprite: {fileID: 0}
-    m_PressedSprite: {fileID: 0}
+    m_HighlightedSprite: {fileID: 21300000, guid: 62421485a2cfd9343a30a10934d5b947, type: 3}
+    m_PressedSprite: {fileID: 21300000, guid: 62421485a2cfd9343a30a10934d5b947, type: 3}
     m_SelectedSprite: {fileID: 0}
     m_DisabledSprite: {fileID: 0}
   m_AnimationTriggers:
@@ -3512,6 +3513,23 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &7044196022264187156
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3641887727043722972}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 87a8499f506c00949bced7934c1ba7e2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MenuButtonArt
+  normal: {fileID: 21300000, guid: 16e153ebce37a9f448e1abdb7de033e8, type: 3}
+  highlighted: {fileID: 21300000, guid: 62421485a2cfd9343a30a10934d5b947, type: 3}
+  disabledTint: {r: 0.42, g: 0.42, b: 0.42, a: 0.6}
+  plainSprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
+  plainSize: {x: 260, y: 46}
 --- !u!1 &4476900475822235620
 GameObject:
   m_ObjectHideFlags: 0
@@ -5890,6 +5908,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ControlsMenu
   settingsBackButton: {fileID: 1114357402449369707}
   controlsButton: {fileID: 7608518282072362075}
+  resetNormal: {fileID: 21300000, guid: d0a4d2ebc47e8e54f8bd36ace5f3a55f, type: 3}
+  resetHighlighted: {fileID: 21300000, guid: 70d2c1f13a174ff4d838614b337f2ce4, type: 3}
   backgroundColor: {r: 0.05, g: 0.06, b: 0.08, a: 0.97}
   headerColor: {r: 1, g: 0.74, b: 0.3, a: 1}
   textColor: {r: 0.92, g: 0.93, b: 0.95, a: 1}
@@ -6163,8 +6183,13 @@ MonoBehaviour:
   missionPassedSprite: {fileID: 21300000, guid: 3e24d74dd899682419d1eb19640423f3, type: 3}
   missionFailedSprite: {fileID: 21300000, guid: 1c8e5a6219794f9409407eeae9f0eb07, type: 3}
   bustedSprite: {fileID: 21300000, guid: df87f45b35143ff4c9768e262a1bf369, type: 3}
+  spottedSprite: {fileID: 21300000, guid: 10565dba587c29643be173e54afcb1c0, type: 3}
   displaySeconds: 3.5
   failDisplaySeconds: 5
+  bustedSlowMotion: 1
+  slowMotionScale: 0.3
+  bustedGreyVolume: {fileID: 0}
+  bustedGreyVolumeName: BustedGreyVolume
 --- !u!114 &7735973240466962041
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6244,6 +6269,10 @@ MonoBehaviour:
   panel: {fileID: 7444813242124802622}
   messageText: {fileID: 1327342395946534425}
   defaultSeconds: 5
+  typeSpeed: 45
+  minReadTime: 1.5
+  typeSound: {fileID: 0}
+  soundEveryLetters: 2
 --- !u!114 &5284474939128753381
 MonoBehaviour:
   m_ObjectHideFlags: 0

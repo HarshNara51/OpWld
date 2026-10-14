@@ -61,6 +61,7 @@ screen can be built from it. First draft 2026-10-09, made by scanning
 | [ ] | `Fire Dept` textures `Bricks026`, `Concrete011` | Look like ambientCG (CC0) - confirm | ambientCG | CC0? | https://ambientcg.com |
 | [ ] | `Sounds` | door-unlock, shutter clicks (file names look like Pixabay: free, no credit needed - confirm) | freesound_community, kauasilbershlachparodes | Pixabay Content Licence? | https://pixabay.com |
 | [ ] | `image` | Map layout + pngegg.png. **pngegg images are often copied from elsewhere** - replace unless you made it | | | |
+| [ ] | `image/Menu/Neon Gradient Crosshair Reticle.png` | Gun crosshair (neon reticle) | | | |
 
 Also check the Sketchfab zips still in `Downloads` (carrier-car, diner, laundry) - if any of them ended up in the game, add a row.
 

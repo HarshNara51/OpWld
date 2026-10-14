@@ -11,6 +11,13 @@ public class BodyDiscoveryZone : PhotoTarget
                && Mission3Manager.Instance.CurrentState == Mission3Manager.MissionState.Searching;
     }
 
+    // The car has to be in its parking spot first - the player walks back to it later
+    protected override string NotYetReason()
+    {
+        if (Mission3Manager.Instance == null || Mission3Manager.Instance.CarParkedOrNoSpot) return null;
+        return "Park your car at the Park Here spot first, and come back on foot.";
+    }
+
     protected override void HandlePhotographed()
     {
         Mission3Manager.Instance.OnBodyFound();

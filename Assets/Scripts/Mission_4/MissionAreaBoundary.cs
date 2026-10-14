@@ -7,7 +7,8 @@ using UnityEngine.UI;
 // circle in the Scene view). Only active during the shootout: from the
 // first shot until enough enemies are down for the truck to flee. Leave
 // the circle and a countdown starts; come back and it resets; let it run
-// out and the mission fails. Builds its own warning UI - nothing to wire.
+// out and the mission fails. A glowing red ring on the ground shows the
+// edge during the shootout. Builds its own UI and ring - nothing to wire.
 public class MissionAreaBoundary : MonoBehaviour
 {
     [SerializeField] private float radius = 75f;
@@ -15,11 +16,19 @@ public class MissionAreaBoundary : MonoBehaviour
     [SerializeField] private string warningText = "RETURN TO THE MISSION AREA";
     [SerializeField] private string failReason = "You abandoned the shootout";
 
+    [Header("Ground ring")]
+    [SerializeField] private bool showRing = true;
+    [SerializeField] private Color ringColor = new Color(1f, 0.15f, 0.1f, 0.85f);
+    [SerializeField] private float ringWidth = 0.35f;
+    [Tooltip("Layers the ring sits on (the ground). Defaults to everything.")]
+    [SerializeField] private LayerMask groundMask = ~0;
+
     private Transform player;
     private float timeLeft;
     private GameObject warningUI;
     private TMP_Text label;
     private Image tint;
+    private LineRenderer ring;
 
     private void Start()
     {
@@ -27,12 +36,24 @@ public class MissionAreaBoundary : MonoBehaviour
         if (p != null) player = p.transform;
         timeLeft = warningSeconds;
         BuildWarningUI();
+        if (showRing) BuildRing();
     }
 
     private void Update()
     {
         Transform target = Target();
-        bool outside = target != null && IsShootoutOn() && FlatDistance(target.position) > radius;
+        bool on = IsShootoutOn();
+        if (ring != null)
+        {
+            if (ring.enabled != on) ring.enabled = on;
+            if (on) // gentle pulse so it reads as a boundary, not scenery
+            {
+                Color c = ringColor;
+                c.a *= 0.65f + 0.35f * Mathf.Sin(Time.time * 3f);
+                ring.startColor = ring.endColor = c;
+            }
+        }
+        bool outside = target != null && on && FlatDistance(target.position) > radius;
 
         if (!outside)
         {
@@ -109,6 +130,36 @@ public class MissionAreaBoundary : MonoBehaviour
         lr.offsetMin = lr.offsetMax = Vector2.zero;
 
         warningUI.SetActive(false);
+    }
+
+    // A circle of points laid on the ground (rays down, so it follows slopes)
+    private void BuildRing()
+    {
+        int segments = Mathf.Clamp(Mathf.RoundToInt(radius * 2f), 48, 256);
+        var go = new GameObject("MissionAreaRing");
+        go.transform.SetParent(transform, false);
+        ring = go.AddComponent<LineRenderer>();
+        ring.useWorldSpace = true;
+        ring.loop = true;
+        ring.positionCount = segments;
+        ring.widthMultiplier = ringWidth;
+        ring.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
+        ring.receiveShadows = false;
+        ring.material = new Material(Shader.Find("Sprites/Default"));
+        ring.startColor = ring.endColor = ringColor;
+
+        for (int i = 0; i < segments; i++)
+        {
+            float a = i * Mathf.PI * 2f / segments;
+            Vector3 p = transform.position + new Vector3(Mathf.Cos(a) * radius, 0f, Mathf.Sin(a) * radius);
+            // Lowest hit = the ground, not a roof, canopy or tree above it
+            float lowest = float.MaxValue;
+            foreach (RaycastHit hit in Physics.RaycastAll(p + Vector3.up * 50f, Vector3.down, 200f, groundMask, QueryTriggerInteraction.Ignore))
+                lowest = Mathf.Min(lowest, hit.point.y);
+            if (lowest < float.MaxValue) p.y = lowest;
+            ring.SetPosition(i, p + Vector3.up * 0.15f);
+        }
+        ring.enabled = false;
     }
 
     private void OnDrawGizmosSelected()

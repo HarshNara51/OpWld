@@ -11,6 +11,15 @@ public class VehicleSummon : MonoBehaviour
     [Tooltip("Layers considered 'ground' for placing the car. Defaults to everything.")]
     public LayerMask groundMask = ~0;
 
+    // A mission can switch summoning off (e.g. Farm: the car must stay parked).
+    // Tied to the mission object, so it switches back on by itself when that
+    // scene unloads - this script lives on Managers and outlives scenes.
+    private static Object blocker;
+    private static string blockedMessage;
+
+    public static void Block(Object by, string message) { blocker = by; blockedMessage = message; }
+    public static void Unblock(Object by) { if (blocker == by) blocker = null; }
+
     private Transform car;
     private Rigidbody carRigidbody;
     private Transform player;
@@ -60,6 +69,12 @@ public class VehicleSummon : MonoBehaviour
         // Adjust this check to match however VehicleInteraction actually
         // disables the player object when entering the car.
         if (!player.gameObject.activeInHierarchy) return;
+
+        if (blocker != null) // Unity null once the mission's scene is gone
+        {
+            NotePopup.Show(blockedMessage, 3f);
+            return;
+        }
 
         Vector3 forward = playerCamera.transform.forward;
         forward.y = 0f;

@@ -7,9 +7,10 @@ using UnityEngine.UI;
 // Builds its own UI, nothing to wire.
 public class AimCrosshair : MonoBehaviour
 {
-    [SerializeField] private float size = 6f;
-    [SerializeField] private Color aimColor = new Color(1f, 1f, 1f, 0.95f);
-    [SerializeField] private Color hipColor = new Color(1f, 1f, 1f, 0.45f);
+    [SerializeField] private float size = 36f;
+    [SerializeField] private Sprite sprite; // reticle image; empty = plain square dot
+    [SerializeField] private Color aimColor = new Color(1f, 1f, 1f, 1f);
+    [SerializeField] private Color hipColor = new Color(1f, 1f, 1f, 0.6f);
 
     private WeaponHolster holster;
     private GameObject canvasGo;
@@ -29,6 +30,8 @@ public class AimCrosshair : MonoBehaviour
         dotGo.transform.SetParent(canvasGo.transform, false);
         dot = dotGo.AddComponent<Image>();
         dot.raycastTarget = false;
+        dot.sprite = sprite;
+        dot.preserveAspect = true;
         RectTransform rt = dotGo.GetComponent<RectTransform>();
         rt.anchorMin = rt.anchorMax = new Vector2(0.5f, 0.5f);
         rt.sizeDelta = new Vector2(size, size);

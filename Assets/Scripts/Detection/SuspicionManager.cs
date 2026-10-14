@@ -23,6 +23,9 @@ public class SuspicionManager : MonoBehaviour
     [Tooltip("Whichever mission manager is in this scene - must implement IFailableMission")]
     [SerializeField] private MonoBehaviour missionManagerSource;
 
+    [Tooltip("Tick when the sources are the police (e.g. Railway's cops): a full meter shows BUSTED. Unticked (guards, gangs, trucks...) it shows SPOTTED.")]
+    [SerializeField] private bool policeDetection = false;
+
     private readonly List<SuspicionSource> sources = new List<SuspicionSource>();
     private IFailableMission missionManager;
     private Transform player;
@@ -126,8 +129,8 @@ public class SuspicionManager : MonoBehaviour
         if (busted || currentSuspicion < maxSuspicion) return;
 
         busted = true;
-        Debug.Log("Busted!");
+        Debug.Log(policeDetection ? "Busted!" : "Spotted!");
         Busted?.Invoke();
-        missionManager?.FailMission("Busted");
+        missionManager?.FailMission(policeDetection ? "Busted" : "Spotted");
     }
 }

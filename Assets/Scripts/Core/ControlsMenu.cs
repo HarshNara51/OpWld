@@ -26,6 +26,10 @@ public class ControlsMenu : MonoBehaviour
     [Tooltip("Optional - your own Controls button. Left empty, one is created at the bottom centre.")]
     [SerializeField] private Button controlsButton;
 
+    [Tooltip("Pictures for the Reset to defaults button (set by Tools > UI > Apply Menu Button Art). Empty = plain button with text.")]
+    [SerializeField] private Sprite resetNormal;
+    [SerializeField] private Sprite resetHighlighted;
+
     [Header("Look")]
     [SerializeField] private Color backgroundColor = new Color(0.05f, 0.06f, 0.08f, 0.97f);
     [SerializeField] private Color headerColor = new Color(1f, 0.74f, 0.3f);
@@ -378,7 +382,7 @@ public class ControlsMenu : MonoBehaviour
         CopyBackButton(pageRt, "ControlsBackButton", "Back", backPos, Close);
         // Reset sits mirrored on the other side from Back (or beside it if Back is centred)
         Vector2 resetPos = Mathf.Abs(backPos.x) > 150f ? new Vector2(-backPos.x, backPos.y) : backPos + new Vector2(340f, 0f);
-        Button reset = CopyBackButton(pageRt, "ResetKeysButton", "Reset to defaults", resetPos, ResetToDefaults);
+        Button reset = CopyBackButton(pageRt, "ResetKeysButton", "Reset to defaults", resetPos, ResetToDefaults, resetNormal, resetHighlighted);
         TMP_Text resetLabel = reset.GetComponentInChildren<TMP_Text>(true);
         if (resetLabel != null) resetLabel.enableAutoSizing = true;
     }
@@ -478,7 +482,8 @@ public class ControlsMenu : MonoBehaviour
 
     // ================= helpers =================
 
-    private Button CopyBackButton(Transform parent, string name, string label, Vector2 position, UnityAction onClick)
+    private Button CopyBackButton(Transform parent, string name, string label, Vector2 position, UnityAction onClick,
+                                  Sprite picture = null, Sprite pictureLit = null)
     {
         GameObject go = Instantiate(settingsBackButton.gameObject, parent);
         go.name = name;
@@ -490,7 +495,12 @@ public class ControlsMenu : MonoBehaviour
         b.onClick.AddListener(onClick);
 
         // A copy of a picture Back button that says something else: plain look with its own text
-        if (label != "Back" && go.TryGetComponent(out MenuButtonArt art)) art.RemoveArt();
+        // (or its own picture, if it has one - same size box as Back, text stays hidden)
+        if (label != "Back" && go.TryGetComponent(out MenuButtonArt art))
+        {
+            if (picture != null) { art.Apply(picture, pictureLit != null ? pictureLit : picture); return b; }
+            art.RemoveArt();
+        }
 
         TMP_Text t = go.GetComponentInChildren<TMP_Text>(true);
         if (t != null) t.text = label;

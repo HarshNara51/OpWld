@@ -18,8 +18,11 @@ using UnityEngine.UI;
 //               switched off, not deleted)
 //   Settings:   Graphics (current level shown beside it) + Controls on the
 //               left (the volume sliders are in the middle), Back bottom right
-//   Pause:      Resume, Settings, Main Menu, Quit (Return Home has no
-//               picture yet - it keeps its plain look)
+//   Pause:      Resume, Settings, Return Home, Main Menu, Quit
+//   Controls:   Reset to defaults (built at runtime - ControlsMenu gets the pictures)
+//
+// Tools > UI > Apply OK Button Art (open scene) does the mission briefing /
+// puzzle OK buttons in whichever mission scene is open.
 public static class MenuButtonArtSetup
 {
     private const string Folder = "Assets/Imports/image/Menu/";
@@ -30,8 +33,12 @@ public static class MenuButtonArtSetup
         { "ContinueButton", "continue" }, { "NewGameButton", "new_game" },
         { "SettingsButton", "settings" }, { "QuitButton", "quit" },
         { "BackButton", "back" }, { "GraphicsButton", "graphics" }, { "ControlsButton", "controls" },
-        { "resume", "resume" }, { "settings", "settings" }, { "mainmenu", "main_menu" }, { "quit", "quit" },
+        { "resume", "resume" }, { "settings", "settings" }, { "returnhome", "return_home" },
+        { "mainmenu", "main_menu" }, { "quit", "quit" },
+        { "OKButton", "ok" }, { "OkButton", "ok" }, { "okButton", "ok" }, { "ok", "ok" },
     };
+
+    private const float OkWidth = 300f; // visible width of a mission OK button
 
     private const float MenuWidth = 470f;   // main menu column
     private const float PauseWidth = 400f;  // pause column
@@ -105,6 +112,26 @@ public static class MenuButtonArtSetup
         return summary;
     }
 
+    [MenuItem("Tools/UI/Apply OK Button Art (open scene)")]
+    public static string ApplyOkButtons()
+    {
+        var log = new List<string>();
+        FixImports(log);
+        var scene = EditorSceneManager.GetActiveScene();
+        foreach (GameObject r in scene.GetRootGameObjects())
+            foreach (Button b in r.GetComponentsInChildren<Button>(true))
+            {
+                if (!Art.TryGetValue(b.name, out string art) || art != "ok") continue;
+                SizeTo(b.transform, OkWidth); // keeps its position
+                Dress(b.transform, log);
+            }
+        EditorSceneManager.MarkSceneDirty(scene);
+        EditorSceneManager.SaveScene(scene);
+        string summary = $"OK button art ({scene.name}): " + string.Join(", ", log);
+        Debug.Log(summary);
+        return summary;
+    }
+
     // Graphics + Controls + Back on a Settings screen
     private static void DressSettings(Transform panel, List<string> log)
     {
@@ -120,6 +147,13 @@ public static class MenuButtonArtSetup
 
         // A real Controls button (ControlsMenu would otherwise make a copy of Back)
         ControlsMenu controls = panel.GetComponent<ControlsMenu>();
+        if (controls != null)
+        {
+            var reset = new SerializedObject(controls);
+            reset.FindProperty("resetNormal").objectReferenceValue = Load("reset_to_defaults_normal");
+            reset.FindProperty("resetHighlighted").objectReferenceValue = Load("reset_to_defaults_highlighted");
+            reset.ApplyModifiedPropertiesWithoutUndo();
+        }
         if (controls != null && back != null)
         {
             Transform existing = panel.Find("ControlsButton");
@@ -189,6 +223,13 @@ public static class MenuButtonArtSetup
         Undo.RecordObject(rt, "Menu art");
         rt.anchorMin = rt.anchorMax = rt.pivot = new Vector2(0.5f, 0.5f);
         rt.anchoredPosition = position;
+        SizeTo(button, width);
+    }
+
+    private static void SizeTo(Transform button, float width)
+    {
+        var rt = (RectTransform)button;
+        Undo.RecordObject(rt, "Menu art");
         if (width <= 0f) return;
         string art = Art.TryGetValue(button.name, out string a) ? a : null;
         Sprite s = art != null ? (Load(art + "_normal") ?? Load(art + "_unselected")) : null;

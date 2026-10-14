@@ -27,6 +27,9 @@ public class Mission3Manager : MonoBehaviour, IFailableMission
     [Tooltip("Only turned on during the Following phase, so it can't trigger while hiding near the parked trucks")]
     [SerializeField] private SuspicionManager suspicion;
 
+    [Tooltip("The car must be parked here before the body photo counts. Summoning the car (V) is off until the trucks are photographed, so the player walks back to it.")]
+    [SerializeField] private ParkingSpot parkingSpot;
+
     [Header("Guidance")]
     [Tooltip("Seconds after the trucks leave before the 'keep following' reminder")]
     [SerializeField] private float followReminderDelay = 12f;
@@ -36,6 +39,7 @@ public class Mission3Manager : MonoBehaviour, IFailableMission
     public bool BodyFound { get; private set; }
     public int CluesFound { get; private set; }
     public int TotalClues => totalClues;
+    public bool CarParkedOrNoSpot => parkingSpot == null || parkingSpot.CarParked;
 
     private void Awake()
     {
@@ -50,6 +54,8 @@ public class Mission3Manager : MonoBehaviour, IFailableMission
         CurrentState = MissionState.Searching;
         CluesFound = 0;
         BodyFound = false;
+        if (parkingSpot != null)
+            VehicleSummon.Block(this, "You can't call your car on this job. Walk back to it.");
     }
 
     // Called by BodyDiscoveryZone when the body is photographed -
@@ -111,7 +117,9 @@ public class Mission3Manager : MonoBehaviour, IFailableMission
 
         CurrentState = MissionState.Following;
         Debug.Log("Trucks are leaving. Get in your car and follow them - don't get too close.");
-        NotePopup.Show("They're leaving. Get in your car and follow them... but keep your distance.");
+        NotePopup.Show(parkingSpot != null
+            ? "They're leaving. Run back to your parked car and follow them... but keep your distance."
+            : "They're leaving. Get in your car and follow them... but keep your distance.");
         if (suspicion != null) suspicion.SetActive(true);
         StartCoroutine(FollowReminder());
     }
@@ -146,6 +154,7 @@ public class Mission3Manager : MonoBehaviour, IFailableMission
         Debug.Log("Final photo captured! Now deliver it to the police station.");
         NotePopup.Show("Got them red-handed. Get this to the police station.");
         if (suspicion != null) suspicion.SetActive(false);
+        VehicleSummon.Unblock(this);
     }
 
     // Called by PoliceDeliveryZone
@@ -166,6 +175,7 @@ public class Mission3Manager : MonoBehaviour, IFailableMission
         if (CurrentState == MissionState.Success || CurrentState == MissionState.Failed) return;
 
         CurrentState = MissionState.Failed;
+        VehicleSummon.Unblock(this);
         if (truckCountdown != null) truckCountdown.StopCountdown();
         Debug.Log($"Mission Failed: {reason}");
         MissionResultUI.Instance.ShowFailure(reason); // shared fail screen, then back to Hub

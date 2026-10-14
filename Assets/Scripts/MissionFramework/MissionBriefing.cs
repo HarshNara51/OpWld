@@ -2,6 +2,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
 using TMPro;
+using UnityEngine.UI;
 
 // Put this on an empty GameObject in each mission scene, alongside a
 // briefing panel (instructions + OK button) and a countdown panel
@@ -13,6 +14,16 @@ public class MissionBriefing : MonoBehaviour
     [SerializeField] private GameObject countdownPanel;
     [SerializeField] private TMP_Text countdownText;
     [SerializeField] private int countdownSeconds = 3;
+
+    [Header("Countdown look (applied in code - same in every mission)")]
+    [Tooltip("Empty = Anton (bold poster font from TextMesh Pro's extras)")]
+    [SerializeField] private TMP_FontAsset countdownFont;
+    [SerializeField] private float countdownFontSize = 260f;
+    [Tooltip("How see-through the white screen is (0 = invisible, 1 = solid)")]
+    [Range(0f, 1f)] [SerializeField] private float screenAlpha = 0.18f;
+    [SerializeField] private Color numberColor = new Color(1f, 0.74f, 0.3f);   // warm amber, like the menu titles
+    [SerializeField] private Color goColor = new Color(0.95f, 0.22f, 0.12f);   // hot red-orange
+    [SerializeField] private Color outlineColor = new Color(0.08f, 0.06f, 0.05f);
 
     [Tooltip("Wire this per-scene: e.g. Mission1Manager.StartMission + TrainTimer.StartTimer for Railway, or just Mission3Manager.StartMission for Farm")]
     [SerializeField] private UnityEvent onMissionStart;
@@ -82,17 +93,14 @@ public class MissionBriefing : MonoBehaviour
     private IEnumerator CountdownRoutine()
     {
         if (countdownPanel != null) countdownPanel.SetActive(true);
+        StyleCountdown();
 
         // Time.timeScale is still 0 here, so this uses realtime,
         // not the scaled WaitForSeconds, or it would never finish.
         for (int i = countdownSeconds; i > 0; i--)
-        {
-            if (countdownText != null) countdownText.text = i.ToString();
-            yield return new WaitForSecondsRealtime(1f);
-        }
+            yield return Punch(i.ToString(), numberColor, 1f, 1f);
 
-        if (countdownText != null) countdownText.text = "GO!";
-        yield return new WaitForSecondsRealtime(0.5f);
+        yield return Punch("GO!", goColor, 0.7f, 1.25f);
 
         if (countdownPanel != null) countdownPanel.SetActive(false);
 
@@ -101,5 +109,55 @@ public class MissionBriefing : MonoBehaviour
         Cursor.visible = false;
 
         onMissionStart?.Invoke();
+    }
+
+    // Big, centred, outlined - whatever the scene's text was set up as
+    private void StyleCountdown()
+    {
+        if (countdownPanel != null && countdownPanel.TryGetComponent(out Image screen))
+        {
+            Color c = screen.color;
+            c.a = screenAlpha;
+            screen.color = c;
+        }
+        if (countdownText == null) return;
+
+        TMP_FontAsset font = countdownFont != null ? countdownFont : Resources.Load<TMP_FontAsset>("Fonts & Materials/Anton SDF");
+        if (font != null) countdownText.font = font;
+
+        RectTransform rt = countdownText.rectTransform;
+        rt.anchorMin = rt.anchorMax = rt.pivot = new Vector2(0.5f, 0.5f);
+        rt.anchoredPosition = Vector2.zero;
+        rt.sizeDelta = new Vector2(1200f, 500f);
+        countdownText.alignment = TextAlignmentOptions.Center;
+        countdownText.enableAutoSizing = false;
+        countdownText.textWrappingMode = TextWrappingModes.NoWrap;
+        countdownText.fontSize = countdownFontSize;
+        countdownText.characterSpacing = 4f;
+
+        // Thick dark outline so it reads on the white screen and bright scenery
+        countdownText.outlineWidth = 0.22f;
+        countdownText.outlineColor = outlineColor;
+    }
+
+    // Each number slams in big, settles, then fades out before the next
+    private IEnumerator Punch(string text, Color color, float duration, float size)
+    {
+        if (countdownText == null) { yield return new WaitForSecondsRealtime(duration); yield break; }
+
+        countdownText.text = text;
+        countdownText.color = color;
+        Transform t = countdownText.rectTransform;
+        const float slam = 0.18f, fade = 0.25f;
+
+        for (float time = 0f; time < duration; time += Time.unscaledDeltaTime)
+        {
+            float k = Mathf.Clamp01(time / slam);
+            float scale = Mathf.LerpUnclamped(1.9f, 1f, 1f - (1f - k) * (1f - k) * (1f - k)); // ease out
+            t.localScale = Vector3.one * scale * size;
+            countdownText.alpha = Mathf.Min(Mathf.Clamp01(time / 0.08f), Mathf.Clamp01((duration - time) / fade));
+            yield return null;
+        }
+        countdownText.alpha = 0f;
     }
 }
