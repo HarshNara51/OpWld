@@ -84,6 +84,7 @@ public class GameManager : MonoBehaviour
         isCar2Unlocked = false;
         PlayerPrefs.DeleteKey(Car2Key);
         CarPaint.ResetAllSaved(); // cars back to factory paint
+        if (PhotoCollectionManager.Instance != null) PhotoCollectionManager.Instance.ResetAll(); // photo hunt + reward car locked again
 
         foreach (string mission in missionSceneNames)
         {

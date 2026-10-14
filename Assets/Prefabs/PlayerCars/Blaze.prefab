@@ -10303,6 +10303,7 @@ GameObject:
   - component: {fileID: 6210047956592360697}
   - component: {fileID: 9072123450976887930}
   - component: {fileID: 5140540423397688928}
+  - component: {fileID: -8317151366500457770}
   m_Layer: 0
   m_Name: Blaze
   m_TagString: Untagged
@@ -10488,6 +10489,31 @@ MonoBehaviour:
   maxStripeWidth: 0.1
   wheelRenderers: []
   rimMinBrightness: 0.3
+--- !u!114 &-8317151366500457770
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2812711790797143740}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 28deb68319d1a4643b16caf2ddacbb72, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PhotoRewardCar
+  renderersToHide:
+  - {fileID: 2949288329723991044}
+  - {fileID: 5787884828777260344}
+  - {fileID: 7257287601510440689}
+  - {fileID: 4164060194211268179}
+  - {fileID: 3918319246978175824}
+  collidersToDisable:
+  - {fileID: 7675925842285965075}
+  - {fileID: 6039254806889625676}
+  - {fileID: 136811321258294175}
+  - {fileID: 8013628983706873591}
+  - {fileID: 6066960734947936455}
+  interactionScript: {fileID: 5187053617212328490}
 --- !u!1 &2887620843521091327
 GameObject:
   m_ObjectHideFlags: 0

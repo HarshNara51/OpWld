@@ -6086,6 +6086,7 @@ GameObject:
   - component: {fileID: 5660617732698265946}
   - component: {fileID: 5284474939128753381}
   - component: {fileID: 6859476975955277811}
+  - component: {fileID: 6819918878575850055}
   m_Layer: 0
   m_Name: Managers
   m_TagString: Untagged
@@ -6191,6 +6192,8 @@ MonoBehaviour:
   slowMotionScale: 0.3
   bustedGreyVolume: {fileID: 0}
   bustedGreyVolumeName: BustedGreyVolume
+  spottedSlowMotionScale: 0.6
+  spottedFlashColor: {r: 0.35, g: 1, b: 0.2, a: 0.45}
 --- !u!114 &7735973240466962041
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6358,6 +6361,61 @@ MonoBehaviour:
   showHealthBar: 1
   font: {fileID: 0}
   smoothing: 6
+--- !u!114 &6819918878575850055
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7198674379158672777}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 732dc67be26738a45b585432e032f578, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PhotoCollectionManager
+  items:
+  - id: dino_trex
+    displayName: The T-Rex
+  - id: dino_brachiosaurus
+    displayName: The Brachiosaurus
+  - id: dino_triceratops
+    displayName: The Triceratops
+  - id: dino_stegosaurus
+    displayName: The Stegosaurus
+  - id: dino_spinosaurus
+    displayName: The Spinosaurus
+  - id: dino_dilophosaurus
+    displayName: The Dilophosaurus
+  - id: dino_velociraptor
+    displayName: Charlie the Velociraptor
+  - id: art_blrv99_gold_splatter_emblem
+    displayName: BLRV99 Gold Splatter Emblem
+  - id: art_boisterous_viking_tavern_feast
+    displayName: Boisterous Viking Tavern Feast
+  - id: art_cowboy_versus_zombie_showdown
+    displayName: Cowboy Versus Zombie Showdown
+  - id: art_dragonfly_guitar_by_the_lakeside
+    displayName: Dragonfly Guitar By The Lakeside
+  - id: art_four_panel_neon_graffiti_sticker_sheet
+    displayName: Four-Panel Neon Graffiti Sticker Sheet
+  - id: art_glossy_metallic_spider_emblem
+    displayName: Glossy Metallic Spider Emblem
+  - id: art_monochrome_bigfoot_forest_guardian
+    displayName: Monochrome Bigfoot Forest Guardian
+  - id: art_mythic_council_of_sky_sea_and_underworld
+    displayName: Mythic Council Of Sky, Sea, And Underworld
+  - id: art_neon_graffiti_speed_racing_logo
+    displayName: Neon Graffiti Speed Racing Logo
+  - id: art_neon_splatter_tactical_duo
+    displayName: Neon Splatter Tactical Duo
+  - id: art_ornate_norse_war_axe_with_crimson_wrappings
+    displayName: Ornate Norse War Axe With Crimson Wrappings
+  - id: art_symmetrical_black_dragonfly_illustration
+    displayName: Symmetrical Black Dragonfly Illustration
+  - id: art_urban_crime_action_collage
+    displayName: Urban Crime Action Collage
+  completeMessage: You photographed them all! A brand new car is waiting for you
+    in the garage.
 --- !u!1 &7444813242124802622
 GameObject:
   m_ObjectHideFlags: 0
