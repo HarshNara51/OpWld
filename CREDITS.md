@@ -36,6 +36,7 @@ screen can be built from it. First draft 2026-10-09, made by scanning
 | [ ] | `Dagger` | Knife_low - player's knife | | | |
 | [ ] | `Dead_Body` | deadman / hobo body | | | |
 | [ ] | `Dinosaurs` (1-7) | Photo hunt dinosaurs: Triceratops (1), Stegosaurus (2), Brachiosaurus (3), T-Rex (4), Spinosaurus (5), Dilophosaurus (6), Charlie the Velociraptor (7) - separate models, check each | | | |
+| [ ] | `uplight` | Uplight / floodlight lamp model (lights the dinosaurs) | | | |
 | [ ] | `Fire Dept` | Fire department building (FireDep009.dae) | | | |
 | [ ] | `Gas station` | Gas station + "6twelve" store (Downloads: gas-station.zip, 6twelve.zip) | | | |
 | [ ] | `Grass_Dry` | Dry grass clumps | | | |
