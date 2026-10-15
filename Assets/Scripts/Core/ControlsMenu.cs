@@ -93,7 +93,10 @@ public class ControlsMenu : MonoBehaviour
                 Press("Interact / pick up / use", GameAction.Interact),
                 Press("Start mission", GameAction.Interact),
                 Hold("Return home", GameAction.Interact),
-                Hold("Call the cops", GameAction.Interact)),
+                Hold("Call the cops", GameAction.Interact),
+                Hold("Gas pump: refuel", GameAction.Refuel),
+                Press("Tow phone: repair car", GameAction.CallTowRepair),
+                Press("Tow phone: refuel car", GameAction.CallTowRefuel)),
             new Section("Combat & gadgets",
                 Press("Rifle: equip / holster", GameAction.EquipRifle),
                 Press("Knife: equip / holster", GameAction.EquipKnife),
@@ -127,6 +130,8 @@ public class ControlsMenu : MonoBehaviour
     private const float ContentHeight = 800f;
 
     private static ControlsMenu openMenu;
+
+    private ScrollRect scroll;
 
     // Every changeable key cap on the page, so labels can be refreshed
     private struct BoundCap
@@ -217,6 +222,11 @@ public class ControlsMenu : MonoBehaviour
         openMenu = this;
         FitToScreen();
         RefreshKeys();
+        if (scroll != null)
+        {
+            Canvas.ForceUpdateCanvases();
+            scroll.verticalNormalizedPosition = 1f; // always opens at the top
+        }
         SetStatus("Click a key to change it.", false);
     }
 
@@ -347,13 +357,34 @@ public class ControlsMenu : MonoBehaviour
         TMP_Text subtitle = NewText("Subtitle", content, "Keyboard & mouse  -  click a key to change it", 24, FontStyles.Normal, dimTextColor, TextAlignmentOptions.Center);
         TopStrip(subtitle.rectTransform, 72f, 34f);
 
-        RectTransform columns = NewRect("Columns", content);
-        Stretch(columns);
-        columns.offsetMax = new Vector2(0f, -140f);
+        // The columns sit in a scrolling view: if the rows ever grow taller than
+        // the page, the mouse wheel (or the thin bar on the right) scrolls them
+        RectTransform view = NewRect("ColumnsView", content);
+        Stretch(view);
+        view.offsetMax = new Vector2(0f, -140f);
+        view.gameObject.AddComponent<RectMask2D>();
+        view.gameObject.AddComponent<Image>().color = Color.clear; // catches the mouse wheel between rows
+
+        RectTransform columns = NewRect("Columns", view);
+        columns.anchorMin = new Vector2(0f, 1f);
+        columns.anchorMax = new Vector2(1f, 1f);
+        columns.pivot = new Vector2(0.5f, 1f);
+        columns.offsetMin = columns.offsetMax = Vector2.zero;
+        columns.gameObject.AddComponent<ContentSizeFitter>().verticalFit = ContentSizeFitter.FitMode.PreferredSize;
         HorizontalLayoutGroup h = columns.gameObject.AddComponent<HorizontalLayoutGroup>();
         h.spacing = 70f;
+        h.padding = new RectOffset(0, 24, 0, 0); // room for the scroll bar
         h.childControlWidth = h.childControlHeight = true;
         h.childForceExpandWidth = h.childForceExpandHeight = true;
+
+        scroll = view.gameObject.AddComponent<ScrollRect>();
+        scroll.viewport = view;
+        scroll.content = columns;
+        scroll.horizontal = false;
+        scroll.movementType = ScrollRect.MovementType.Clamped;
+        scroll.scrollSensitivity = 40f;
+        scroll.verticalScrollbar = BuildScrollbar(view);
+        scroll.verticalScrollbarVisibility = ScrollRect.ScrollbarVisibility.AutoHide; // only when it doesn't fit
 
         foreach (Section[] column in Columns)
         {
@@ -528,6 +559,31 @@ public class ControlsMenu : MonoBehaviour
         t.textWrappingMode = TextWrappingModes.NoWrap;
         t.raycastTarget = false;
         return t;
+    }
+
+    // Thin vertical bar on the right edge of the scrolling view
+    private Scrollbar BuildScrollbar(RectTransform view)
+    {
+        RectTransform track = NewRect("Scrollbar", view);
+        track.anchorMin = new Vector2(1f, 0f);
+        track.anchorMax = Vector2.one;
+        track.pivot = new Vector2(1f, 0.5f);
+        track.sizeDelta = new Vector2(8f, 0f);
+        track.anchoredPosition = Vector2.zero;
+        track.gameObject.AddComponent<Image>().color = new Color(1f, 1f, 1f, 0.08f);
+
+        RectTransform area = NewRect("Sliding Area", track);
+        Stretch(area);
+        RectTransform handle = NewRect("Handle", area);
+        Stretch(handle);
+        Image handleImage = handle.gameObject.AddComponent<Image>();
+        handleImage.color = new Color(dimTextColor.r, dimTextColor.g, dimTextColor.b, 0.8f);
+
+        Scrollbar bar = track.gameObject.AddComponent<Scrollbar>();
+        bar.handleRect = handle;
+        bar.targetGraphic = handleImage;
+        bar.direction = Scrollbar.Direction.BottomToTop;
+        return bar;
     }
 
     private static void Spacer(Transform parent, float height)

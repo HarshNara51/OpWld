@@ -57,7 +57,8 @@ public class WeaponFire : MonoBehaviour
         {
             if (CurrentAmmo <= 0)
             {
-                Debug.Log($"Out of ammo - press {GameKeys.Label(GameAction.Reload)} to reload");
+                if (GameKeys.Down(GameAction.FireStab))
+                    NotePopup.Show($"Out of ammo - press {GameKeys.Label(GameAction.Reload)} to reload.", 2f);
                 return;
             }
 
@@ -78,7 +79,6 @@ public class WeaponFire : MonoBehaviour
         if (!EnemyCover.CombatActive)
         {
             EnemyCover.CombatActive = true;
-            Debug.Log("Shots fired - they're alerted now.");
         }
 
         Vector3 origin = fireCamera.transform.position;
@@ -90,7 +90,6 @@ public class WeaponFire : MonoBehaviour
             if (head != null && head.Health != null)
             {
                 float headshotDamage = bodyDamage * headshotMultiplier;
-                Debug.Log($"Headshot! ({headshotDamage:F0} damage)");
                 head.Health.TakeDamage(headshotDamage, headshot: true);
                 return;
             }
@@ -106,10 +105,8 @@ public class WeaponFire : MonoBehaviour
     private IEnumerator Reload()
     {
         IsReloading = true;
-        Debug.Log("Reloading...");
         yield return new WaitForSeconds(reloadSeconds);
         CurrentAmmo = magazineSize;
         IsReloading = false;
-        Debug.Log("Reloaded.");
     }
 }

@@ -52,6 +52,24 @@ public class VehicleInteraction : MonoBehaviour
         unlocked = puzzle == null;
     }
 
+    // Cars that are prefab instances (PlayerCars/*) lose their scene links
+    // easily (reverting overrides wipes them), so fill in any missing ones
+    private void Start()
+    {
+        if (player == null)
+        {
+            GameObject p = GameObject.FindGameObjectWithTag("Player");
+            if (p != null) player = p.transform;
+        }
+        if (cameraOrbit == null)
+        {
+            cameraOrbit = Camera.main != null ? Camera.main.GetComponent<CameraOrbit>() : null;
+            if (cameraOrbit == null) cameraOrbit = FindFirstObjectByType<CameraOrbit>();
+        }
+        if (player == null || cameraOrbit == null)
+            Debug.LogWarning($"{name}: no Player (tag) or CameraOrbit found - this car can't be entered.", this);
+    }
+
     private void OnEnable() => all.Add(this);
 
     private void OnDisable()

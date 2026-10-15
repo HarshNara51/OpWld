@@ -92,7 +92,6 @@ public class Mission2Manager : MonoBehaviour, IFailableMission
         if (CurrentState != MissionState.InProgress) return;
 
         TargetEliminated = true;
-        Debug.Log("Target eliminated. Grab the item and get out.");
         NotePopup.Show("Target down. Grab the item and get out of here.", 4f);
     }
 
@@ -103,7 +102,6 @@ public class Mission2Manager : MonoBehaviour, IFailableMission
         if (CurrentState != MissionState.InProgress || !TargetEliminated) return;
 
         CurrentState = MissionState.Escaping;
-        Debug.Log("Item recovered. Escape!");
         NotePopup.Show(escapeMessage, 6f);
 
         if (escapeCountdown != null) escapeCountdown.StartCountdown();
@@ -117,7 +115,6 @@ public class Mission2Manager : MonoBehaviour, IFailableMission
         if (CurrentState != MissionState.Escaping || copsDispatched) return;
         copsDispatched = true;
 
-        Debug.Log("Cops dispatched!");
         NotePopup.Show("Sirens in the distance... the cops are on their way!", 3f);
 
         SetCopCarsVisible(true);
@@ -139,7 +136,6 @@ public class Mission2Manager : MonoBehaviour, IFailableMission
         if (CurrentState != MissionState.Escaping) return;
 
         if (!copsDispatched) OnCopsDispatched();
-        Debug.Log("Time's up - the cops are here!");
         CopsCheckForPlayer();
     }
 
@@ -210,7 +206,6 @@ public class Mission2Manager : MonoBehaviour, IFailableMission
         CurrentState = MissionState.Success;
         if (escapeCountdown != null) escapeCountdown.StopCountdown();
 
-        Debug.Log("Escaped. Mission Complete!");
         GameManager.Instance.MarkMissionComplete(gameObject.scene.name); // saves progress
         NotePopup.Show("You made it out. Clean getaway.", 3f);
         MissionResultUI.Instance.ShowSuccess(null, 2f);
@@ -224,7 +219,6 @@ public class Mission2Manager : MonoBehaviour, IFailableMission
         CurrentState = MissionState.Failed;
         if (escapeCountdown != null) escapeCountdown.StopCountdown();
 
-        Debug.Log($"Mission Failed: {reason}");
         MissionResultUI.Instance.ShowFailure(reason); // shared fail screen, then back to Hub
     }
 }

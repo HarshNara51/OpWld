@@ -84,7 +84,6 @@ public class GuardAI : MonoBehaviour
         // back, turn around toward the point he just came from.
         targetIndex = CurrentState == State.Returning ? Mathf.Min(targetIndex + 1, LastIndex) : 1;
         CurrentState = State.Investigating;
-        if (!roamOnHisOwn) Debug.Log($"{name}: heard something, going to check.");
     }
 
     private void Update()
@@ -145,7 +144,6 @@ public class GuardAI : MonoBehaviour
                     {
                         CurrentState = State.OnPost;
                         postTimer = Random.Range(pauseAtPost.x, pauseAtPost.y);
-                        if (!roamOnHisOwn) Debug.Log($"{name}: back on post.");
                     }
                     else targetIndex--;
                 }
@@ -181,7 +179,6 @@ public class GuardAI : MonoBehaviour
             CurrentState = State.Caught;
             caughtTimer = bustDelay;
             NotePopup.Show(questionLine, bustDelay);
-            Debug.Log($"{name}: caught the player!");
             return;
         }
 

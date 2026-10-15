@@ -73,7 +73,6 @@ public class VehicleHealth : MonoBehaviour
     private void Wreck()
     {
         IsWrecked = true;
-        Debug.Log($"{name} is wrecked!");
 
         bool playerInside = interaction != null && VehicleInteraction.Current == interaction;
         if (interaction != null)

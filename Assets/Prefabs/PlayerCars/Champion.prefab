@@ -182,13 +182,13 @@ WheelCollider:
     m_ExtremumValue: 1
     m_AsymptoteSlip: 0.8
     m_AsymptoteValue: 0.5
-    m_Stiffness: 1
+    m_Stiffness: 1.1
   m_SidewaysFriction:
     m_ExtremumSlip: 0.2
     m_ExtremumValue: 1
     m_AsymptoteSlip: 0.5
     m_AsymptoteValue: 0.75
-    m_Stiffness: 1
+    m_Stiffness: 1.15
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -343,13 +343,13 @@ WheelCollider:
     m_ExtremumValue: 1
     m_AsymptoteSlip: 0.8
     m_AsymptoteValue: 0.5
-    m_Stiffness: 1
+    m_Stiffness: 1.1
   m_SidewaysFriction:
     m_ExtremumSlip: 0.2
     m_ExtremumValue: 1
     m_AsymptoteSlip: 0.5
     m_AsymptoteValue: 0.75
-    m_Stiffness: 1
+    m_Stiffness: 1.1
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -10596,13 +10596,13 @@ WheelCollider:
     m_ExtremumValue: 1
     m_AsymptoteSlip: 0.8
     m_AsymptoteValue: 0.5
-    m_Stiffness: 1
+    m_Stiffness: 1.1
   m_SidewaysFriction:
     m_ExtremumSlip: 0.2
     m_ExtremumValue: 1
     m_AsymptoteSlip: 0.5
     m_AsymptoteValue: 0.75
-    m_Stiffness: 1
+    m_Stiffness: 1.1
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -11099,13 +11099,13 @@ WheelCollider:
     m_ExtremumValue: 1
     m_AsymptoteSlip: 0.8
     m_AsymptoteValue: 0.5
-    m_Stiffness: 1
+    m_Stiffness: 1.1
   m_SidewaysFriction:
     m_ExtremumSlip: 0.2
     m_ExtremumValue: 1
     m_AsymptoteSlip: 0.5
     m_AsymptoteValue: 0.75
-    m_Stiffness: 1
+    m_Stiffness: 1.15
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -16320,7 +16320,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7886802377231549143}
   serializedVersion: 5
-  m_Mass: 1000
+  m_Mass: 1100
   m_LinearDamping: 0
   m_AngularDamping: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
@@ -16351,15 +16351,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c0fefceefe666bb4682b272ec8c5bdd0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PrometeoCarController
-  maxSpeed: 140
-  maxReverseSpeed: 50
+  maxSpeed: 160
+  maxReverseSpeed: 55
   accelerationMultiplier: 8
-  maxSteeringAngle: 32
-  steeringSpeed: 0.6
-  brakeForce: 420
-  decelerationMultiplier: 2
-  handbrakeDriftMultiplier: 7
-  bodyMassCenter: {x: 0, y: 0, z: 0}
+  maxSteeringAngle: 30
+  steeringSpeed: 0.65
+  brakeForce: 520
+  decelerationMultiplier: 3
+  handbrakeDriftMultiplier: 4
+  bodyMassCenter: {x: 0, y: -0.1, z: 0}
   frontLeftMesh: {fileID: 5122994738350003915}
   frontLeftCollider: {fileID: 5086449226814357023}
   frontRightMesh: {fileID: 2720065588317679659}
@@ -16441,9 +16441,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::VehicleFuel
   tankSize: 100
-  fuelPerKm: 12
-  highSpeedMultiplier: 1.5
-  topSpeedKmh: 120
+  fuelPerKm: 14
+  highSpeedMultiplier: 1.6
+  topSpeedKmh: 160
   infiniteFuel: 0
   carController: {fileID: 0}
 --- !u!114 &652854167080873930
@@ -16513,7 +16513,10 @@ MonoBehaviour:
   beams:
   - {fileID: 3349685710152864861}
   - {fileID: 8741341825225405164}
+  beamDistance: 70
   signalCycle: 0.7
+  useModelLamps: 1
+  modelLampGlow: 4
 --- !u!1 &8676462654275684195
 GameObject:
   m_ObjectHideFlags: 0

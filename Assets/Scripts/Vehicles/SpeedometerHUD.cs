@@ -22,8 +22,10 @@ public class SpeedometerHUD : MonoBehaviour
     [SerializeField] private Sprite speedNeedle;
     [SerializeField] private Sprite rpmNeedle;
     [SerializeField] private Sprite fuelNeedle;
-    [Tooltip("Optional: a small fuel icon that blinks when low (white art is best)")]
+    [Tooltip("Optional: a small fuel icon that blinks when low (white art is best). Empty = a built-in glowing lamp")]
     [SerializeField] private Sprite lowFuelIcon;
+    [Tooltip("Colour of the low-fuel light when lit")]
+    [SerializeField] private Color lowFuelColor = new Color(1f, 0.32f, 0.08f);
 
     [Header("Size & placement")]
     [Tooltip("On-screen width of the dashboard (height follows the image)")]
@@ -90,7 +92,7 @@ public class SpeedometerHUD : MonoBehaviour
     private GameObject root;
     private RectTransform dash;
     private RectTransform speedNeedleRect, rpmNeedleRect, fuelNeedleRect, lowFuelRect;
-    private Image lowFuelImage;
+    private Image lowFuelImage, lowFuelGlow;
     private TMP_Text speedText;
     private GameObject healthGroup;
     private RectTransform healthFill;
@@ -118,6 +120,10 @@ public class SpeedometerHUD : MonoBehaviour
             SetAngle(rpmNeedleRect, Mathf.Lerp(rpmAngleAtZero, rpmAngleAtMax, testRpm));
             SetAngle(fuelNeedleRect, Mathf.Lerp(fuelAngleEmpty, fuelAngleFull, testFuel));
             if (fuelNeedleRect != null) fuelNeedleRect.gameObject.SetActive(true);
+            // Low-fuel light lit while Test Fuel is in the low zone, so it's easy to place
+            bool testLow = testFuel <= lowFuelBelow;
+            if (lowFuelImage != null) lowFuelImage.color = testLow ? lowFuelColor : new Color(0.3f, 0.09f, 0.05f, 0.9f);
+            if (lowFuelGlow != null) lowFuelGlow.color = testLow ? new Color(lowFuelColor.r, lowFuelColor.g, lowFuelColor.b, 0.6f) : Color.clear;
             if (speedText != null) speedText.text = Mathf.RoundToInt(testSpeed * dialMaxSpeed).ToString();
             trackedCar = null;
             return;
@@ -136,6 +142,7 @@ public class SpeedometerHUD : MonoBehaviour
             carHealth = car.GetComponent<VehicleHealth>();
             if (fuelNeedleRect != null) fuelNeedleRect.gameObject.SetActive(carFuel != null);
             if (lowFuelRect != null) lowFuelRect.gameObject.SetActive(carFuel != null);
+            if (lowFuelGlow != null) lowFuelGlow.gameObject.SetActive(carFuel != null);
             if (healthGroup != null) healthGroup.SetActive(carHealth != null);
             shownFuel = carFuel != null ? carFuel.Fuel01 : 1f;
         }
@@ -172,9 +179,12 @@ public class SpeedometerHUD : MonoBehaviour
 
             if (lowFuelImage != null)
             {
+                // Low: blinks. Empty: stays lit. Otherwise a dark, unlit lamp.
                 bool low = carFuel.Fuel01 <= lowFuelBelow;
                 bool lit = low && (carFuel.IsEmpty || (Time.unscaledTime * 2.5f) % 1f < 0.55f);
-                lowFuelImage.color = lit ? new Color(1f, 0.25f, 0.15f, 1f) : new Color(1f, 1f, 1f, 0f);
+                Color off = lowFuelIcon != null ? new Color(1f, 1f, 1f, 0f) : new Color(0.3f, 0.09f, 0.05f, 0.9f);
+                lowFuelImage.color = lit ? lowFuelColor : off;
+                if (lowFuelGlow != null) lowFuelGlow.color = lit ? new Color(lowFuelColor.r, lowFuelColor.g, lowFuelColor.b, 0.6f) : Color.clear;
             }
         }
 
@@ -214,6 +224,11 @@ public class SpeedometerHUD : MonoBehaviour
         {
             lowFuelRect.anchoredPosition = Vector2.Scale(lowFuelIconPosition, DashSize);
             lowFuelRect.sizeDelta = Vector2.one * lowFuelIconSize;
+            if (lowFuelGlow != null)
+            {
+                lowFuelGlow.rectTransform.anchoredPosition = lowFuelRect.anchoredPosition;
+                lowFuelGlow.rectTransform.sizeDelta = Vector2.one * lowFuelIconSize * 2.6f;
+            }
         }
 
         if (healthGroup != null)
@@ -263,12 +278,17 @@ public class SpeedometerHUD : MonoBehaviour
         speedNeedleRect = MakeNeedle("SpeedNeedle", speedNeedle);
         fuelNeedleRect = MakeNeedle("FuelNeedle", fuelNeedle);
 
-        if (lowFuelIcon != null)
+        // Low-fuel warning light: your icon, or a small glowing lamp (a shaded
+        // sphere with a soft halo behind it - made first so it draws underneath)
+        if (lowFuelIcon == null)
         {
-            lowFuelRect = MakeImage("LowFuelLight", dash, lowFuelIcon, new Color(1f, 1f, 1f, 0f));
-            lowFuelRect.anchorMin = lowFuelRect.anchorMax = Vector2.zero;
-            lowFuelImage = lowFuelRect.GetComponent<Image>();
+            RectTransform glow = MakeImage("LowFuelGlow", dash, GlowSprite(), Color.clear);
+            glow.anchorMin = glow.anchorMax = Vector2.zero;
+            lowFuelGlow = glow.GetComponent<Image>();
         }
+        lowFuelRect = MakeImage("LowFuelLight", dash, lowFuelIcon != null ? lowFuelIcon : LampSprite(), new Color(1f, 1f, 1f, 0f));
+        lowFuelRect.anchorMin = lowFuelRect.anchorMax = Vector2.zero;
+        lowFuelImage = lowFuelRect.GetComponent<Image>();
 
         if (showDigitalSpeed)
         {
@@ -299,6 +319,47 @@ public class SpeedometerHUD : MonoBehaviour
         }
 
         Layout();
+    }
+
+    // A little shaded sphere: white highlight top-left, darker rim. Drawn in
+    // greys so the Image colour tints it.
+    private static Sprite LampSprite()
+    {
+        const int size = 64;
+        var tex = new Texture2D(size, size, TextureFormat.RGBA32, false) { wrapMode = TextureWrapMode.Clamp };
+        Vector2 c = new Vector2(size - 1, size - 1) * 0.5f;
+        Vector2 highlight = c + new Vector2(-size * 0.16f, size * 0.18f);
+        float r = size * 0.5f - 1f;
+        for (int y = 0; y < size; y++)
+        for (int x = 0; x < size; x++)
+        {
+            Vector2 p = new Vector2(x, y);
+            float d = Vector2.Distance(p, c) / r;                    // 0 centre .. 1 edge
+            float alpha = Mathf.Clamp01((1f - d) * r);               // smooth edge
+            float shade = Mathf.Lerp(1f, 0.45f, d * d);              // darker towards the rim
+            float spot = Mathf.Clamp01(1f - Vector2.Distance(p, highlight) / (size * 0.22f));
+            float v = Mathf.Clamp01(shade + spot * spot * 0.9f);
+            tex.SetPixel(x, y, new Color(v, Mathf.Lerp(v, 1f, spot * spot), Mathf.Lerp(v, 1f, spot * spot), alpha));
+        }
+        tex.Apply();
+        return Sprite.Create(tex, new Rect(0, 0, size, size), new Vector2(0.5f, 0.5f));
+    }
+
+    // Soft round halo, fully transparent at the edge
+    private static Sprite GlowSprite()
+    {
+        const int size = 64;
+        var tex = new Texture2D(size, size, TextureFormat.RGBA32, false) { wrapMode = TextureWrapMode.Clamp };
+        Vector2 c = new Vector2(size - 1, size - 1) * 0.5f;
+        for (int y = 0; y < size; y++)
+        for (int x = 0; x < size; x++)
+        {
+            float d = Mathf.Clamp01(Vector2.Distance(new Vector2(x, y), c) / (size * 0.5f));
+            float a = (1f - d) * (1f - d);
+            tex.SetPixel(x, y, new Color(1f, 1f, 1f, a));
+        }
+        tex.Apply();
+        return Sprite.Create(tex, new Rect(0, 0, size, size), new Vector2(0.5f, 0.5f));
     }
 
     private RectTransform MakeNeedle(string name, Sprite sprite)

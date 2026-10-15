@@ -35,8 +35,7 @@ public class VehicleFuel : MonoBehaviour
 
     private VehicleInteraction interaction;
     private Rigidbody rb;
-    private bool warnedLow;
-    private bool warnedCritical;
+    private bool outOfFuelNoted;
 
     private void Awake()
     {
@@ -55,6 +54,13 @@ public class VehicleFuel : MonoBehaviour
         if (IsEmpty)
         {
             if (carController != null && carController.enabled) carController.enabled = false;
+
+            // Once it has rolled to a stop, say what happened (once per empty tank)
+            if (!outOfFuelNoted && (rb == null || rb.linearVelocity.magnitude < 0.5f))
+            {
+                outOfFuelNoted = true;
+                NotePopup.Show("Out of fuel! Find a tow phone and call for fuel.", 5f);
+            }
             return;
         }
 
@@ -77,7 +83,6 @@ public class VehicleFuel : MonoBehaviour
 
         if (wasEmpty && !IsEmpty)
         {
-            Debug.Log($"{name}: engine restarted.");
             // Back in business if someone's driving it
             if (interaction != null && VehicleInteraction.Current == interaction && carController != null)
                 carController.enabled = true;
@@ -93,32 +98,17 @@ public class VehicleFuel : MonoBehaviour
         if (Mathf.Approximately(before, Current)) return;
 
         FuelChanged?.Invoke(Fuel01);
-        LogWarnings(before);
+        FuelWarnings(before);
     }
 
-    private void LogWarnings(float before)
+    // Empty: the engine cuts out and the car coasts. The low-fuel light on
+    // the speedometer does the warning before that - no notes.
+    private void FuelWarnings(float before)
     {
-        float f = Fuel01;
-
-        // Re-arm the warnings after refuelling
-        if (f > 0.25f) { warnedLow = false; warnedCritical = false; }
-
-        if (f <= 0.25f && !warnedLow)
-        {
-            warnedLow = true;
-            Debug.Log($"{name}: fuel low ({Mathf.RoundToInt(f * 100)}%) - find a gas station.");
-        }
-
-        if (f <= 0.1f && !warnedCritical)
-        {
-            warnedCritical = true;
-            Debug.Log($"{name}: fuel almost empty ({Mathf.RoundToInt(f * 100)}%)!");
-        }
-
         if (before > 0f && Current <= 0f)
         {
-            Debug.Log($"{name}: out of fuel! The engine cut out.");
             if (carController != null) carController.enabled = false; // coasts to a stop
+            outOfFuelNoted = false; // the note waits until the car has stopped
         }
     }
 }

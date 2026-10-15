@@ -129,7 +129,6 @@ public class SuspicionManager : MonoBehaviour
         if (busted || currentSuspicion < maxSuspicion) return;
 
         busted = true;
-        Debug.Log(policeDetection ? "Busted!" : "Spotted!");
         Busted?.Invoke();
         missionManager?.FailMission(policeDetection ? "Busted" : "Spotted");
     }

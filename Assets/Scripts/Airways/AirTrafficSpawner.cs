@@ -177,7 +177,6 @@ public class AirTrafficSpawner : MonoBehaviour
             radius = halfDiagonal * autoRadiusMargin;
         }
 
-        Debug.Log($"{name}: centered on terrain at {transform.position}, radius {radius:F0}");
     }
 
     private static Vector3 Direction(float degrees)

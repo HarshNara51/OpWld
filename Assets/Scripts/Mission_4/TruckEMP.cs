@@ -34,7 +34,6 @@ public class TruckEMP : MonoBehaviour
     private float nextDisruptionTime;
     private bool complete;
     private bool wasCharging;
-    private int lastLoggedMilestone = -1; // TEMP DIAGNOSTIC - remove once a real UI bar exists
 
     private Transform GetActiveTarget()
     {
@@ -73,19 +72,11 @@ public class TruckEMP : MonoBehaviour
         {
             Percent01 = Mathf.Min(1f, Percent01 + (fillRatePercentPerSecond / 100f) * Time.deltaTime);
 
-            // TEMP DIAGNOSTIC - remove once a real UI bar exists
-            int milestone = Mathf.FloorToInt(Percent01 * 10f);
-            if (milestone > lastLoggedMilestone)
-            {
-                lastLoggedMilestone = milestone;
-                Debug.Log($"EMP charge: {milestone * 10}%");
-            }
-
             if (Time.time >= nextDisruptionTime)
             {
                 IsDisrupted = true;
                 IsCharging = false;
-                Debug.Log("EMP connection lost - release and hold again.");
+                NotePopup.Show($"EMP connection lost - release {GameKeys.Label(GameAction.EMP)} and hold it again.", 2.5f);
                 ScheduleNextDisruption();
             }
         }

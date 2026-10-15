@@ -15,6 +15,8 @@ public enum GameAction
     BackOff, TurnLock, TimingHit,
     // Photo mode
     PhotoMode, TakePicture,
+    // Gas station & tow phones
+    Refuel, CallTowRepair, CallTowRefuel,
 }
 
 // The one place that knows which key does what. Scripts ask
@@ -29,7 +31,9 @@ public static class GameKeys
     // When an action is used. Two actions may share a key only if they are
     // never used at the same time (e.g. W = walk forward AND accelerate).
     [Flags]
-    private enum Context { Foot = 1, Car = 2, Puzzle = 4, Photo = 8 }
+    // Pump = held at a gas pump, on foot or in the car. It gets its own
+    // flag so it can share I with the repair phone (never at the same spot).
+    private enum Context { Foot = 1, Car = 2, Puzzle = 4, Photo = 8, Pump = 16 }
 
     private struct Info
     {
@@ -76,6 +80,10 @@ public static class GameKeys
 
         Add(GameAction.PhotoMode, KeyCode.P, Context.Foot | Context.Car | Context.Photo);
         Add(GameAction.TakePicture, KeyCode.Mouse0, Context.Photo);
+
+        Add(GameAction.Refuel, KeyCode.I, Context.Pump);
+        Add(GameAction.CallTowRepair, KeyCode.I, Context.Foot);
+        Add(GameAction.CallTowRefuel, KeyCode.O, Context.Foot);
         return infos;
     }
 
@@ -221,6 +229,9 @@ public static class GameKeys
             case GameAction.TimingHit: return "Timing: hit";
             case GameAction.PhotoMode: return "Photo mode";
             case GameAction.TakePicture: return "Take picture";
+            case GameAction.Refuel: return "Refuel at pump";
+            case GameAction.CallTowRepair: return "Tow phone: repair";
+            case GameAction.CallTowRefuel: return "Tow phone: refuel";
             default: return a.ToString();
         }
     }

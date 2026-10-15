@@ -62,11 +62,11 @@ public class Mission4Manager : MonoBehaviour, IFailableMission
         if (CurrentState != MissionState.InProgress) return;
 
         EnemiesDown++;
-        Debug.Log($"Enemy down ({EnemiesDown}/{enemiesToEliminate})");
+        if (EnemiesDown < enemiesToEliminate)
+            NotePopup.Show($"Enemy down ({EnemiesDown}/{enemiesToEliminate})", 2f);
 
         if (EnemiesDown >= enemiesToEliminate)
         {
-            Debug.Log("Remaining enemies are fleeing - get to your car!");
             NotePopup.Show("The rest of the gang is getting away in the truck! Get in your car and follow it. " +
                            $"Once you're close enough, hold {GameKeys.Label(GameAction.EMP)} to fire the EMP and disable the truck.");
             if (truck != null) truck.BeginMoving();
@@ -79,7 +79,6 @@ public class Mission4Manager : MonoBehaviour, IFailableMission
         if (CurrentState != MissionState.InProgress) return;
 
         CurrentState = MissionState.Success;
-        Debug.Log("Mission Complete!");
         GameManager.Instance.MarkMissionComplete(gameObject.scene.name); // saves progress
         MissionResultUI.Instance.ShowMessage("Mission Complete!");
         if (cleanup != null) cleanup.ApplySuccessState();
@@ -90,7 +89,6 @@ public class Mission4Manager : MonoBehaviour, IFailableMission
         if (CurrentState == MissionState.Success || CurrentState == MissionState.Failed) return;
 
         CurrentState = MissionState.Failed;
-        Debug.Log($"Mission Failed: {reason}");
         MissionResultUI.Instance.ShowFailure(reason); // shared fail screen, then back to Hub
     }
 }

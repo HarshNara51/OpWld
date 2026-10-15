@@ -66,8 +66,6 @@ public class Mission3Manager : MonoBehaviour, IFailableMission
 
         BodyFound = true;
         CurrentState = MissionState.Investigating;
-        Debug.Log("Photograph captured.");
-        Debug.Log("Capture all 5 clues before the trucks arrive, and hide immediately!");
         NotePopup.Show($"Photograph all {totalClues} clues before the trucks arrive... then hide!");
 
         if (truckCountdown != null) truckCountdown.StartCountdown();
@@ -79,7 +77,6 @@ public class Mission3Manager : MonoBehaviour, IFailableMission
         if (CurrentState != MissionState.Investigating) return;
 
         CluesFound++;
-        Debug.Log($"Photograph captured. Clue {CluesFound}/{totalClues}");
 
         if (CluesFound >= totalClues)
         {
@@ -106,7 +103,6 @@ public class Mission3Manager : MonoBehaviour, IFailableMission
         }
 
         CurrentState = MissionState.TrucksAtFarm;
-        Debug.Log("The trucks have arrived. Stay hidden.");
         NotePopup.Show("The trucks have arrived. Stay hidden...", 4f);
     }
 
@@ -116,7 +112,6 @@ public class Mission3Manager : MonoBehaviour, IFailableMission
         if (CurrentState != MissionState.TrucksAtFarm) return;
 
         CurrentState = MissionState.Following;
-        Debug.Log("Trucks are leaving. Get in your car and follow them - don't get too close.");
         NotePopup.Show(parkingSpot != null
             ? "They're leaving. Run back to your parked car and follow them... but keep your distance."
             : "They're leaving. Get in your car and follow them... but keep your distance.");
@@ -151,7 +146,6 @@ public class Mission3Manager : MonoBehaviour, IFailableMission
         if (CurrentState != MissionState.Following) return;
 
         CurrentState = MissionState.Delivering;
-        Debug.Log("Final photo captured! Now deliver it to the police station.");
         NotePopup.Show("Got them red-handed. Get this to the police station.");
         if (suspicion != null) suspicion.SetActive(false);
         VehicleSummon.Unblock(this);
@@ -163,8 +157,6 @@ public class Mission3Manager : MonoBehaviour, IFailableMission
         if (CurrentState != MissionState.Delivering) return;
 
         CurrentState = MissionState.Success;
-        Debug.Log("All photos and evidence delivered.");
-        Debug.Log("Mission Complete!");
         GameManager.Instance.MarkMissionComplete(gameObject.scene.name); // saves progress
         NotePopup.Show("Evidence handed over. The police will take it from here... the farmer's son will get justice.", passedScreenDelay - 0.5f);
         MissionResultUI.Instance.ShowSuccess(null, passedScreenDelay);
@@ -177,7 +169,6 @@ public class Mission3Manager : MonoBehaviour, IFailableMission
         CurrentState = MissionState.Failed;
         VehicleSummon.Unblock(this);
         if (truckCountdown != null) truckCountdown.StopCountdown();
-        Debug.Log($"Mission Failed: {reason}");
         MissionResultUI.Instance.ShowFailure(reason); // shared fail screen, then back to Hub
     }
 }

@@ -264,14 +264,15 @@ public class CameraMode : MonoBehaviour
             string file = Path.Combine(folder, $"Photo_{DateTime.Now:yyyyMMdd_HHmmss_fff}.png");
             ScreenCapture.CaptureScreenshot(file);
 
+            yield return new WaitForEndOfFrame();
+            yield return null;
+
+            // Once per session, after the capture so the note isn't in the photo
             if (!loggedFolder)
             {
                 loggedFolder = true;
-                Debug.Log($"Photos are saved in: {folder}");
+                NotePopup.Show($"Photos are saved in:\n<size=80%>{folder}</size>", 5f);
             }
-
-            yield return new WaitForEndOfFrame();
-            yield return null;
 
             if (active && frameOverlay != null) frameOverlay.SetActive(true);
         }
@@ -280,7 +281,6 @@ public class CameraMode : MonoBehaviour
         if (shutterSound != null && AudioManager.Instance != null) AudioManager.Instance.PlayUI(shutterSound);
         if (flash != null) StartCoroutine(Flash());
 
-        Debug.Log("Click! Photo taken.");
         if (best != null) best.TryPhotograph();
     }
 

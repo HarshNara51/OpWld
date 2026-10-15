@@ -86,7 +86,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 149924728982260323}
   serializedVersion: 5
-  m_Mass: 1000
+  m_Mass: 1200
   m_LinearDamping: 0
   m_AngularDamping: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
@@ -117,15 +117,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c0fefceefe666bb4682b272ec8c5bdd0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PrometeoCarController
-  maxSpeed: 140
+  maxSpeed: 135
   maxReverseSpeed: 50
-  accelerationMultiplier: 8
-  maxSteeringAngle: 32
-  steeringSpeed: 0.6
-  brakeForce: 420
+  accelerationMultiplier: 10
+  maxSteeringAngle: 28
+  steeringSpeed: 0.45
+  brakeForce: 380
   decelerationMultiplier: 2
-  handbrakeDriftMultiplier: 7
-  bodyMassCenter: {x: 0, y: 0, z: 0}
+  handbrakeDriftMultiplier: 8
+  bodyMassCenter: {x: 0, y: 0.05, z: 0}
   frontLeftMesh: {fileID: 7887775956663866214}
   frontLeftCollider: {fileID: 7034460338970076116}
   frontRightMesh: {fileID: 5039642239725596145}
@@ -207,9 +207,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::VehicleFuel
   tankSize: 100
-  fuelPerKm: 12
+  fuelPerKm: 13
   highSpeedMultiplier: 1.5
-  topSpeedKmh: 120
+  topSpeedKmh: 135
   infiniteFuel: 0
   carController: {fileID: 0}
 --- !u!114 &396439560301921588
@@ -259,7 +259,10 @@ MonoBehaviour:
   beams:
   - {fileID: 4025708647196814340}
   - {fileID: 8392625491919305166}
+  beamDistance: 70
   signalCycle: 0.7
+  useModelLamps: 1
+  modelLampGlow: 4
 --- !u!1 &357519486026408133
 GameObject:
   m_ObjectHideFlags: 0
@@ -11326,13 +11329,13 @@ WheelCollider:
     m_ExtremumValue: 1
     m_AsymptoteSlip: 0.8
     m_AsymptoteValue: 0.5
-    m_Stiffness: 1
+    m_Stiffness: 0.85
   m_SidewaysFriction:
     m_ExtremumSlip: 0.2
     m_ExtremumValue: 1
     m_AsymptoteSlip: 0.5
     m_AsymptoteValue: 0.75
-    m_Stiffness: 1
+    m_Stiffness: 0.82
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -11524,13 +11527,13 @@ WheelCollider:
     m_ExtremumValue: 1
     m_AsymptoteSlip: 0.8
     m_AsymptoteValue: 0.5
-    m_Stiffness: 1
+    m_Stiffness: 0.85
   m_SidewaysFriction:
     m_ExtremumSlip: 0.2
     m_ExtremumValue: 1
     m_AsymptoteSlip: 0.5
     m_AsymptoteValue: 0.75
-    m_Stiffness: 1
+    m_Stiffness: 0.82
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0

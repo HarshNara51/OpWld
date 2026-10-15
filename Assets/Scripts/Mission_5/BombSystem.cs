@@ -61,7 +61,6 @@ public class BombSystem : MonoBehaviour
 
         armed = true;
         remaining = bombDuration;
-        Debug.Log("It's rigged! Get to a secluded spot and defuse it - or run.");
         NotePopup.Show("Wait... what's that ticking? It's rigged! Get somewhere secluded and defuse it - or run!", 6f);
     }
 
@@ -141,7 +140,6 @@ public class BombSystem : MonoBehaviour
 
     private void Explode()
     {
-        Debug.Log("The bomb went off!");
         if (bombTimerText != null) bombTimerText.text = "";
         if (warningPanel != null) warningPanel.SetActive(false);
         if (cameraShake != null) cameraShake.Shake();

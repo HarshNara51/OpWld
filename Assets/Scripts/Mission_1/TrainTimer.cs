@@ -34,7 +34,6 @@ public class TrainTimer : MonoBehaviour
         remaining = durationSeconds;
         running = true;
         UpdateText();
-        Debug.Log($"Train timer started: {durationSeconds:F0}s");
     }
 
     // Stops and hides the countdown (mission completed or failed early)

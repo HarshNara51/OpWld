@@ -55,13 +55,13 @@ WheelCollider:
     m_ExtremumValue: 1
     m_AsymptoteSlip: 0.8
     m_AsymptoteValue: 0.5
-    m_Stiffness: 1
+    m_Stiffness: 1.2
   m_SidewaysFriction:
     m_ExtremumSlip: 0.2
     m_ExtremumValue: 1
     m_AsymptoteSlip: 0.5
     m_AsymptoteValue: 0.75
-    m_Stiffness: 1
+    m_Stiffness: 1.25
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -5161,7 +5161,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1133060515157128656}
-  m_Mesh: {fileID: 4300000, guid: b412969ef17a59d4483ee6d1cfe701e0, type: 2}
+  m_Mesh: {fileID: 4300000, guid: 0bdc41bd74177d14fb2b78f15407368b, type: 2}
 --- !u!23 &2949288329723991044
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -5193,6 +5193,8 @@ MeshRenderer:
   - {fileID: -2315378818891012869, guid: 830690d5c1cddc44ea920740a956d0b1, type: 3}
   - {fileID: -1221561137008478051, guid: 830690d5c1cddc44ea920740a956d0b1, type: 3}
   - {fileID: 8746743644527141077, guid: 830690d5c1cddc44ea920740a956d0b1, type: 3}
+  - {fileID: 2100000, guid: 350e5514831af364dab7c62b86c847da, type: 2}
+  - {fileID: 2100000, guid: a935c6e2249fc654fab5e2a22d4d7205, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -10463,13 +10465,13 @@ WheelCollider:
     m_ExtremumValue: 1
     m_AsymptoteSlip: 0.8
     m_AsymptoteValue: 0.5
-    m_Stiffness: 1
+    m_Stiffness: 1.2
   m_SidewaysFriction:
     m_ExtremumSlip: 0.2
     m_ExtremumValue: 1
     m_AsymptoteSlip: 0.5
     m_AsymptoteValue: 0.75
-    m_Stiffness: 1
+    m_Stiffness: 1.3
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -10566,9 +10568,9 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2812711790797143740}
   serializedVersion: 5
-  m_Mass: 1000
+  m_Mass: 950
   m_LinearDamping: 0
-  m_AngularDamping: 0.05
+  m_AngularDamping: 0.12
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
   m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
@@ -10597,15 +10599,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c0fefceefe666bb4682b272ec8c5bdd0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PrometeoCarController
-  maxSpeed: 140
-  maxReverseSpeed: 50
-  accelerationMultiplier: 8
-  maxSteeringAngle: 32
-  steeringSpeed: 0.6
-  brakeForce: 420
-  decelerationMultiplier: 2
-  handbrakeDriftMultiplier: 7
-  bodyMassCenter: {x: 0, y: 0, z: 0}
+  maxSpeed: 190
+  maxReverseSpeed: 60
+  accelerationMultiplier: 10
+  maxSteeringAngle: 34
+  steeringSpeed: 0.8
+  brakeForce: 600
+  decelerationMultiplier: 3
+  handbrakeDriftMultiplier: 6
+  bodyMassCenter: {x: 0, y: -0.2, z: 0}
   frontLeftMesh: {fileID: 2385498324129676133}
   frontLeftCollider: {fileID: 7675925842285965075}
   frontRightMesh: {fileID: 3707125302441944393}
@@ -10687,9 +10689,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::VehicleFuel
   tankSize: 100
-  fuelPerKm: 12
-  highSpeedMultiplier: 1.5
-  topSpeedKmh: 120
+  fuelPerKm: 16
+  highSpeedMultiplier: 1.8
+  topSpeedKmh: 190
   infiniteFuel: 0
   carController: {fileID: 0}
 --- !u!114 &5140540423397688928
@@ -10764,7 +10766,10 @@ MonoBehaviour:
   beams:
   - {fileID: 1543041395112053206}
   - {fileID: 8220646692346531471}
+  beamDistance: 70
   signalCycle: 0.7
+  useModelLamps: 1
+  modelLampGlow: 4
 --- !u!1 &2887620843521091327
 GameObject:
   m_ObjectHideFlags: 0
@@ -10820,13 +10825,13 @@ WheelCollider:
     m_ExtremumValue: 1
     m_AsymptoteSlip: 0.8
     m_AsymptoteValue: 0.5
-    m_Stiffness: 1
+    m_Stiffness: 1.2
   m_SidewaysFriction:
     m_ExtremumSlip: 0.2
     m_ExtremumValue: 1
     m_AsymptoteSlip: 0.5
     m_AsymptoteValue: 0.75
-    m_Stiffness: 1
+    m_Stiffness: 1.3
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -11047,13 +11052,13 @@ WheelCollider:
     m_ExtremumValue: 1
     m_AsymptoteSlip: 0.8
     m_AsymptoteValue: 0.5
-    m_Stiffness: 1
+    m_Stiffness: 1.2
   m_SidewaysFriction:
     m_ExtremumSlip: 0.2
     m_ExtremumValue: 1
     m_AsymptoteSlip: 0.5
     m_AsymptoteValue: 0.75
-    m_Stiffness: 1
+    m_Stiffness: 1.25
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0

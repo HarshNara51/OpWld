@@ -6,7 +6,6 @@ using UnityEngine;
 // needed; it checks distance.
 public class FuelStation : MonoBehaviour
 {
-    [SerializeField] private KeyCode refuelKey = KeyCode.F;
     [SerializeField] private float radius = 5f;
 
     [Tooltip("Fuel added per second while holding the key")]
@@ -32,7 +31,7 @@ public class FuelStation : MonoBehaviour
         }
 
         bool stopped = IsStopped(car);
-        bool refuelling = Input.GetKey(refuelKey) && car.Fuel01 < 1f && stopped;
+        bool refuelling = GameKeys.Held(GameAction.Refuel) && car.Fuel01 < 1f && stopped;
         if (refuelling) car.AddFuel(refuelRate * Time.deltaTime);
         wasRefuelling = refuelling;
 
@@ -41,7 +40,7 @@ public class FuelStation : MonoBehaviour
         string text = car.Fuel01 >= 0.999f ? "Tank full!"
                     : !stopped ? "Stop the car to refuel."
                     : refuelling ? $"Refuelling... {percent}%"
-                    : $"Hold {NotePopup.Key(refuelKey.ToString())} to refuel ({percent}% in the tank)";
+                    : $"Hold {NotePopup.Key(GameAction.Refuel)} to refuel ({percent}% in the tank)";
         NotePopup.Prompt(this, "<b>Gas station:</b> " + text);
     }
 

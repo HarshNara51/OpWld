@@ -213,7 +213,6 @@ public class EnemyCover : MonoBehaviour
                 bool lands = Random.value < Mathf.Lerp(closeRangeHitChance, longRangeHitChance, t);
                 if (muzzle == null) muzzle = MuzzleFlash.Find(transform);
                 MuzzleFlash.Play(muzzle);
-                Debug.Log($"{name} shoots at player ({dist:F0} m) - {(lands ? "hit" : "miss")}");
                 if (lands && playerHealth != null) playerHealth.TakeDamage(damage);
             }
         }

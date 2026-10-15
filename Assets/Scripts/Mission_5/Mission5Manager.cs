@@ -29,7 +29,6 @@ public class Mission5Manager : MonoBehaviour, IFailableMission
         if (CurrentState != MissionState.InProgress) return;
 
         CurrentState = MissionState.Success;
-        Debug.Log("Car saved!");
         GameManager.Instance.MarkMissionComplete(gameObject.scene.name); // saves progress
         MissionResultUI.Instance.ShowSuccess("Bomb defused! The car is yours now - you'll find it in the garage.");
         GameManager.Instance.UnlockCar2();
@@ -43,7 +42,6 @@ public class Mission5Manager : MonoBehaviour, IFailableMission
         if (CurrentState != MissionState.InProgress) return;
 
         CurrentState = MissionState.Failed;
-        Debug.Log("Mission Failed: bomb went off (player escaped).");
         MissionResultUI.Instance.ShowFailureStay("The bomb went off. The car is no longer drivable.\nBetter luck next time!");
         NotePopup.Show("You got out just in time... but that car's wrecked. Come back and try again anytime.", 5f);
     }
@@ -53,7 +51,6 @@ public class Mission5Manager : MonoBehaviour, IFailableMission
         if (CurrentState == MissionState.Success || CurrentState == MissionState.Failed) return;
 
         CurrentState = MissionState.Failed;
-        Debug.Log($"Mission Failed: {reason}");
         MissionResultUI.Instance.ShowFailure(reason); // shared fail screen, then back to Hub
     }
 }

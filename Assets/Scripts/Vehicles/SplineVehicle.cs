@@ -166,7 +166,6 @@ public class SplineVehicle : MonoBehaviour
         if (resumeRoutine != null) { StopCoroutine(resumeRoutine); resumeRoutine = null; }
         moving = true;
         state = State.DrivingToEnd;
-        Debug.Log($"{name} departing.");
         onDepartedStop.Invoke();
     }
 
@@ -177,7 +176,6 @@ public class SplineVehicle : MonoBehaviour
         if (resumeRoutine != null) { StopCoroutine(resumeRoutine); resumeRoutine = null; }
         currentSpeed = 0f;
         state = State.StoppedAtEnd;
-        Debug.Log($"{name} disabled and stopped.");
     }
 
     // Distance along the spline of the point nearest to a world position.
@@ -274,7 +272,6 @@ public class SplineVehicle : MonoBehaviour
             ownDistance = stopKnotDistance;
             currentSpeed = 0f;
             state = State.PausedAtStop;
-            Debug.Log($"{name} arrived at stop point.");
             onArrivedAtStop.Invoke();
 
             if (stopRelease == StopRelease.Timed)
@@ -287,7 +284,6 @@ public class SplineVehicle : MonoBehaviour
             ownDistance = endKnotDistance;
             currentSpeed = 0f;
             state = State.StoppedAtEnd;
-            Debug.Log($"{name} reached the end and stopped for good.");
             onReachedEnd.Invoke();
         }
     }

@@ -49,13 +49,11 @@ public class Health : MonoBehaviour
         if (isDead) return;
 
         currentHealth = Mathf.Max(0f, currentHealth - amount);
-        Debug.Log($"{name} took {amount:F0} damage ({currentHealth:F0}/{maxHealth:F0} left)");
 
         if (currentHealth <= 0f)
         {
             isDead = true;
             KilledByHeadshot = headshot;
-            Debug.Log($"{name} is down.");
             Died?.Invoke(); // first, so e.g. PlayerDeath is set before the mission reacts
             onDeath?.Invoke();
         }
@@ -69,7 +67,6 @@ public class Health : MonoBehaviour
 
         currentHealth = 0f;
         isDead = true;
-        Debug.Log($"{name} is down.");
         Died?.Invoke(); // first, so e.g. PlayerDeath is set before the mission reacts
         onDeath?.Invoke();
     }

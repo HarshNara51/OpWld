@@ -65,6 +65,16 @@ public class Mission1Manager : MonoBehaviour, IFailableMission
         // Train rolls out of the tunnel; its "On Arrived At Stop" event
         // starts TrainTimer once it's waiting at the platform.
         if (train != null) train.BeginMoving();
+        UpdateObjective();
+    }
+
+    // The top-left objective line (same one the Hotel mission uses)
+    private void UpdateObjective()
+    {
+        if (CurrentState != MissionState.InProgress) { ObjectiveHUD.Clear(); return; }
+        ObjectiveHUD.Set(IsCarryingCargo
+            ? $"Deliver the cargo to the train ({deliveredCount}/{TotalCargo})"
+            : $"Pick up the cargo ({deliveredCount}/{TotalCargo})");
     }
 
     public void OnCargoPickedUp()
@@ -73,7 +83,7 @@ public class Mission1Manager : MonoBehaviour, IFailableMission
 
         IsCarryingCargo = true;
         nextPickupIndex++;
-        Debug.Log($"Cargo picked up ({nextPickupIndex}/{TotalCargo})");
+        UpdateObjective();
     }
 
     public void OnCargoDelivered()
@@ -82,7 +92,6 @@ public class Mission1Manager : MonoBehaviour, IFailableMission
 
         IsCarryingCargo = false;
         deliveredCount++;
-        Debug.Log($"Items delivered: {deliveredCount}/{TotalCargo}");
 
         if (deliveredCount >= TotalCargo)
         {
@@ -91,6 +100,7 @@ public class Mission1Manager : MonoBehaviour, IFailableMission
         else
         {
             cargoPickups[nextPickupIndex].gameObject.SetActive(true);
+            UpdateObjective();
         }
     }
 
@@ -101,7 +111,7 @@ public class Mission1Manager : MonoBehaviour, IFailableMission
         if (CurrentState != MissionState.InProgress) return;
 
         HasTrainDeparted = true;
-        Debug.Log("Time's up - the train is leaving!");
+        NotePopup.Show("Time's up - the train is leaving!", 3f);
 
         if (train != null) train.Depart();
         else FailMission("Failed to deliver all cargo"); // no train assigned
@@ -123,8 +133,8 @@ public class Mission1Manager : MonoBehaviour, IFailableMission
         HasTrainDeparted = true;
         if (TrainTimer.Instance != null) TrainTimer.Instance.StopTimer();
         if (train != null) train.Depart(); // leaves with the cargo
+        ObjectiveHUD.Clear();
 
-        Debug.Log("Mission Complete!");
         GameManager.Instance.MarkMissionComplete(gameObject.scene.name); // saves progress
         MissionResultUI.Instance.ShowSuccess();
         if (cleanup != null) cleanup.ApplySuccessState();
@@ -138,8 +148,8 @@ public class Mission1Manager : MonoBehaviour, IFailableMission
         HasTrainDeparted = true;
         if (TrainTimer.Instance != null) TrainTimer.Instance.StopTimer();
         if (train != null) train.Depart(); // e.g. failed by suspicion - train leaves anyway
+        ObjectiveHUD.Clear();
 
-        Debug.Log($"Mission Failed: {reason}");
         MissionResultUI.Instance.ShowFailure(reason); // shared fail screen, then back to Hub
     }
 }

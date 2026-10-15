@@ -99,7 +99,6 @@ public class GameManager : MonoBehaviour
     {
         PlayerPrefs.SetInt(MissionDonePrefix + missionSceneName, 1);
         PlayerPrefs.Save();
-        Debug.Log($"Saved: {missionSceneName} completed");
     }
 
     // True in a mission's own scene until that mission is passed (the Hub never counts)

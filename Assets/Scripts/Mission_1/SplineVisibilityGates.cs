@@ -76,7 +76,6 @@ public class SplineVisibilityGates : MonoBehaviour
         if (allPassed && !allPassedFired)
         {
             allPassedFired = true;
-            Debug.Log("Whole train has passed the exit.");
             onAllPassedExit.Invoke();
         }
     }

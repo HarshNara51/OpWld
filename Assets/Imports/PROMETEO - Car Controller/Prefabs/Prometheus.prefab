@@ -210,7 +210,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::VehicleFuel
   tankSize: 100
   fuelPerKm: 10
-  highSpeedMultiplier: 1.5
+  highSpeedMultiplier: 1.4
   topSpeedKmh: 120
   infiniteFuel: 0
   carController: {fileID: 0}
@@ -286,7 +286,10 @@ MonoBehaviour:
   beams:
   - {fileID: 5101955470814795009}
   - {fileID: 2751845045325429074}
+  beamDistance: 70
   signalCycle: 0.7
+  useModelLamps: 1
+  modelLampGlow: 4
 --- !u!1 &934883528070179459
 GameObject:
   m_ObjectHideFlags: 0
@@ -652,7 +655,7 @@ Transform:
   m_GameObject: {fileID: 2036643036887610114}
   serializedVersion: 2
   m_LocalRotation: {x: -0.000000086563006, y: 0.99683934, z: 0.07944355, w: 0.0000010861727}
-  m_LocalPosition: {x: 0.6781277, y: 0.7938957, z: -2.6120634}
+  m_LocalPosition: {x: 0.661, y: 0.7938957, z: -2.612}
   m_LocalScale: {x: 0.21879993, y: 0.057290714, z: 0.025}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -815,6 +818,7 @@ GameObject:
   m_Component:
   - component: {fileID: 646499946819615587}
   - component: {fileID: 2751845045325429074}
+  - component: {fileID: 1568653711433859870}
   m_Layer: 0
   m_Name: Beam_Right
   m_TagString: Untagged
@@ -831,7 +835,7 @@ Transform:
   m_GameObject: {fileID: 3307548745491168943}
   serializedVersion: 2
   m_LocalRotation: {x: 0.05232799, y: 0.017428488, z: -0.0009133884, w: 0.99847746}
-  m_LocalPosition: {x: 0.6377449, y: 0.72458243, z: 2.417183}
+  m_LocalPosition: {x: 0.833, y: 0.667, z: 2.337}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -902,6 +906,35 @@ Light:
   m_LightUnit: 1
   m_LuxAtDistance: 1
   m_EnableSpotReflector: 1
+--- !u!114 &1568653711433859870
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3307548745491168943}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 474bcb49853aa07438625e644c072ee6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.RenderPipelines.Universal.Runtime::UnityEngine.Rendering.Universal.UniversalAdditionalLightData
+  m_UsePipelineSettings: 1
+  m_AdditionalLightsShadowResolutionTier: 2
+  m_CustomShadowLayers: 0
+  m_LightCookieSize: {x: 1, y: 1}
+  m_LightCookieOffset: {x: 0, y: 0}
+  m_SoftShadowQuality: 0
+  m_RenderingLayersMask:
+    serializedVersion: 0
+    m_Bits: 1
+  m_ShadowRenderingLayersMask:
+    serializedVersion: 0
+    m_Bits: 1
+  m_Version: 4
+  m_LightLayerMask: 1
+  m_ShadowLayerMask: 1
+  m_RenderingLayers: 1
+  m_ShadowRenderingLayers: 1
 --- !u!1 &3386343362015136015
 GameObject:
   m_ObjectHideFlags: 0
@@ -1037,6 +1070,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3588483037058653574}
   - component: {fileID: 5101955470814795009}
+  - component: {fileID: 569682003264086993}
   m_Layer: 0
   m_Name: Beam_Left
   m_TagString: Untagged
@@ -1053,7 +1087,7 @@ Transform:
   m_GameObject: {fileID: 5019297529450393808}
   serializedVersion: 2
   m_LocalRotation: {x: 0.05232799, y: -0.017428488, z: 0.0009133884, w: 0.99847746}
-  m_LocalPosition: {x: -0.6377449, y: 0.72458243, z: 2.417183}
+  m_LocalPosition: {x: -0.845, y: 0.65, z: 2.327}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1124,6 +1158,35 @@ Light:
   m_LightUnit: 1
   m_LuxAtDistance: 1
   m_EnableSpotReflector: 1
+--- !u!114 &569682003264086993
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5019297529450393808}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 474bcb49853aa07438625e644c072ee6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.RenderPipelines.Universal.Runtime::UnityEngine.Rendering.Universal.UniversalAdditionalLightData
+  m_UsePipelineSettings: 1
+  m_AdditionalLightsShadowResolutionTier: 2
+  m_CustomShadowLayers: 0
+  m_LightCookieSize: {x: 1, y: 1}
+  m_LightCookieOffset: {x: 0, y: 0}
+  m_SoftShadowQuality: 0
+  m_RenderingLayersMask:
+    serializedVersion: 0
+    m_Bits: 1
+  m_ShadowRenderingLayersMask:
+    serializedVersion: 0
+    m_Bits: 1
+  m_Version: 4
+  m_LightLayerMask: 1
+  m_ShadowLayerMask: 1
+  m_RenderingLayers: 1
+  m_ShadowRenderingLayers: 1
 --- !u!1 &6204759407096980703
 GameObject:
   m_ObjectHideFlags: 0
@@ -1241,7 +1304,7 @@ Transform:
   m_GameObject: {fileID: 6806684113946345186}
   serializedVersion: 2
   m_LocalRotation: {x: 0.1567331, y: -0.14779185, z: 0.02372783, w: 0.9762322}
-  m_LocalPosition: {x: -0.6377449, y: 0.72458243, z: 2.417183}
+  m_LocalPosition: {x: -0.845, y: 0.65, z: 2.327}
   m_LocalScale: {x: 0.24067992, y: 0.07002198, z: 0.025}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1362,7 +1425,7 @@ Transform:
   m_GameObject: {fileID: 8300142594212896845}
   serializedVersion: 2
   m_LocalRotation: {x: 0.0000000644805, y: 0.9968395, z: 0.07944162, w: -0.00000080910615}
-  m_LocalPosition: {x: -0.6781277, y: 0.79389566, z: -2.6120634}
+  m_LocalPosition: {x: -0.649, y: 0.79389566, z: -2.6120634}
   m_LocalScale: {x: 0.21879993, y: 0.057290714, z: 0.025}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1748,7 +1811,7 @@ Transform:
   m_GameObject: {fileID: 9119627428613752814}
   serializedVersion: 2
   m_LocalRotation: {x: 0.15673248, y: 0.1477918, z: -0.02372773, w: 0.9762323}
-  m_LocalPosition: {x: 0.6377449, y: 0.72458243, z: 2.417183}
+  m_LocalPosition: {x: 0.833, y: 0.667, z: 2.337}
   m_LocalScale: {x: 0.24067992, y: 0.07002198, z: 0.025}
   m_ConstrainProportionsScale: 0
   m_Children: []
