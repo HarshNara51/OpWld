@@ -107,6 +107,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3722782654828092904}
   - component: {fileID: 5730368692693802368}
+  - component: {fileID: 5170777363762404851}
   m_Layer: 0
   m_Name: Uplight (Aimable)
   m_TagString: Untagged
@@ -148,6 +149,21 @@ MonoBehaviour:
   tilt: 35
   swivel: {fileID: 3523014073880690083}
   head: {fileID: 7814413634403059426}
+--- !u!114 &5170777363762404851
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4829880872136973969}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b9555042cfc14f4888cc956b71c9fac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::NightOnly
+  components:
+  - {fileID: 4961204011352170707}
+  renderers: []
 --- !u!1 &7164533155978773360
 GameObject:
   m_ObjectHideFlags: 0

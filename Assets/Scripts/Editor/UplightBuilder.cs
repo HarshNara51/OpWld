@@ -100,6 +100,14 @@ public static class UplightBuilder
         so.FindProperty("head").objectReferenceValue = head.transform;
         so.ApplyModifiedPropertiesWithoutUndo();
 
+        // Light only in Night scenes (the lamp itself stays visible)
+        var night = root.AddComponent<NightOnly>();
+        var nso = new SerializedObject(night);
+        SerializedProperty comps = nso.FindProperty("components");
+        comps.arraySize = 1;
+        comps.GetArrayElementAtIndex(0).objectReferenceValue = light;
+        nso.ApplyModifiedPropertiesWithoutUndo();
+
         PrefabUtility.SaveAsPrefabAsset(root, PrefabPath);
         Object.DestroyImmediate(root);
         AssetDatabase.SaveAssets();

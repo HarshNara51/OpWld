@@ -40,6 +40,7 @@ public class TrafficCar : MonoBehaviour
     private float ignoreTrafficUntil;
 
     private WheelSpinner wheelSpinner;
+    private CarLights lights;
     private bool axleSteering;
     private float rearAxleZ, wheelbase;
     private Vector3 rearPoint;
@@ -55,6 +56,7 @@ public class TrafficCar : MonoBehaviour
         StripPhysics();
         Measure();
         SetupWheels();
+        lights = GetComponentInChildren<CarLights>();
 
         Path = path;
         distance = startDistance;
@@ -190,6 +192,17 @@ public class TrafficCar : MonoBehaviour
         }
 
         Place();
+        UpdateSignal();
+    }
+
+    // Indicator on while the road just ahead turns sharply (a junction or corner),
+    // off again once the car is through it. Gentle bends don't count.
+    private void UpdateSignal()
+    {
+        if (lights == null) return;
+        float front = distance + FrontZ;
+        float yaw = Vector3.SignedAngle(Path.DirectionAt(front - 3f), Path.DirectionAt(Mathf.Min(front + 25f, Path.Length)), Vector3.up);
+        lights.SetSignal(Mathf.Abs(yaw) > 30f ? (yaw > 0f ? 1 : -1) : 0); // positive = turning right
     }
 
     // Slow enough now to make every bend in the next stretch of road
