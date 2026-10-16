@@ -5583,8 +5583,71 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7470336060906289227}
+  - {fileID: 334460365}
   m_Father: {fileID: 1276025580}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &197020376
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 334460365}
+    m_Modifications:
+    - target: {fileID: 281859814891231263, guid: 450a7f258ca02c6428c4ecbd8ea4679b, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 619
+      objectReference: {fileID: 0}
+    - target: {fileID: 281859814891231263, guid: 450a7f258ca02c6428c4ecbd8ea4679b, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 6.2425156
+      objectReference: {fileID: 0}
+    - target: {fileID: 281859814891231263, guid: 450a7f258ca02c6428c4ecbd8ea4679b, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 502.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 281859814891231263, guid: 450a7f258ca02c6428c4ecbd8ea4679b, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 281859814891231263, guid: 450a7f258ca02c6428c4ecbd8ea4679b, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 281859814891231263, guid: 450a7f258ca02c6428c4ecbd8ea4679b, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 281859814891231263, guid: 450a7f258ca02c6428c4ecbd8ea4679b, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 281859814891231263, guid: 450a7f258ca02c6428c4ecbd8ea4679b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 281859814891231263, guid: 450a7f258ca02c6428c4ecbd8ea4679b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 281859814891231263, guid: 450a7f258ca02c6428c4ecbd8ea4679b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6446946711060317972, guid: 450a7f258ca02c6428c4ecbd8ea4679b, type: 3}
+      propertyPath: m_Name
+      value: Canopy Tube 8
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 450a7f258ca02c6428c4ecbd8ea4679b, type: 3}
+--- !u!4 &197020377 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 281859814891231263, guid: 450a7f258ca02c6428c4ecbd8ea4679b, type: 3}
+  m_PrefabInstance: {fileID: 197020376}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &197669851
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -10455,6 +10518,49 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d3c81b7ccb8f3224db463deb4de8c0b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CameraOrbit
+--- !u!1 &334460364
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 334460365}
+  m_Layer: 0
+  m_Name: Canopy Lights
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &334460365
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 334460364}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -286.49954, y: 0.00001, z: -534.5087}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1275462918}
+  - {fileID: 1632343597}
+  - {fileID: 556706291}
+  - {fileID: 751730439}
+  - {fileID: 1432291328}
+  - {fileID: 1368536806}
+  - {fileID: 1356576452}
+  - {fileID: 197020377}
+  - {fileID: 2036314827}
+  - {fileID: 1545321088}
+  - {fileID: 1726458688}
+  - {fileID: 2054233166}
+  m_Father: {fileID: 188199389}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &336021815
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -16383,6 +16489,68 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 2556575398579934989, guid: fe3dc9f3ed5175d46a773c9bf8b80182, type: 3}
   m_PrefabInstance: {fileID: 553707008}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &556706290
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 334460365}
+    m_Modifications:
+    - target: {fileID: 3611148361615738197, guid: 28c430cf9343e2145b12d12629a70637, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 612.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3611148361615738197, guid: 28c430cf9343e2145b12d12629a70637, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 6.2425165
+      objectReference: {fileID: 0}
+    - target: {fileID: 3611148361615738197, guid: 28c430cf9343e2145b12d12629a70637, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 491.6
+      objectReference: {fileID: 0}
+    - target: {fileID: 3611148361615738197, guid: 28c430cf9343e2145b12d12629a70637, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3611148361615738197, guid: 28c430cf9343e2145b12d12629a70637, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3611148361615738197, guid: 28c430cf9343e2145b12d12629a70637, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3611148361615738197, guid: 28c430cf9343e2145b12d12629a70637, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3611148361615738197, guid: 28c430cf9343e2145b12d12629a70637, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3611148361615738197, guid: 28c430cf9343e2145b12d12629a70637, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3611148361615738197, guid: 28c430cf9343e2145b12d12629a70637, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5168611145845042329, guid: 28c430cf9343e2145b12d12629a70637, type: 3}
+      propertyPath: m_Name
+      value: Canopy Tube 3
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 28c430cf9343e2145b12d12629a70637, type: 3}
+--- !u!4 &556706291 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3611148361615738197, guid: 28c430cf9343e2145b12d12629a70637, type: 3}
+  m_PrefabInstance: {fileID: 556706290}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &557482249
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -21111,6 +21279,68 @@ PrefabInstance:
 Transform:
   m_CorrespondingSourceObject: {fileID: 5223664099914683835, guid: 50735db97b0ffca498141f7612b276fb, type: 3}
   m_PrefabInstance: {fileID: 751244367}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &751730438
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 334460365}
+    m_Modifications:
+    - target: {fileID: 281859814891231263, guid: 450a7f258ca02c6428c4ecbd8ea4679b, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 619
+      objectReference: {fileID: 0}
+    - target: {fileID: 281859814891231263, guid: 450a7f258ca02c6428c4ecbd8ea4679b, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 6.2425156
+      objectReference: {fileID: 0}
+    - target: {fileID: 281859814891231263, guid: 450a7f258ca02c6428c4ecbd8ea4679b, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 491.6
+      objectReference: {fileID: 0}
+    - target: {fileID: 281859814891231263, guid: 450a7f258ca02c6428c4ecbd8ea4679b, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 281859814891231263, guid: 450a7f258ca02c6428c4ecbd8ea4679b, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 281859814891231263, guid: 450a7f258ca02c6428c4ecbd8ea4679b, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 281859814891231263, guid: 450a7f258ca02c6428c4ecbd8ea4679b, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 281859814891231263, guid: 450a7f258ca02c6428c4ecbd8ea4679b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 281859814891231263, guid: 450a7f258ca02c6428c4ecbd8ea4679b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 281859814891231263, guid: 450a7f258ca02c6428c4ecbd8ea4679b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6446946711060317972, guid: 450a7f258ca02c6428c4ecbd8ea4679b, type: 3}
+      propertyPath: m_Name
+      value: Canopy Tube 4
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 450a7f258ca02c6428c4ecbd8ea4679b, type: 3}
+--- !u!4 &751730439 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 281859814891231263, guid: 450a7f258ca02c6428c4ecbd8ea4679b, type: 3}
+  m_PrefabInstance: {fileID: 751730438}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &751916027
 GameObject:
@@ -35525,6 +35755,68 @@ Transform:
   - {fileID: 947126220}
   m_Father: {fileID: 51621413}
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
+--- !u!1001 &1275462917
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 334460365}
+    m_Modifications:
+    - target: {fileID: 281859814891231263, guid: 450a7f258ca02c6428c4ecbd8ea4679b, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 612.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 281859814891231263, guid: 450a7f258ca02c6428c4ecbd8ea4679b, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 6.2425165
+      objectReference: {fileID: 0}
+    - target: {fileID: 281859814891231263, guid: 450a7f258ca02c6428c4ecbd8ea4679b, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 486
+      objectReference: {fileID: 0}
+    - target: {fileID: 281859814891231263, guid: 450a7f258ca02c6428c4ecbd8ea4679b, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 281859814891231263, guid: 450a7f258ca02c6428c4ecbd8ea4679b, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 281859814891231263, guid: 450a7f258ca02c6428c4ecbd8ea4679b, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 281859814891231263, guid: 450a7f258ca02c6428c4ecbd8ea4679b, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 281859814891231263, guid: 450a7f258ca02c6428c4ecbd8ea4679b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 281859814891231263, guid: 450a7f258ca02c6428c4ecbd8ea4679b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 281859814891231263, guid: 450a7f258ca02c6428c4ecbd8ea4679b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6446946711060317972, guid: 450a7f258ca02c6428c4ecbd8ea4679b, type: 3}
+      propertyPath: m_Name
+      value: Canopy Tube 1
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 450a7f258ca02c6428c4ecbd8ea4679b, type: 3}
+--- !u!4 &1275462918 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 281859814891231263, guid: 450a7f258ca02c6428c4ecbd8ea4679b, type: 3}
+  m_PrefabInstance: {fileID: 1275462917}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1276025579
 GameObject:
   m_ObjectHideFlags: 0
@@ -38074,6 +38366,68 @@ Transform:
   m_Children: []
   m_Father: {fileID: 695053929}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &1356576451
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 334460365}
+    m_Modifications:
+    - target: {fileID: 3611148361615738197, guid: 28c430cf9343e2145b12d12629a70637, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 612.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3611148361615738197, guid: 28c430cf9343e2145b12d12629a70637, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 6.2425165
+      objectReference: {fileID: 0}
+    - target: {fileID: 3611148361615738197, guid: 28c430cf9343e2145b12d12629a70637, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 502.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 3611148361615738197, guid: 28c430cf9343e2145b12d12629a70637, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3611148361615738197, guid: 28c430cf9343e2145b12d12629a70637, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3611148361615738197, guid: 28c430cf9343e2145b12d12629a70637, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3611148361615738197, guid: 28c430cf9343e2145b12d12629a70637, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3611148361615738197, guid: 28c430cf9343e2145b12d12629a70637, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3611148361615738197, guid: 28c430cf9343e2145b12d12629a70637, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3611148361615738197, guid: 28c430cf9343e2145b12d12629a70637, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5168611145845042329, guid: 28c430cf9343e2145b12d12629a70637, type: 3}
+      propertyPath: m_Name
+      value: Canopy Tube 7
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 28c430cf9343e2145b12d12629a70637, type: 3}
+--- !u!4 &1356576452 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3611148361615738197, guid: 28c430cf9343e2145b12d12629a70637, type: 3}
+  m_PrefabInstance: {fileID: 1356576451}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1357058806
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -38453,6 +38807,68 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!1001 &1368536805
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 334460365}
+    m_Modifications:
+    - target: {fileID: 3611148361615738197, guid: 28c430cf9343e2145b12d12629a70637, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 619
+      objectReference: {fileID: 0}
+    - target: {fileID: 3611148361615738197, guid: 28c430cf9343e2145b12d12629a70637, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 6.2425156
+      objectReference: {fileID: 0}
+    - target: {fileID: 3611148361615738197, guid: 28c430cf9343e2145b12d12629a70637, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 497.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3611148361615738197, guid: 28c430cf9343e2145b12d12629a70637, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3611148361615738197, guid: 28c430cf9343e2145b12d12629a70637, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3611148361615738197, guid: 28c430cf9343e2145b12d12629a70637, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3611148361615738197, guid: 28c430cf9343e2145b12d12629a70637, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3611148361615738197, guid: 28c430cf9343e2145b12d12629a70637, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3611148361615738197, guid: 28c430cf9343e2145b12d12629a70637, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3611148361615738197, guid: 28c430cf9343e2145b12d12629a70637, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5168611145845042329, guid: 28c430cf9343e2145b12d12629a70637, type: 3}
+      propertyPath: m_Name
+      value: Canopy Tube 6
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 28c430cf9343e2145b12d12629a70637, type: 3}
+--- !u!4 &1368536806 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3611148361615738197, guid: 28c430cf9343e2145b12d12629a70637, type: 3}
+  m_PrefabInstance: {fileID: 1368536805}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1369417883
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -40087,6 +40503,68 @@ MonoBehaviour:
   m_ShadowLayerMask: 1
   m_RenderingLayers: 1
   m_ShadowRenderingLayers: 1
+--- !u!1001 &1432291327
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 334460365}
+    m_Modifications:
+    - target: {fileID: 281859814891231263, guid: 450a7f258ca02c6428c4ecbd8ea4679b, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 612.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 281859814891231263, guid: 450a7f258ca02c6428c4ecbd8ea4679b, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 6.2425165
+      objectReference: {fileID: 0}
+    - target: {fileID: 281859814891231263, guid: 450a7f258ca02c6428c4ecbd8ea4679b, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 497.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 281859814891231263, guid: 450a7f258ca02c6428c4ecbd8ea4679b, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 281859814891231263, guid: 450a7f258ca02c6428c4ecbd8ea4679b, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 281859814891231263, guid: 450a7f258ca02c6428c4ecbd8ea4679b, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 281859814891231263, guid: 450a7f258ca02c6428c4ecbd8ea4679b, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 281859814891231263, guid: 450a7f258ca02c6428c4ecbd8ea4679b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 281859814891231263, guid: 450a7f258ca02c6428c4ecbd8ea4679b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 281859814891231263, guid: 450a7f258ca02c6428c4ecbd8ea4679b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6446946711060317972, guid: 450a7f258ca02c6428c4ecbd8ea4679b, type: 3}
+      propertyPath: m_Name
+      value: Canopy Tube 5
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 450a7f258ca02c6428c4ecbd8ea4679b, type: 3}
+--- !u!4 &1432291328 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 281859814891231263, guid: 450a7f258ca02c6428c4ecbd8ea4679b, type: 3}
+  m_PrefabInstance: {fileID: 1432291327}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1434145124
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -42726,6 +43204,68 @@ MonoBehaviour:
   reverseSpin: 0
   maxSteerAngle: 35
   steerResponsiveness: 6
+--- !u!1001 &1545321087
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 334460365}
+    m_Modifications:
+    - target: {fileID: 3611148361615738197, guid: 28c430cf9343e2145b12d12629a70637, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 619
+      objectReference: {fileID: 0}
+    - target: {fileID: 3611148361615738197, guid: 28c430cf9343e2145b12d12629a70637, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 6.2425156
+      objectReference: {fileID: 0}
+    - target: {fileID: 3611148361615738197, guid: 28c430cf9343e2145b12d12629a70637, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 508.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 3611148361615738197, guid: 28c430cf9343e2145b12d12629a70637, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3611148361615738197, guid: 28c430cf9343e2145b12d12629a70637, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3611148361615738197, guid: 28c430cf9343e2145b12d12629a70637, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3611148361615738197, guid: 28c430cf9343e2145b12d12629a70637, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3611148361615738197, guid: 28c430cf9343e2145b12d12629a70637, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3611148361615738197, guid: 28c430cf9343e2145b12d12629a70637, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3611148361615738197, guid: 28c430cf9343e2145b12d12629a70637, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5168611145845042329, guid: 28c430cf9343e2145b12d12629a70637, type: 3}
+      propertyPath: m_Name
+      value: Canopy Tube 10
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 28c430cf9343e2145b12d12629a70637, type: 3}
+--- !u!4 &1545321088 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3611148361615738197, guid: 28c430cf9343e2145b12d12629a70637, type: 3}
+  m_PrefabInstance: {fileID: 1545321087}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1547333285
 GameObject:
   m_ObjectHideFlags: 0
@@ -45796,6 +46336,68 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 7540118288272239799, guid: 81effee8faf61a14f95796687cbb181e, type: 3}
   m_PrefabInstance: {fileID: 1631306980}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &1632343596
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 334460365}
+    m_Modifications:
+    - target: {fileID: 3611148361615738197, guid: 28c430cf9343e2145b12d12629a70637, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 619
+      objectReference: {fileID: 0}
+    - target: {fileID: 3611148361615738197, guid: 28c430cf9343e2145b12d12629a70637, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 6.2425156
+      objectReference: {fileID: 0}
+    - target: {fileID: 3611148361615738197, guid: 28c430cf9343e2145b12d12629a70637, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 486
+      objectReference: {fileID: 0}
+    - target: {fileID: 3611148361615738197, guid: 28c430cf9343e2145b12d12629a70637, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3611148361615738197, guid: 28c430cf9343e2145b12d12629a70637, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3611148361615738197, guid: 28c430cf9343e2145b12d12629a70637, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3611148361615738197, guid: 28c430cf9343e2145b12d12629a70637, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3611148361615738197, guid: 28c430cf9343e2145b12d12629a70637, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3611148361615738197, guid: 28c430cf9343e2145b12d12629a70637, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3611148361615738197, guid: 28c430cf9343e2145b12d12629a70637, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5168611145845042329, guid: 28c430cf9343e2145b12d12629a70637, type: 3}
+      propertyPath: m_Name
+      value: Canopy Tube 2
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 28c430cf9343e2145b12d12629a70637, type: 3}
+--- !u!4 &1632343597 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3611148361615738197, guid: 28c430cf9343e2145b12d12629a70637, type: 3}
+  m_PrefabInstance: {fileID: 1632343596}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1635440066
 GameObject:
   m_ObjectHideFlags: 0
@@ -48392,6 +48994,68 @@ PrefabInstance:
 Transform:
   m_CorrespondingSourceObject: {fileID: 5223664099914683835, guid: 50735db97b0ffca498141f7612b276fb, type: 3}
   m_PrefabInstance: {fileID: 1725811561}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &1726458687
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 334460365}
+    m_Modifications:
+    - target: {fileID: 3611148361615738197, guid: 28c430cf9343e2145b12d12629a70637, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 612.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3611148361615738197, guid: 28c430cf9343e2145b12d12629a70637, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 6.2425165
+      objectReference: {fileID: 0}
+    - target: {fileID: 3611148361615738197, guid: 28c430cf9343e2145b12d12629a70637, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 514
+      objectReference: {fileID: 0}
+    - target: {fileID: 3611148361615738197, guid: 28c430cf9343e2145b12d12629a70637, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3611148361615738197, guid: 28c430cf9343e2145b12d12629a70637, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3611148361615738197, guid: 28c430cf9343e2145b12d12629a70637, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3611148361615738197, guid: 28c430cf9343e2145b12d12629a70637, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3611148361615738197, guid: 28c430cf9343e2145b12d12629a70637, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3611148361615738197, guid: 28c430cf9343e2145b12d12629a70637, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3611148361615738197, guid: 28c430cf9343e2145b12d12629a70637, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5168611145845042329, guid: 28c430cf9343e2145b12d12629a70637, type: 3}
+      propertyPath: m_Name
+      value: Canopy Tube 11
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 28c430cf9343e2145b12d12629a70637, type: 3}
+--- !u!4 &1726458688 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3611148361615738197, guid: 28c430cf9343e2145b12d12629a70637, type: 3}
+  m_PrefabInstance: {fileID: 1726458687}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1728791632
 PrefabInstance:
@@ -57949,6 +58613,68 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!1001 &2036314826
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 334460365}
+    m_Modifications:
+    - target: {fileID: 281859814891231263, guid: 450a7f258ca02c6428c4ecbd8ea4679b, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 612.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 281859814891231263, guid: 450a7f258ca02c6428c4ecbd8ea4679b, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 6.2425165
+      objectReference: {fileID: 0}
+    - target: {fileID: 281859814891231263, guid: 450a7f258ca02c6428c4ecbd8ea4679b, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 508.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 281859814891231263, guid: 450a7f258ca02c6428c4ecbd8ea4679b, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 281859814891231263, guid: 450a7f258ca02c6428c4ecbd8ea4679b, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 281859814891231263, guid: 450a7f258ca02c6428c4ecbd8ea4679b, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 281859814891231263, guid: 450a7f258ca02c6428c4ecbd8ea4679b, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 281859814891231263, guid: 450a7f258ca02c6428c4ecbd8ea4679b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 281859814891231263, guid: 450a7f258ca02c6428c4ecbd8ea4679b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 281859814891231263, guid: 450a7f258ca02c6428c4ecbd8ea4679b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6446946711060317972, guid: 450a7f258ca02c6428c4ecbd8ea4679b, type: 3}
+      propertyPath: m_Name
+      value: Canopy Tube 9
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 450a7f258ca02c6428c4ecbd8ea4679b, type: 3}
+--- !u!4 &2036314827 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 281859814891231263, guid: 450a7f258ca02c6428c4ecbd8ea4679b, type: 3}
+  m_PrefabInstance: {fileID: 2036314826}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &2038745498
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -58582,6 +59308,68 @@ PrefabInstance:
 Transform:
   m_CorrespondingSourceObject: {fileID: 1062534682570061587, guid: e3cf10508107a5044a28e614cfc91317, type: 3}
   m_PrefabInstance: {fileID: 2052770312}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &2054233165
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 334460365}
+    m_Modifications:
+    - target: {fileID: 281859814891231263, guid: 450a7f258ca02c6428c4ecbd8ea4679b, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 619
+      objectReference: {fileID: 0}
+    - target: {fileID: 281859814891231263, guid: 450a7f258ca02c6428c4ecbd8ea4679b, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 6.2425156
+      objectReference: {fileID: 0}
+    - target: {fileID: 281859814891231263, guid: 450a7f258ca02c6428c4ecbd8ea4679b, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 514
+      objectReference: {fileID: 0}
+    - target: {fileID: 281859814891231263, guid: 450a7f258ca02c6428c4ecbd8ea4679b, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 281859814891231263, guid: 450a7f258ca02c6428c4ecbd8ea4679b, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 281859814891231263, guid: 450a7f258ca02c6428c4ecbd8ea4679b, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 281859814891231263, guid: 450a7f258ca02c6428c4ecbd8ea4679b, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 281859814891231263, guid: 450a7f258ca02c6428c4ecbd8ea4679b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 281859814891231263, guid: 450a7f258ca02c6428c4ecbd8ea4679b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 281859814891231263, guid: 450a7f258ca02c6428c4ecbd8ea4679b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6446946711060317972, guid: 450a7f258ca02c6428c4ecbd8ea4679b, type: 3}
+      propertyPath: m_Name
+      value: Canopy Tube 12
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 450a7f258ca02c6428c4ecbd8ea4679b, type: 3}
+--- !u!4 &2054233166 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 281859814891231263, guid: 450a7f258ca02c6428c4ecbd8ea4679b, type: 3}
+  m_PrefabInstance: {fileID: 2054233165}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &2055150605
 PrefabInstance:

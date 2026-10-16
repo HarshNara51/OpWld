@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 // Put this on each guard. The guard stands at his post (wherever he is
@@ -8,6 +9,10 @@ using UnityEngine;
 // The walk back is the takedown window: EliminateTarget only allows a
 // takedown from behind. If the player is standing near the investigate
 // spot when he arrives, he questions them (on-screen line + suspicion).
+//
+// Guards watch each other: if he SEES another guard being taken down
+// (close enough, in his view, no wall between), he raises the alarm and
+// the mission fails like being caught.
 public class GuardAI : MonoBehaviour
 {
     public enum State { OnPost, Investigating, Looking, Returning, Caught, Down }
@@ -45,6 +50,22 @@ public class GuardAI : MonoBehaviour
     [SerializeField] private bool caughtMeansBusted = false;
     [SerializeField] private float bustDelay = 4f;
 
+    [Header("Witnessing a takedown")]
+    [Tooltip("If he sees another guard being taken down, he raises the alarm (mission fails like being caught)")]
+    [SerializeField] private bool reactToTakedowns = true;
+    [Tooltip("How far away he can see it happen")]
+    [SerializeField] private float witnessDistance = 15f;
+    [Tooltip("Width of his view for this, in degrees (wider than his normal view - a struggle catches the eye)")]
+    [Range(10f, 360f)][SerializeField] private float witnessViewAngle = 150f;
+    [Tooltip("This close he hears the struggle - notices it whichever way he's facing (walls still block)")]
+    [SerializeField] private float hearDistance = 6f;
+    [TextArea(2, 4)]
+    [SerializeField] private string alarmLine = "Hey! Man down! Don't move!";
+    [Tooltip("Seconds between his shout and the fail screen")]
+    [SerializeField] private float alarmDelay = 2.5f;
+
+    private static readonly List<GuardAI> All = new List<GuardAI>();
+
     [Header("Takedown")]
     [SerializeField] private float takedownRange = 2.2f;
     [Tooltip("Width of the 'behind him' zone in degrees")]
@@ -73,6 +94,9 @@ public class GuardAI : MonoBehaviour
 
         postTimer = Random.Range(pauseAtPost.x, pauseAtPost.y);
     }
+
+    private void OnEnable() => All.Add(this);
+    private void OnDisable() => All.Remove(this);
 
     // Called by NoiseMaker
     public void Investigate()
@@ -218,11 +242,64 @@ public class GuardAI : MonoBehaviour
 
     public void TakeDown()
     {
+        // Anyone watching? (before he goes down - dying switches this script off)
+        foreach (GuardAI other in All.ToArray())
+            if (other != this) other.WitnessTakedown(this);
+
         CurrentState = State.Down;
 
         // With an NPCDeath he plays his death animation first, then disappears
         if (TryGetComponent(out NPCDeath death)) death.Die();
         else gameObject.SetActive(false); // also switches off his SuspicionSource
+    }
+
+    // Did he just see that? Close enough, inside his view, and nothing solid in between.
+    private void WitnessTakedown(GuardAI victim)
+    {
+        if (!reactToTakedowns || CurrentState == State.Down || CurrentState == State.Caught) return;
+
+        Vector3 eye = BodyCentre(this) + Vector3.up * 0.5f;
+        Vector3 target = BodyCentre(victim);
+        Vector3 toVictim = target - eye;
+        Vector3 flat = new Vector3(toVictim.x, 0f, toVictim.z);
+        if (flat.magnitude > witnessDistance) return;
+
+        Vector3 forward = transform.forward;
+        forward.y = 0f;
+        if (flat.magnitude > hearDistance && Vector3.Angle(forward, flat) > witnessViewAngle * 0.5f) return;
+
+        // Walls, floors, doors block the view; the two guards and the player don't
+        // (back faces count too - many interior walls are single-sided)
+        Transform playerRoot = player != null ? player.root : null;
+        bool backfaces = Physics.queriesHitBackfaces;
+        Physics.queriesHitBackfaces = true;
+        RaycastHit[] hits = Physics.RaycastAll(eye, toVictim.normalized, toVictim.magnitude, ~0, QueryTriggerInteraction.Ignore);
+        Physics.queriesHitBackfaces = backfaces;
+        foreach (RaycastHit hit in hits)
+        {
+            Transform t = hit.transform;
+            if (t.IsChildOf(transform) || t.IsChildOf(victim.transform)) continue;
+            if (playerRoot != null && t.root == playerRoot) continue;
+            return;
+        }
+
+        // Raise the alarm: he freezes, faces the player, shouts - then it's over
+        CurrentState = State.Caught;
+        caughtTimer = alarmDelay;
+        questionCooldown = float.MaxValue;
+        NotePopup.Show(alarmLine, alarmDelay);
+    }
+
+    // Middle of his body (his pivot can be at his feet or his hips depending on the model)
+    private static Vector3 BodyCentre(GuardAI guard)
+    {
+        bool found = false;
+        Bounds b = default;
+        foreach (Renderer r in guard.GetComponentsInChildren<SkinnedMeshRenderer>())
+        {
+            if (!found) { b = r.bounds; found = true; } else b.Encapsulate(r.bounds);
+        }
+        return found ? b.center : guard.transform.position + Vector3.up;
     }
 
     private Vector3 PathPoint(int index)

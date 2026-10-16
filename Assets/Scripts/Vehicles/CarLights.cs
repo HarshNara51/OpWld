@@ -12,6 +12,10 @@ using UnityEngine;
 //                             near the player, so far-away traffic costs nothing
 //   Turn signals           : traffic only, day or night, blink while the
 //                             car is about to turn / turning (TrafficCar sets them)
+//   Brake lights           : tail lamps are DIM at night and flare up BRIGHT
+//                             (bloom) while braking - day or night.
+//                             Player: Space, or S while still rolling forward.
+//                             Traffic: slowing down, or standing in a queue.
 //
 // Cars whose model has its own lamp material (name contains "light" or
 // "emission", e.g. PCC_Light_Mat, Lights, 7-Light, or the *_HeadLight /
@@ -36,6 +40,14 @@ public class CarLights : MonoBehaviour
     [Tooltip("Seconds per signal blink (on + off)")]
     [SerializeField] private float signalCycle = 0.7f;
 
+    [Header("Brake lights")]
+    [Tooltip("Tail lamps at night when not braking (fraction of full glow)")]
+    [Range(0.05f, 1f)][SerializeField] private float tailDim = 0.35f;
+    [Tooltip("Tail lamps while braking (times full glow - above 1 blooms harder)")]
+    [SerializeField] private float brakeBright = 2f;
+    [Tooltip("Traffic: slowing faster than this (m/s per second) counts as braking")]
+    [SerializeField] private float trafficBrakeDecel = 1f;
+
     [Header("The model's own lamps")]
     [Tooltip("Light up the car model's own lamp material(s) instead of the dots, if it has any")]
     [SerializeField] private bool useModelLamps = true;
@@ -48,11 +60,15 @@ public class CarLights : MonoBehaviour
         public bool wasEmissive;
         public Color offColor, onColor;
         public Texture offMap, onMap;
+        public bool head, tail;     // which end(s) of the car it lights
     }
     private readonly List<ModelLamp> modelLamps = new List<ModelLamp>();
     private bool modelHasHead, modelHasTail;
+    private bool modelHasTailOnly;   // a lamp material just for the back (can brake-flash on its own)
 
     private VehicleInteraction vehicle;
+    private TrafficCar trafficCar;   // only set on cars the traffic system is driving
+    private float nextTrafficCheck;
     private int signal;          // -1 left, 0 off, +1 right
     private bool? lampsShown;    // last state, so renderers are only touched on change
     private bool? leftShown, rightShown;
@@ -60,10 +76,17 @@ public class CarLights : MonoBehaviour
     private float nextDistanceCheck;
     private bool nearPlayer;
     private static Transform player;
+    private Rigidbody body;
+    private bool? brakeShown;
+    private float lastSpeed, brakeHold;
+    private MaterialPropertyBlock block;
+    private static readonly int BaseColorId = Shader.PropertyToID("_BaseColor");
 
     private void Awake()
     {
         vehicle = GetComponentInParent<VehicleInteraction>();
+        body = GetComponentInParent<Rigidbody>();
+        block = new MaterialPropertyBlock();
         SetAll(headlamps, false); SetAll(tailLamps, false);
         SetAll(leftSignals, false); SetAll(rightSignals, false);
         if (beams != null) foreach (Light l in beams) if (l != null) l.enabled = false;
@@ -100,13 +123,17 @@ public class CarLights : MonoBehaviour
                 {
                     copy = new Material(m) { name = m.name + " (lamp)" };
                     copies[m] = copy;
-                    modelLamps.Add(MakeLamp(copy));
 
                     string n = m.name.ToLowerInvariant();
                     bool tail = n.Contains("tail") || n.Contains("rear") || n.Contains("brake");
                     bool head = n.Contains("head") || n.Contains("front");
-                    if (head || !tail) modelHasHead = true;
-                    if (tail || !head) modelHasTail = true;
+                    ModelLamp lamp = MakeLamp(copy);
+                    lamp.head = head || !tail;
+                    lamp.tail = tail || !head;
+                    modelLamps.Add(lamp);
+                    if (lamp.head) modelHasHead = true;
+                    if (lamp.tail) modelHasTail = true;
+                    if (lamp.tail && !lamp.head) modelHasTailOnly = true;
                 }
                 mats[i] = copy;
                 changed = true;
@@ -141,15 +168,53 @@ public class CarLights : MonoBehaviour
         return lamp;
     }
 
-    private void SetModelLamps(bool on)
+    // Head / both-ends lamps: on or off. Back-only lamps: off, dim (night) or bright (braking).
+    private void SetModelLamps(bool on, bool braking)
     {
         foreach (ModelLamp l in modelLamps)
         {
             if (l.material == null) continue;
-            if (on || l.wasEmissive) l.material.EnableKeyword("_EMISSION");
+            bool backOnly = l.tail && !l.head;
+            float level = backOnly ? (braking ? brakeBright : on ? tailDim : 0f) : (on ? 1f : 0f);
+            bool lit = level > 0f;
+            if (lit || l.wasEmissive) l.material.EnableKeyword("_EMISSION");
             else l.material.DisableKeyword("_EMISSION");
-            if (l.material.HasProperty("_EmissionColor")) l.material.SetColor("_EmissionColor", on ? l.onColor : l.offColor);
-            if (l.material.HasProperty("_EmissionMap")) l.material.SetTexture("_EmissionMap", on ? l.onMap : l.offMap);
+            if (l.material.HasProperty("_EmissionColor")) l.material.SetColor("_EmissionColor", lit ? l.onColor * level : l.offColor);
+            if (l.material.HasProperty("_EmissionMap")) l.material.SetTexture("_EmissionMap", lit ? l.onMap : l.offMap);
+        }
+    }
+
+    // Player: handbrake, or "reverse" while still rolling forward (= braking).
+    // Traffic: slowing down, or standing still (holding the brakes in a queue).
+    private bool IsBraking(bool driven)
+    {
+        if (kind == Kind.Player)
+        {
+            if (!driven) return false;
+            float forward = body != null ? Vector3.Dot(body.linearVelocity, body.transform.forward) : 0f;
+            return GameKeys.Held(GameAction.Handbrake) || (GameKeys.Held(GameAction.Reverse) && forward > 0.5f);
+        }
+        if (trafficCar == null || Time.deltaTime <= 0f) return false;
+        float speed = trafficCar.Speed;
+        float decel = (lastSpeed - speed) / Time.deltaTime;
+        lastSpeed = speed;
+        if (decel > trafficBrakeDecel || speed < 0.3f) brakeHold = 0.35f; // short hold so they don't flicker
+        else brakeHold -= Time.deltaTime;
+        return brakeHold > 0f;
+    }
+
+    // Tail dots: dim normally, bright while braking (per-car colour, the shared material stays as is)
+    private void SetTailDots(bool visible, float level)
+    {
+        if (tailLamps == null) return;
+        foreach (Renderer r in tailLamps)
+        {
+            if (r == null) continue;
+            r.enabled = visible;
+            if (!visible) continue;
+            Color c = r.sharedMaterial != null ? r.sharedMaterial.GetColor(BaseColorId) : Color.red;
+            block.SetColor(BaseColorId, c * level);
+            r.SetPropertyBlock(block);
         }
     }
 
@@ -160,15 +225,30 @@ public class CarLights : MonoBehaviour
     {
         bool night = SceneTimeOfDay.LightsOn;
         bool driven = vehicle != null && vehicle.IsDriving;
-        bool lamps = night && (kind == Kind.Traffic || driven);
+        // Traffic models also stand around as parked props - those stay dark.
+        // TrafficCar is added right after spawning, so look for it a few times
+        if (kind == Kind.Traffic && trafficCar == null && Time.time >= nextTrafficCheck)
+        {
+            nextTrafficCheck = Time.time + 1f;
+            trafficCar = GetComponentInParent<TrafficCar>();
+        }
+        bool moving = kind == Kind.Traffic ? trafficCar != null : driven;
+        bool lamps = night && moving;
 
-        if (lampsShown != lamps)
+        bool braking = IsBraking(driven);
+        if (lampsShown != lamps || brakeShown != braking)
         {
             lampsShown = lamps;
+            brakeShown = braking;
             // The model's own lamps replace the dots at that end of the car
             SetAll(headlamps, lamps && !modelHasHead);
-            SetAll(tailLamps, lamps && !modelHasTail);
-            SetModelLamps(lamps);
+            SetModelLamps(lamps, braking);
+            // Tail dots: shown when the model has no back lamps of its own - and, while
+            // braking, also when its one lamp material covers both ends (so the
+            // headlights stay as they are while the brakes flare up)
+            bool dotsAtNight = lamps && !modelHasTail;
+            bool dotsBraking = braking && !modelHasTailOnly;
+            SetTailDots(dotsAtNight || dotsBraking, braking ? brakeBright : tailDim);
         }
 
         // Real beams: traffic only near the player (checked a few times a second, not every frame)
