@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 4875304249414818233}
   - component: {fileID: 5392095313001825969}
   - component: {fileID: 6472096647256757326}
+  - component: {fileID: 4872293016175615402}
   m_Layer: 0
   m_Name: StreetLight_Optimized
   m_TagString: Untagged
@@ -82,6 +83,24 @@ CapsuleCollider:
   m_Height: 8.869596
   m_Direction: 1
   m_Center: {x: 0, y: 4.434798, z: 0}
+--- !u!114 &4872293016175615402
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 703878482052149485}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b9555042cfc14f4888cc956b71c9fac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::NightOnly
+  components:
+  - {fileID: 4972971895951538647}
+  renderers: []
+  emissionOff:
+  - {fileID: 5735795830927402955}
+  - {fileID: 7978166461414749915}
 --- !u!1 &4285682351972126021
 GameObject:
   m_ObjectHideFlags: 0

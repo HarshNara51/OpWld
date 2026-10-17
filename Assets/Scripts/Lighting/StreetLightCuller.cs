@@ -5,6 +5,7 @@ using UnityEngine;
 // Light off when it's far from the camera - nobody notices a street light
 // going dark 80 m away, but every lit light costs GPU time. The glowing
 // bulb material stays on, so lamps still look lit in the distance.
+// In daytime scenes (see SceneTimeOfDay) all lamps stay off.
 public class StreetLightCuller : MonoBehaviour
 {
     [Tooltip("Lights further than this from the camera are switched off")]
@@ -38,11 +39,13 @@ public class StreetLightCuller : MonoBehaviour
         if (cam == null) return;
         Vector3 camPos = cam.transform.position;
         float maxSqr = maxDistance * maxDistance;
+        // Daytime scenes (SceneTimeOfDay Morning/Day) keep every lamp off.
+        bool dark = SceneTimeOfDay.LightsOn;
 
         foreach (Light l in lights)
         {
             if (l == null) continue;
-            bool on = (l.transform.position - camPos).sqrMagnitude <= maxSqr;
+            bool on = dark && (l.transform.position - camPos).sqrMagnitude <= maxSqr;
             if (l.enabled != on) l.enabled = on;
         }
     }
