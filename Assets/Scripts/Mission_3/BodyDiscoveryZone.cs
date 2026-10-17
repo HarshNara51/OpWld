@@ -5,6 +5,25 @@ using UnityEngine;
 // trucks moving.
 public class BodyDiscoveryZone : PhotoTarget
 {
+    [Tooltip("Shown once, the first time the player walks up to the body (the player came to help the son)")]
+    [TextArea(2, 5)]
+    [SerializeField] private string discoveryNote =
+        "Oh no... the farmer's son is dead. The man who once helped my family... and I came too late. " +
+        "Maybe there are clues around the farm that can tell me what really happened here.";
+
+    private bool discovered;
+
+    protected override void OnTriggerEnter(Collider other)
+    {
+        if (!discovered && !Photographed && CanBePhotographed()
+            && (other.CompareTag("Player") || other.CompareTag("PlayerCar")))
+        {
+            discovered = true;
+            NotePopup.Show(discoveryNote, 7f);
+        }
+        base.OnTriggerEnter(other);
+    }
+
     protected override bool CanBePhotographed()
     {
         return Mission3Manager.Instance != null

@@ -64,6 +64,8 @@ screen can be built from it. First draft 2026-10-09, made by scanning
 | [ ] | `image` | Map layout + pngegg.png. **pngegg images are often copied from elsewhere** - replace unless you made it | | | |
 | [ ] | `image/Menu/Neon Gradient Crosshair Reticle.png` | Gun crosshair (neon reticle) | | | |
 | [ ] | `Weather` (4 skies) | HDRI skies: belfast_sunset, kloofendal_misty_morning, qwantani_moon_noon, qwantani_night (all "puresky 4k" .exr). File names look like Poly Haven (usually CC0, credit optional) - confirm where they came from | | | |
+| [x] | `Fonts/1` | Font "Tulpen One" (mission briefing titles) | Naima Ben Ayed | SIL Open Font License 1.1 (free, credit nice to have; OFL.txt included) | Google Fonts |
+| [x] | `Fonts/2` (`Fonts/3` is a duplicate) | Font "Sniglet" (mission briefing text) | Haley Fiege, Brenda Gallo, Pablo Impallari | SIL Open Font License 1.1 (OFL.txt included) | Google Fonts |
 
 Also check the Sketchfab zips still in `Downloads` (carrier-car, diner, laundry) - if any of them ended up in the game, add a row.
 
