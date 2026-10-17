@@ -63,6 +63,7 @@ screen can be built from it. First draft 2026-10-09, made by scanning
 | [ ] | `Sounds` | door-unlock, shutter clicks (file names look like Pixabay: free, no credit needed - confirm) | freesound_community, kauasilbershlachparodes | Pixabay Content Licence? | https://pixabay.com |
 | [ ] | `image` | Map layout + pngegg.png. **pngegg images are often copied from elsewhere** - replace unless you made it | | | |
 | [ ] | `image/Menu/Neon Gradient Crosshair Reticle.png` | Gun crosshair (neon reticle) | | | |
+| [ ] | `Weather` (4 skies) | HDRI skies: belfast_sunset, kloofendal_misty_morning, qwantani_moon_noon, qwantani_night (all "puresky 4k" .exr). File names look like Poly Haven (usually CC0, credit optional) - confirm where they came from | | | |
 
 Also check the Sketchfab zips still in `Downloads` (carrier-car, diner, laundry) - if any of them ended up in the game, add a row.
 
