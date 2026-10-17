@@ -101,6 +101,7 @@ just don't share the raw files.
 | `Imports/Unity Technologies/CarsAssetPack` | Cars asset pack (player cars Car2, Car3) - **check** where it came from (not in the Asset Store cache) | Unity Technologies? |
 | `AssetsStore/Garage_props` | Garage Props Set | Abandoned World |
 | `Visual Design Cafe` | Nature Renderer 6 Free | Visual Design Cafe |
+| `Mirza/AERO - Volumetric Fog and Mist` (+ `Mirza/_VFXToolkit` noise texture) | AERO - Volumetric Fog & Mist (god rays, ground mist) - **check** it came from the Asset Store | Mirza Beig |
 | `TextMesh Pro`, URP, Input System | Unity packages | Unity Technologies |
 
 Your Asset Store cache also has ~40 other packages that are **not** in this
