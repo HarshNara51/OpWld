@@ -21,6 +21,27 @@ public class Mission5Manager : MonoBehaviour, IFailableMission
     public void StartMission()
     {
         CurrentState = MissionState.InProgress;
+        UpdateObjective();
+    }
+
+    private void Update()
+    {
+        UpdateObjective(); // cheap; only changes the HUD when the text changes
+    }
+
+    // The top-left objective line - follows the bomb's progress, so the
+    // bomb is only mentioned once it has been revealed
+    private void UpdateObjective()
+    {
+        if (CurrentState != MissionState.InProgress) { ObjectiveHUD.Clear(); return; }
+
+        BombSystem bomb = BombSystem.Instance;
+        if (bomb != null && bomb.IsArmed)
+            ObjectiveHUD.Set("Defuse the bomb - or get out");
+        else if (bomb != null && bomb.RevealStarted)
+            ObjectiveHUD.Set("Drive it away");
+        else
+            ObjectiveHUD.Set("Break into the car");
     }
 
     // Called once the defuse puzzle is solved
@@ -29,6 +50,7 @@ public class Mission5Manager : MonoBehaviour, IFailableMission
         if (CurrentState != MissionState.InProgress) return;
 
         CurrentState = MissionState.Success;
+        UpdateObjective();
         GameManager.Instance.MarkMissionComplete(gameObject.scene.name); // saves progress
         MissionResultUI.Instance.ShowSuccess("Bomb defused! The car is yours now - you'll find it in the garage.");
         GameManager.Instance.UnlockCar2();
@@ -42,6 +64,7 @@ public class Mission5Manager : MonoBehaviour, IFailableMission
         if (CurrentState != MissionState.InProgress) return;
 
         CurrentState = MissionState.Failed;
+        UpdateObjective();
         MissionResultUI.Instance.ShowFailureStay("The bomb went off. The car is no longer drivable.\nBetter luck next time!");
         NotePopup.Show("You got out just in time... but that car's wrecked. Come back and try again anytime.", 5f);
     }
@@ -51,6 +74,7 @@ public class Mission5Manager : MonoBehaviour, IFailableMission
         if (CurrentState == MissionState.Success || CurrentState == MissionState.Failed) return;
 
         CurrentState = MissionState.Failed;
+        UpdateObjective();
         MissionResultUI.Instance.ShowFailure(reason); // shared fail screen, then back to Hub
     }
 }

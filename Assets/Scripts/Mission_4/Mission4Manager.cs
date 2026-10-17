@@ -45,6 +45,16 @@ public class Mission4Manager : MonoBehaviour, IFailableMission
     {
         CurrentState = MissionState.InProgress;
         EnemiesDown = 0;
+        UpdateObjective();
+    }
+
+    // The top-left objective line - only ever shows the current step
+    private void UpdateObjective()
+    {
+        if (CurrentState != MissionState.InProgress) { ObjectiveHUD.Clear(); return; }
+        ObjectiveHUD.Set(ShootoutOver
+            ? "Stop the truck"
+            : $"Take down the gang ({EnemiesDown}/{enemiesToEliminate})");
     }
 
     // First shot fired: tell the player where to take cover and where the fight's limits are
@@ -62,6 +72,7 @@ public class Mission4Manager : MonoBehaviour, IFailableMission
         if (CurrentState != MissionState.InProgress) return;
 
         EnemiesDown++;
+        UpdateObjective();
         if (EnemiesDown < enemiesToEliminate)
             NotePopup.Show($"Enemy down ({EnemiesDown}/{enemiesToEliminate})", 2f);
 
@@ -79,6 +90,7 @@ public class Mission4Manager : MonoBehaviour, IFailableMission
         if (CurrentState != MissionState.InProgress) return;
 
         CurrentState = MissionState.Success;
+        UpdateObjective();
         GameManager.Instance.MarkMissionComplete(gameObject.scene.name); // saves progress
         MissionResultUI.Instance.ShowMessage("Mission Complete!");
         if (cleanup != null) cleanup.ApplySuccessState();
@@ -89,6 +101,7 @@ public class Mission4Manager : MonoBehaviour, IFailableMission
         if (CurrentState == MissionState.Success || CurrentState == MissionState.Failed) return;
 
         CurrentState = MissionState.Failed;
+        UpdateObjective();
         MissionResultUI.Instance.ShowFailure(reason); // shared fail screen, then back to Hub
     }
 }

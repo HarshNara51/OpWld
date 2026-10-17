@@ -37,6 +37,7 @@ public class BombSystem : MonoBehaviour
     private bool defusing;
 
     public bool IsArmed => armed;
+    public bool RevealStarted => revealStarted; // true once the player first got in the car
     public float Remaining => remaining;
 
     private void Awake()

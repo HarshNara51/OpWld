@@ -41,6 +41,8 @@ public class Mission3Manager : MonoBehaviour, IFailableMission
     public int TotalClues => totalClues;
     public bool CarParkedOrNoSpot => parkingSpot == null || parkingSpot.CarParked;
 
+    private bool trucksStopped;
+
     private void Awake()
     {
         Instance = this;
@@ -54,8 +56,40 @@ public class Mission3Manager : MonoBehaviour, IFailableMission
         CurrentState = MissionState.Searching;
         CluesFound = 0;
         BodyFound = false;
+        trucksStopped = false;
         if (parkingSpot != null)
             VehicleSummon.Block(this, "You can't call your car on this job. Walk back to it.");
+        UpdateObjective();
+    }
+
+    // The top-left objective line - only ever shows the current step
+    private void UpdateObjective()
+    {
+        switch (CurrentState)
+        {
+            case MissionState.Searching:
+                ObjectiveHUD.Set("Find the farmer's son");
+                break;
+            case MissionState.Investigating:
+                ObjectiveHUD.Set(CluesFound < totalClues
+                    ? $"Photograph the clues ({CluesFound}/{totalClues})"
+                    : "Hide!");
+                break;
+            case MissionState.TrucksAtFarm:
+                ObjectiveHUD.Set("Stay hidden");
+                break;
+            case MissionState.Following:
+                ObjectiveHUD.Set(trucksStopped
+                    ? "Photograph the trucks"
+                    : "Follow the trucks - keep your distance");
+                break;
+            case MissionState.Delivering:
+                ObjectiveHUD.Set("Take the evidence to the police station");
+                break;
+            default:
+                ObjectiveHUD.Clear();
+                break;
+        }
     }
 
     // Called by BodyDiscoveryZone when the body is photographed -
@@ -67,6 +101,7 @@ public class Mission3Manager : MonoBehaviour, IFailableMission
         BodyFound = true;
         CurrentState = MissionState.Investigating;
         NotePopup.Show($"Photograph all {totalClues} clues before the trucks arrive... then hide!");
+        UpdateObjective();
 
         if (truckCountdown != null) truckCountdown.StartCountdown();
         if (leadTruck != null) leadTruck.BeginMoving();
@@ -82,6 +117,7 @@ public class Mission3Manager : MonoBehaviour, IFailableMission
         {
             NotePopup.Show("That's everything. The trucks will be here any minute. Hide. Now.");
         }
+        UpdateObjective();
     }
 
     // Called by TruckArrivalCountdown at zero - this is also exactly
@@ -104,6 +140,7 @@ public class Mission3Manager : MonoBehaviour, IFailableMission
 
         CurrentState = MissionState.TrucksAtFarm;
         NotePopup.Show("The trucks have arrived. Stay hidden...", 4f);
+        UpdateObjective();
     }
 
     // Wired to the lead truck's SplineVehicle "On Departed Stop" event
@@ -117,6 +154,7 @@ public class Mission3Manager : MonoBehaviour, IFailableMission
             : "They're leaving. Get in your car and follow them... but keep your distance.");
         if (suspicion != null) suspicion.SetActive(true);
         StartCoroutine(FollowReminder());
+        UpdateObjective();
     }
 
     private IEnumerator FollowReminder()
@@ -132,6 +170,8 @@ public class Mission3Manager : MonoBehaviour, IFailableMission
     public void OnTrucksStopped()
     {
         if (CurrentState != MissionState.Following) return;
+        trucksStopped = true;
+        UpdateObjective();
         NotePopup.Show($"They've stopped. Get a clear shot of the trucks - press {CameraKey()}, then left click.", 6f);
     }
 
@@ -149,6 +189,7 @@ public class Mission3Manager : MonoBehaviour, IFailableMission
         NotePopup.Show("Got them red-handed. Get this to the police station.");
         if (suspicion != null) suspicion.SetActive(false);
         VehicleSummon.Unblock(this);
+        UpdateObjective();
     }
 
     // Called by PoliceDeliveryZone
@@ -157,6 +198,7 @@ public class Mission3Manager : MonoBehaviour, IFailableMission
         if (CurrentState != MissionState.Delivering) return;
 
         CurrentState = MissionState.Success;
+        UpdateObjective();
         GameManager.Instance.MarkMissionComplete(gameObject.scene.name); // saves progress
         NotePopup.Show("Evidence handed over. The police will take it from here... the farmer's son will get justice.", passedScreenDelay - 0.5f);
         MissionResultUI.Instance.ShowSuccess(null, passedScreenDelay);
@@ -167,6 +209,7 @@ public class Mission3Manager : MonoBehaviour, IFailableMission
         if (CurrentState == MissionState.Success || CurrentState == MissionState.Failed) return;
 
         CurrentState = MissionState.Failed;
+        UpdateObjective();
         VehicleSummon.Unblock(this);
         if (truckCountdown != null) truckCountdown.StopCountdown();
         MissionResultUI.Instance.ShowFailure(reason); // shared fail screen, then back to Hub
