@@ -5917,6 +5917,8 @@ MonoBehaviour:
   objectiveRoot: {fileID: 2311968754982210289}
   objectiveText: {fileID: 6051269131642594966}
   highlightColor: {r: 1, g: 0.85, b: 0.3, a: 1}
+  maxWidth: 760
+  padding: {x: 16, y: 8}
 --- !u!1 &5021619390862568479
 GameObject:
   m_ObjectHideFlags: 0
@@ -8910,10 +8912,6 @@ MonoBehaviour:
     icon: {fileID: 21300000, guid: 29bcfad5c6d2a514da503da02be91bec, type: 3}
     tint: 1
     hide: 0
-  - title: Something's Wrong
-    icon: {fileID: 21300000, guid: 29bcfad5c6d2a514da503da02be91bec, type: 3}
-    tint: 1
-    hide: 0
   - title: Hide Here
     icon: {fileID: 21300000, guid: 29bcfad5c6d2a514da503da02be91bec, type: 3}
     tint: 1
@@ -8991,6 +8989,10 @@ MonoBehaviour:
     tint: 1
     hide: 0
   - title: Clue
+    icon: {fileID: 0}
+    tint: 0
+    hide: 1
+  - title: Something's Wrong
     icon: {fileID: 0}
     tint: 0
     hide: 1

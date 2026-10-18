@@ -15,7 +15,7 @@ public static class MinimapIconSetup
 
     private static readonly string[] Diamonds =   // go here
     {
-        "Park Here", "Something's Wrong", "Hide Here", "Police Station", "Hotel Entrance", "Hotel Exit",
+        "Park Here", "Hide Here", "Police Station", "Hotel Entrance", "Hotel Exit",
         "Bedroom Entrance", "Bedroom Exit", "Vantage Point", "Cargo Drop-off",
     };
 
@@ -28,6 +28,7 @@ public static class MinimapIconSetup
     private static readonly string[] Hidden =
     {
         "Clue",        // Farm detective work - the player finds them
+        "Something's Wrong", // Farm: the body - no spoilers, the player finds the son
         "Tow Truck",   // the payphones (the tow yard has its own place icon)
         "Return Home", // it's at the house, which has the home icon
     };
