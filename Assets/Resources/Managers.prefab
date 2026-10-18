@@ -7109,8 +7109,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: New Text
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: c1f9d6f4d2ba19b41a08d828646d78c6, type: 2}
+  m_sharedMaterial: {fileID: 4831242841400776133, guid: c1f9d6f4d2ba19b41a08d828646d78c6, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -7134,8 +7134,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 24
-  m_fontSizeBase: 24
+  m_fontSize: 30
+  m_fontSizeBase: 30
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -8529,6 +8529,7 @@ GameObject:
   - component: {fileID: 5284474939128753381}
   - component: {fileID: 6859476975955277811}
   - component: {fileID: 6819918878575850055}
+  - component: {fileID: 4282522378303851708}
   m_Layer: 0
   m_Name: Managers
   m_TagString: Untagged
@@ -8865,6 +8866,193 @@ MonoBehaviour:
     displayName: Neon Graffiti Purple
   completeMessage: You photographed them all! A brand new car is waiting for you
     in the garage.
+--- !u!114 &4282522378303851708
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7198674379158672777}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 43723393e1c48ec44b6f1d5de251e871, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Minimap
+  worldMin: {x: -100, y: -100}
+  worldSize: {x: 1200, y: 1200}
+  outsideColor: {r: 0.09, g: 0.17, b: 0.24, a: 1}
+  diameter: 260
+  screenMargin: {x: 36, y: 36}
+  ringWidth: 5
+  ringColor: {r: 0.05, g: 0.05, b: 0.06, a: 0.9}
+  accentColor: {r: 1, g: 0.78, b: 0.25, a: 1}
+  font: {fileID: 11400000, guid: fb247cad0593e2c479f16c925ce65e03, type: 2}
+  titleFont: {fileID: 11400000, guid: 5c5c622ea8150e3459079ed68c5ebbdf, type: 2}
+  waypointColor: {r: 1, g: 0.36, b: 0.86, a: 1}
+  onFootRadius: 85
+  carSlowRadius: 120
+  carFastRadius: 210
+  fastSpeedKmh: 130
+  zoomSmoothing: 2
+  showGizmoBlips: 1
+  missionStartIcon: {fileID: 21300000, guid: 8ee6a0bbdfb804948a650fb704fdb9cc, type: 3}
+  objectiveIcon: {fileID: 21300000, guid: 29bcfad5c6d2a514da503da02be91bec, type: 3}
+  iconRules:
+  - title: Respray
+    icon: {fileID: 21300000, guid: 477c90a5cda616c4a8166040a2b293be, type: 3}
+    tint: 0
+    hide: 0
+  - title: Fuel
+    icon: {fileID: 21300000, guid: 2eacd0b910e58b64f96c11c23d67e97d, type: 3}
+    tint: 0
+    hide: 0
+  - title: Park Here
+    icon: {fileID: 21300000, guid: 29bcfad5c6d2a514da503da02be91bec, type: 3}
+    tint: 1
+    hide: 0
+  - title: Something's Wrong
+    icon: {fileID: 21300000, guid: 29bcfad5c6d2a514da503da02be91bec, type: 3}
+    tint: 1
+    hide: 0
+  - title: Hide Here
+    icon: {fileID: 21300000, guid: 29bcfad5c6d2a514da503da02be91bec, type: 3}
+    tint: 1
+    hide: 0
+  - title: Police Station
+    icon: {fileID: 21300000, guid: 29bcfad5c6d2a514da503da02be91bec, type: 3}
+    tint: 1
+    hide: 0
+  - title: Hotel Entrance
+    icon: {fileID: 21300000, guid: 29bcfad5c6d2a514da503da02be91bec, type: 3}
+    tint: 1
+    hide: 0
+  - title: Hotel Exit
+    icon: {fileID: 21300000, guid: 29bcfad5c6d2a514da503da02be91bec, type: 3}
+    tint: 1
+    hide: 0
+  - title: Bedroom Entrance
+    icon: {fileID: 21300000, guid: 29bcfad5c6d2a514da503da02be91bec, type: 3}
+    tint: 1
+    hide: 0
+  - title: Bedroom Exit
+    icon: {fileID: 21300000, guid: 29bcfad5c6d2a514da503da02be91bec, type: 3}
+    tint: 1
+    hide: 0
+  - title: Vantage Point
+    icon: {fileID: 21300000, guid: 29bcfad5c6d2a514da503da02be91bec, type: 3}
+    tint: 1
+    hide: 0
+  - title: Cargo Drop-off
+    icon: {fileID: 21300000, guid: 29bcfad5c6d2a514da503da02be91bec, type: 3}
+    tint: 1
+    hide: 0
+  - title: Photo Spot
+    icon: {fileID: 21300000, guid: 7d62fbc38bbdac94189695e8f2c24563, type: 3}
+    tint: 1
+    hide: 0
+  - title: Call the Cops
+    icon: {fileID: 21300000, guid: 7d62fbc38bbdac94189695e8f2c24563, type: 3}
+    tint: 1
+    hide: 0
+  - title: Radio
+    icon: {fileID: 21300000, guid: 7d62fbc38bbdac94189695e8f2c24563, type: 3}
+    tint: 1
+    hide: 0
+  - title: Stolen Item
+    icon: {fileID: 21300000, guid: 7d62fbc38bbdac94189695e8f2c24563, type: 3}
+    tint: 1
+    hide: 0
+  - title: Cargo 1
+    icon: {fileID: 21300000, guid: 7d62fbc38bbdac94189695e8f2c24563, type: 3}
+    tint: 1
+    hide: 0
+  - title: Cargo 2
+    icon: {fileID: 21300000, guid: 7d62fbc38bbdac94189695e8f2c24563, type: 3}
+    tint: 1
+    hide: 0
+  - title: Cargo 3
+    icon: {fileID: 21300000, guid: 7d62fbc38bbdac94189695e8f2c24563, type: 3}
+    tint: 1
+    hide: 0
+  - title: Cargo 4
+    icon: {fileID: 21300000, guid: 7d62fbc38bbdac94189695e8f2c24563, type: 3}
+    tint: 1
+    hide: 0
+  - title: Cargo 5
+    icon: {fileID: 21300000, guid: 7d62fbc38bbdac94189695e8f2c24563, type: 3}
+    tint: 1
+    hide: 0
+  - title: TARGET CAR
+    icon: {fileID: 21300000, guid: 7d62fbc38bbdac94189695e8f2c24563, type: 3}
+    tint: 1
+    hide: 0
+  - title: Bomb
+    icon: {fileID: 21300000, guid: 7d62fbc38bbdac94189695e8f2c24563, type: 3}
+    tint: 1
+    hide: 0
+  - title: Clue
+    icon: {fileID: 0}
+    tint: 0
+    hide: 1
+  - title: Tow Truck
+    icon: {fileID: 0}
+    tint: 0
+    hide: 1
+  - title: Return Home
+    icon: {fileID: 0}
+    tint: 0
+    hide: 1
+  places:
+  - name: Home
+    icon: {fileID: 21300000, guid: 63e9c406641d74b4f85447d85c923892, type: 3}
+    position: {x: 460, y: 331}
+    area: 0
+  - name: Hospital
+    icon: {fileID: 21300000, guid: 44e84abcc54c00948acfac77dd163822, type: 3}
+    position: {x: 675, y: 381}
+    area: 0
+  - name: Police Station
+    icon: {fileID: 21300000, guid: da5b252985fe2214e9670755b13bc730, type: 3}
+    position: {x: 503, y: 443}
+    area: 0
+  - name: Fire Station
+    icon: {fileID: 21300000, guid: c7f3b0973da174a46b942077f0c23f24, type: 3}
+    position: {x: 501, y: 380}
+    area: 0
+  - name: Tow Yard
+    icon: {fileID: 21300000, guid: b2a8efb55481bf2458fb9984e7e8e55a, type: 3}
+    position: {x: 509, y: 186}
+    area: 0
+  - name: Farm
+    icon: {fileID: 21300000, guid: 57e000ee9b1a6964ebf967798685da03, type: 3}
+    position: {x: 777, y: 528}
+    area: 1
+  - name: Shopping Center
+    icon: {fileID: 21300000, guid: b5dcc840b8fd98345883233a8ffa1f37, type: 3}
+    position: {x: 160, y: 575}
+    area: 1
+  - name: Construction Site
+    icon: {fileID: 21300000, guid: 06329939d1847f14d88a9ba43fcbb7a8, type: 3}
+    position: {x: 822, y: 405}
+    area: 1
+  - name: Luxury Hotels
+    icon: {fileID: 21300000, guid: 080826ede8becfe43bfab615cc0d5a30, type: 3}
+    position: {x: 320, y: 455}
+    area: 1
+  - name: Railway
+    icon: {fileID: 21300000, guid: 9ef3d611adac2fb488443be6faaa3d86, type: 3}
+    position: {x: 190, y: 870}
+    area: 1
+  iconSize: 24
+  objectiveIconSize: 20
+  areaIconSize: 38
+  areaAlpha: 0.35
+  sameTitleRadius: 40
+  playerArrowSize: 26
+  objectivesStickToEdge: 0
+  showMarker: 1
+  markerIconSize: 30
+  markerEdgeMargin: 70
 --- !u!1 &7402582371969208508
 GameObject:
   m_ObjectHideFlags: 0

@@ -17,6 +17,8 @@ public enum GameAction
     PhotoMode, TakePicture,
     // Gas station & tow phones
     Refuel, CallTowRepair, CallTowRefuel,
+    // Map
+    Map,
 }
 
 // The one place that knows which key does what. Scripts ask
@@ -84,6 +86,8 @@ public static class GameKeys
         Add(GameAction.Refuel, KeyCode.I, Context.Pump);
         Add(GameAction.CallTowRepair, KeyCode.I, Context.Foot);
         Add(GameAction.CallTowRefuel, KeyCode.O, Context.Foot);
+
+        Add(GameAction.Map, KeyCode.M, Context.Foot | Context.Car);
         return infos;
     }
 
@@ -111,8 +115,9 @@ public static class GameKeys
     }
 
     // While the pause menu is open no gameplay key does anything - so
-    // pressing E or 1 to rebind it can't start a mission or draw the rifle
-    private static bool Silenced => PauseManager.IsPaused;
+    // pressing E or 1 to rebind it can't start a mission or draw the rifle.
+    // Same while the big map is open.
+    private static bool Silenced => PauseManager.IsPaused || MapScreen.IsOpen;
 
     public static bool Held(GameAction a) => !Silenced && Input.GetKey(Get(a));
     public static bool Down(GameAction a) => !Silenced && Input.GetKeyDown(Get(a));
@@ -232,6 +237,7 @@ public static class GameKeys
             case GameAction.Refuel: return "Refuel at pump";
             case GameAction.CallTowRepair: return "Tow phone: repair";
             case GameAction.CallTowRefuel: return "Tow phone: refuel";
+            case GameAction.Map: return "Map";
             default: return a.ToString();
         }
     }

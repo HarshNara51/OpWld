@@ -118,6 +118,7 @@ public class ControlsMenu : MonoBehaviour
                 Press("Bomb: cut a wire", "Left Click")),
             new Section("General",
                 Press("Pause", "Esc"),
+                Press("Map", GameAction.Map),
                 Press("Photo mode", GameAction.PhotoMode),
                 Press("Photo: zoom", "Scroll"),
                 Press("Photo: take picture", GameAction.TakePicture)),
