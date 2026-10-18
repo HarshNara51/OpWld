@@ -36,7 +36,7 @@ public class Mission5Manager : MonoBehaviour, IFailableMission
         if (CurrentState != MissionState.InProgress) { ObjectiveHUD.Clear(); return; }
 
         BombSystem bomb = BombSystem.Instance;
-        if (bomb != null && bomb.IsArmed)
+        if (bomb != null && bomb.RevealNoteDone)
             ObjectiveHUD.Set("Defuse the bomb - or get out");
         else if (bomb != null && bomb.RevealStarted)
             ObjectiveHUD.Set("Drive it away");

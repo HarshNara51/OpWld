@@ -38,6 +38,10 @@ public class BombSystem : MonoBehaviour
 
     public bool IsArmed => armed;
     public bool RevealStarted => revealStarted; // true once the player first got in the car
+    // True once the "It's rigged!" note has had its time on screen - the objective line waits for it
+    public bool RevealNoteDone => armed && Time.time >= revealNoteEndsAt;
+    private float revealNoteEndsAt = float.MaxValue;
+    private const float RevealNoteSeconds = 6f;
     public float Remaining => remaining;
 
     private void Awake()
@@ -62,7 +66,8 @@ public class BombSystem : MonoBehaviour
 
         armed = true;
         remaining = bombDuration;
-        NotePopup.Show("Wait... what's that ticking? It's rigged! Get somewhere secluded and defuse it - or run!", 6f);
+        NotePopup.Show("Wait... what's that ticking? It's rigged! Get out of the city to a secluded area and defuse it - or run!", RevealNoteSeconds);
+        revealNoteEndsAt = Time.time + RevealNoteSeconds;
     }
 
     private void Update()

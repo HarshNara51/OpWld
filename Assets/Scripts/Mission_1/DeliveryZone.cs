@@ -11,8 +11,6 @@ public class DeliveryZone : MonoBehaviour
     {
         if (!other.CompareTag("Player")) return;
         playerInRange = true;
-        if (Mission1Manager.Instance != null && Mission1Manager.Instance.IsCarryingCargo)
-            NotePopup.Prompt(this, $"Press {NotePopup.Key(GameAction.Interact)} to unload the cargo onto the train");
     }
 
     private void OnTriggerExit(Collider other)
@@ -24,8 +22,12 @@ public class DeliveryZone : MonoBehaviour
 
     private void Update()
     {
-        if (!playerInRange || !GameKeys.Down(GameAction.Interact)) return;
-        if (!Mission1Manager.Instance.IsCarryingCargo) return;
+        // The prompt only shows while there's cargo to unload - it goes the moment it's delivered
+        bool carrying = playerInRange && Mission1Manager.Instance != null && Mission1Manager.Instance.IsCarryingCargo;
+        if (carrying) NotePopup.Prompt(this, $"Press {NotePopup.Key(GameAction.Interact)} to unload the cargo onto the train");
+        else NotePopup.ClearPrompt(this);
+
+        if (!carrying || !GameKeys.Down(GameAction.Interact)) return;
 
         if (Mission1Manager.Instance.HasTrainDeparted)
         {
@@ -46,6 +48,7 @@ public class DeliveryZone : MonoBehaviour
         }
 
         Mission1Manager.Instance.OnCargoDelivered();
+        NotePopup.ClearPrompt(this);
     }
 
     // Switched off (used up, picked up...) - take the prompt away with it

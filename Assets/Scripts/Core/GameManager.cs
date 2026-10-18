@@ -85,6 +85,7 @@ public class GameManager : MonoBehaviour
         PlayerPrefs.DeleteKey(Car2Key);
         CarPaint.ResetAllSaved(); // cars back to factory paint
         if (PhotoCollectionManager.Instance != null) PhotoCollectionManager.Instance.ResetAll(); // photo hunt + reward car locked again
+        PlayerPrefs.DeleteKey(AllMissionsRewardCar.NoteShownKey); // the bonus taxi's thank-you note shows again at the next 100%
 
         foreach (string mission in missionSceneNames)
         {
@@ -105,6 +106,17 @@ public class GameManager : MonoBehaviour
     public bool IsInUnfinishedMission(string sceneName)
     {
         return System.Array.IndexOf(missionSceneNames, sceneName) >= 0 && !IsMissionComplete(sceneName);
+    }
+
+    // True once every mission has been passed at least once (with the photo hunt, unlocks the bonus taxi)
+    public bool AllMissionsComplete
+    {
+        get
+        {
+            foreach (string mission in missionSceneNames)
+                if (!IsMissionComplete(mission)) return false;
+            return missionSceneNames.Length > 0;
+        }
     }
 
     public bool IsMissionComplete(string missionSceneName)

@@ -12,7 +12,10 @@ public class TrainTimer : MonoBehaviour
     [Tooltip("Seconds the train waits at the platform before departing")]
     [SerializeField] private float durationSeconds = 180f;
 
-    [Tooltip("On-screen countdown (a TextMeshPro text on the Canvas)")]
+    [Tooltip("The styled timer plate (shared mission-timer look). Takes priority over Timer Text.")]
+    [SerializeField] private MissionTimerDisplay display;
+    [SerializeField] private string caption = "TRAIN DEPARTS IN";
+    [Tooltip("Fallback: plain on-screen countdown (a TextMeshPro text on the Canvas)")]
     [SerializeField] private TMP_Text timerText;
 
     private float remaining;
@@ -25,6 +28,7 @@ public class TrainTimer : MonoBehaviour
         Instance = this;
         remaining = durationSeconds;
         if (timerText != null) timerText.text = ""; // hidden until the train arrives
+        if (display != null) display.Hide();
     }
 
     public void StartTimer()
@@ -33,6 +37,7 @@ public class TrainTimer : MonoBehaviour
 
         remaining = durationSeconds;
         running = true;
+        if (display != null) display.Show(caption);
         UpdateText();
     }
 
@@ -41,6 +46,7 @@ public class TrainTimer : MonoBehaviour
     {
         running = false;
         if (timerText != null) timerText.text = "";
+        if (display != null) display.Hide();
     }
 
     private void Update()
@@ -63,6 +69,7 @@ public class TrainTimer : MonoBehaviour
 
     private void UpdateText()
     {
+        if (display != null) { display.SetSeconds(remaining); return; }
         if (timerText == null) return;
 
         int minutes = Mathf.FloorToInt(remaining / 60f);

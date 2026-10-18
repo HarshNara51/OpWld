@@ -16,6 +16,9 @@ using UnityEngine.SceneManagement;
 [DefaultExecutionOrder(10000)] // runs after the normal camera script, so it wins
 public class CameraMode : MonoBehaviour
 {
+    // Full path of the most recent saved photo (null until one is taken)
+    public static string LastPhotoPath { get; private set; }
+
     public static CameraMode Instance { get; private set; }
     public static bool IsActive => Instance != null && Instance.active;
     public KeyCode ToggleKey => GameKeys.Get(GameAction.PhotoMode);
@@ -263,6 +266,7 @@ public class CameraMode : MonoBehaviour
             string folder = GetPhotoFolder();
             string file = Path.Combine(folder, $"Photo_{DateTime.Now:yyyyMMdd_HHmmss_fff}.png");
             ScreenCapture.CaptureScreenshot(file);
+            LastPhotoPath = file; // the Collection copies this file when the shot collects a hunt item
 
             yield return new WaitForEndOfFrame();
             yield return null;

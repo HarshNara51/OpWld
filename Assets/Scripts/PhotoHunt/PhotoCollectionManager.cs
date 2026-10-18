@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 
 // The photo hunt. Lives on the Managers prefab (so it exists in every
@@ -70,6 +71,7 @@ public class PhotoCollectionManager : MonoBehaviour
 
         PlayerPrefs.SetInt(ItemPrefix + id, 1);
         PlayerPrefs.Save();
+        StartCoroutine(CopyToCollection(id, CameraMode.LastPhotoPath)); // first shot of this item = its Collection picture
 
         int got = CollectedCount;
         string label = string.IsNullOrEmpty(item.displayName) ? id : item.displayName;
@@ -89,9 +91,43 @@ public class PhotoCollectionManager : MonoBehaviour
     {
         if (items != null)
             foreach (Item item in items)
-                if (item != null) PlayerPrefs.DeleteKey(ItemPrefix + item.id);
+                if (item != null)
+                {
+                    PlayerPrefs.DeleteKey(ItemPrefix + item.id);
+                    string img = CollectionImagePath(item.id);
+                    try { if (System.IO.File.Exists(img)) System.IO.File.Delete(img); } catch (Exception) { }
+                }
         PlayerPrefs.DeleteKey(RewardKey);
         PlayerPrefs.Save();
+    }
+
+    // ---------- Collection (the in-game photo album) ----------
+
+    // The list in order, for the Collection screen
+    public Item[] Items => items ?? new Item[0];
+
+    public static string CollectionFolder => System.IO.Path.Combine(Application.persistentDataPath, "Collection");
+
+    // One picture per item: <id>.png. Exists only once the item has been collected with a saved photo.
+    public string CollectionImagePath(string id) => System.IO.Path.Combine(CollectionFolder, id + ".png");
+
+    // The screenshot is written at the end of the frame - wait for it, then keep a copy as this item's picture.
+    // Only the FIRST photo of an item is kept; later shots of it never replace it.
+    private IEnumerator CopyToCollection(string id, string source)
+    {
+        if (string.IsNullOrEmpty(source)) yield break;
+        string target = CollectionImagePath(id);
+        if (System.IO.File.Exists(target)) yield break;
+
+        float giveUp = Time.realtimeSinceStartup + 5f;
+        while (!System.IO.File.Exists(source) && Time.realtimeSinceStartup < giveUp) yield return null;
+        yield return new WaitForSecondsRealtime(0.25f); // let the write finish
+        try
+        {
+            System.IO.Directory.CreateDirectory(CollectionFolder);
+            if (System.IO.File.Exists(source) && !System.IO.File.Exists(target)) System.IO.File.Copy(source, target);
+        }
+        catch (Exception e) { Debug.LogWarning("Collection: couldn't save the picture for " + id + ": " + e.Message); }
     }
 
     private Item Find(string id)

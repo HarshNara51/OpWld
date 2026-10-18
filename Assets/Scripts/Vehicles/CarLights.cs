@@ -125,7 +125,7 @@ public class CarLights : MonoBehaviour
                     copies[m] = copy;
 
                     string n = m.name.ToLowerInvariant();
-                    bool tail = n.Contains("tail") || n.Contains("rear") || n.Contains("brake");
+                    bool tail = n.Contains("tail") || n.Contains("rear") || n.Contains("brake") || n.Contains("stop");
                     bool head = n.Contains("head") || n.Contains("front");
                     ModelLamp lamp = MakeLamp(copy);
                     lamp.head = head || !tail;
@@ -145,7 +145,8 @@ public class CarLights : MonoBehaviour
     private static bool IsLampMaterial(string name)
     {
         string n = name.ToLowerInvariant();
-        return n.Contains("light") || n.Contains("emission");
+        // "stop" = brake lamp lenses named like StopSignal_Mat (High Matters sedans, taxi)
+        return n.Contains("light") || n.Contains("emission") || n.Contains("stop");
     }
 
     private ModelLamp MakeLamp(Material m)
