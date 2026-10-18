@@ -110,19 +110,30 @@ public class TrafficSpawner : MonoBehaviour
             }
             else
             {
+                // A mission just started (e.g. replaying one already passed): clear the roads
+                if (cars.Count > 0) ClearTraffic();
                 yield return new WaitForSeconds(1f);
             }
         }
     }
 
-    // No traffic in a mission scene until its mission is passed
+    // In a mission scene there's no traffic from the briefing until this run of the
+    // mission is passed or failed (also when replaying a mission already passed).
+    // Free-roam scenes (Hub) always have traffic.
     private bool TrafficAllowed()
     {
 #if UNITY_EDITOR
         if (ignoreMissionInEditor) return true;
 #endif
-        GameManager gm = GameManager.Instance;
-        return gm == null || !gm.IsInUnfinishedMission(gameObject.scene.name);
+        if (MissionStatus.HasMissionManager() && !MissionStatus.HasMissionEnded()) return false;
+        return true;
+    }
+
+    private void ClearTraffic()
+    {
+        foreach (TrafficCar c in cars) if (c != null) Destroy(c.gameObject);
+        cars.Clear();
+        filledAtStart = false; // refill along the routes once traffic is allowed again
     }
 
     private void SpawnAtEdge()

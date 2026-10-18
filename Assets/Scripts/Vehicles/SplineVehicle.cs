@@ -156,6 +156,35 @@ public class SplineVehicle : MonoBehaviour
         moving = true;
     }
 
+    // World distance along the spline to a knot (e.g. "the farm entrance is knot 5")
+    public float DistanceAtKnot(int knotIndex)
+    {
+        Init();
+        return KnotDistance(knotIndex);
+    }
+
+    // Seconds this (lead) vehicle needs to drive from where it is now to targetDistance,
+    // using the same speed / acceleration / braking rules as the real movement.
+    // Lets a countdown hold the vehicle back so it arrives exactly when the timer hits zero.
+    public float EstimateSecondsTo(float targetDistance)
+    {
+        Init();
+        float d = ownDistance, v = currentSpeed, t = 0f;
+        const float dt = 0.02f;
+        while (d < targetDistance - 0.05f && t < 3600f)
+        {
+            float target = speed;
+            float brakeAt = state == State.DrivingToEnd ? endKnotDistance : stopKnotDistance;
+            float distToBrake = brakeAt - d;
+            if (distToBrake <= brakingDistance) target = speed * Mathf.Clamp01(distToBrake / brakingDistance);
+            v = Mathf.MoveTowards(v, target, acceleration * dt);
+            if (v <= 0.0001f && target <= 0.0001f) break; // would stop before reaching it
+            d += v * dt;
+            t += dt;
+        }
+        return t;
+    }
+
     // Leaves the stop point (or skips it, if still approaching).
     // Safe to call on any car - followers pass it to their leader.
     public void Depart()

@@ -8,7 +8,7 @@ public class ParkingSpot : MonoBehaviour
 {
     [Tooltip("Shown once, the first time the car is parked here and the player gets out. Empty = nothing.")]
     [TextArea(2, 4)]
-    [SerializeField] private string parkedMessage = "Car parked. Now go find the body on foot.";
+    [SerializeField] private string parkedMessage = "Car parked. Continue on foot.";
 
     private BoxCollider box;
     private VehicleInteraction car;

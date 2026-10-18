@@ -52,9 +52,18 @@ public class Mission4Manager : MonoBehaviour, IFailableMission
     private void UpdateObjective()
     {
         if (CurrentState != MissionState.InProgress) { ObjectiveHUD.Clear(); return; }
-        ObjectiveHUD.Set(ShootoutOver
-            ? "Stop the truck"
-            : $"Take down the gang ({EnemiesDown}/{enemiesToEliminate})");
+        if (truckDisabled) ObjectiveHUD.Set("Call the cops at the truck");
+        else if (ShootoutOver) ObjectiveHUD.Set($"Stop the truck - get close and hold {GameKeys.Label(GameAction.EMP)}");
+        else ObjectiveHUD.Set($"Take down the gang ({EnemiesDown}/{enemiesToEliminate})");
+    }
+
+    private bool truckDisabled;
+
+    // Called by TruckEMP once the EMP has stopped the truck
+    public void OnTruckDisabled()
+    {
+        truckDisabled = true;
+        UpdateObjective();
     }
 
     // First shot fired: tell the player where to take cover and where the fight's limits are
@@ -92,7 +101,7 @@ public class Mission4Manager : MonoBehaviour, IFailableMission
         CurrentState = MissionState.Success;
         UpdateObjective();
         GameManager.Instance.MarkMissionComplete(gameObject.scene.name); // saves progress
-        MissionResultUI.Instance.ShowMessage("Mission Complete!");
+        MissionResultUI.Instance.ShowSuccess(null, 1.5f); // the same Mission Passed screen as every other mission
         if (cleanup != null) cleanup.ApplySuccessState();
     }
 

@@ -103,8 +103,9 @@ public class Mission3Manager : MonoBehaviour, IFailableMission
         NotePopup.Show($"Photograph all {totalClues} clues before the trucks arrive... then hide!");
         UpdateObjective();
 
+        // The countdown starts the lead truck itself, timed to reach the farm entrance at 00:00
         if (truckCountdown != null) truckCountdown.StartCountdown();
-        if (leadTruck != null) leadTruck.BeginMoving();
+        else if (leadTruck != null) leadTruck.BeginMoving();
     }
 
     public void OnClueFound()
@@ -120,8 +121,8 @@ public class Mission3Manager : MonoBehaviour, IFailableMission
         UpdateObjective();
     }
 
-    // Called by TruckArrivalCountdown at zero - this is also exactly
-    // when the trucks reach the farm entrance.
+    // Called by TruckArrivalCountdown the moment the lead truck passes the
+    // farm entrance (the countdown is timed so that's also 00:00).
     public void OnCountdownFinished()
     {
         if (CurrentState != MissionState.Investigating) return;

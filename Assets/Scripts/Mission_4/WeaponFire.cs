@@ -43,6 +43,12 @@ public class WeaponFire : MonoBehaviour
 
     private void Update()
     {
+        // One steady "Out of ammo" prompt while the rifle is out and empty (not a queued note
+        // per click - those kept playing long after the reload)
+        bool showEmpty = holster != null && holster.IsRifleEquipped && !IsReloading && CurrentAmmo <= 0 && !CameraMode.IsActive;
+        if (showEmpty) NotePopup.Prompt(this, $"Out of ammo - press {GameKeys.Label(GameAction.Reload)} to reload.");
+        else NotePopup.ClearPrompt(this);
+
         if (holster == null || !holster.IsRifleEquipped) return; // the knife uses left click for stabbing
         if (CameraMode.IsActive) return; // left click takes photos in camera mode, never shoots
         if (IsReloading) return;
@@ -55,12 +61,7 @@ public class WeaponFire : MonoBehaviour
 
         if (GameKeys.Held(GameAction.FireStab) && Time.time >= nextFireTime)
         {
-            if (CurrentAmmo <= 0)
-            {
-                if (GameKeys.Down(GameAction.FireStab))
-                    NotePopup.Show($"Out of ammo - press {GameKeys.Label(GameAction.Reload)} to reload.", 2f);
-                return;
-            }
+            if (CurrentAmmo <= 0) return; // the prompt above already says what to do
 
             nextFireTime = Time.time + fireRate;
             Fire();
@@ -101,6 +102,8 @@ public class WeaponFire : MonoBehaviour
             }
         }
     }
+
+    private void OnDisable() => NotePopup.ClearPrompt(this);
 
     private IEnumerator Reload()
     {

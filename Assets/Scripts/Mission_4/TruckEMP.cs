@@ -59,6 +59,18 @@ public class TruckEMP : MonoBehaviour
 
         IsCharging = keyHeld && inRange && !IsDisrupted;
 
+        // Tell the player what to do once they're close enough (only after the truck flees)
+        bool chasing = Mission4Manager.Instance != null && Mission4Manager.Instance.ShootoutOver;
+        if (chasing && inRange)
+        {
+            string key = GameKeys.Label(GameAction.EMP);
+            NotePopup.Prompt(this, IsCharging
+                ? $"Charging the EMP... keep holding {key}"
+                : IsDisrupted ? $"Connection lost - release {key} and hold it again"
+                : $"Hold {key} to fire the EMP at the truck");
+        }
+        else NotePopup.ClearPrompt(this);
+
         // Reschedule fresh every time a charging session actually
         // begins, so the countdown is never already "overdue" from
         // time spent driving over before you ever pressed the key.
@@ -88,10 +100,14 @@ public class TruckEMP : MonoBehaviour
         if (Percent01 >= 1f)
         {
             complete = true;
+            NotePopup.ClearPrompt(this);
             truck.ForceStop();
             if (callCopsPrompt != null) callCopsPrompt.SetActive(true);
+            if (Mission4Manager.Instance != null) Mission4Manager.Instance.OnTruckDisabled();
         }
     }
+
+    private void OnDisable() => NotePopup.ClearPrompt(this);
 
     private void ScheduleNextDisruption()
     {
