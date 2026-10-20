@@ -59,7 +59,7 @@ public class MainMenuController : MonoBehaviour
         // Esc steps back from sub-screens (Controls page -> Settings first)
         if (Input.GetKeyDown(KeyCode.Escape) && !mainPanel.activeSelf)
         {
-            if (ControlsMenu.CloseOpenPage()) return;
+            if (CreditsMenu.CloseOpenPage() || CollectionMenu.CloseOpenPage() || ControlsMenu.CloseOpenPage()) return;
             Show(mainPanel);
         }
     }

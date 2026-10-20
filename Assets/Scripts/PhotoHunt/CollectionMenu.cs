@@ -19,6 +19,15 @@ public class CollectionMenu : MonoBehaviour
     private Sprite uiSprite;
     private readonly List<Texture2D> loaded = new List<Texture2D>();
     private GameObject viewer;
+    private static CollectionMenu open;
+
+    // Esc in the pause menu / main menu: closes the photo viewer first, then the Collection (true if it closed something)
+    public static bool CloseOpenPage()
+    {
+        if (open == null) return false;
+        if (open.viewer != null) open.CloseViewer(); else open.Close();
+        return true;
+    }
 
     public static CollectionMenu Open(TMP_FontAsset titleFont, TMP_FontAsset bodyFont, Sprite uiSprite)
     {
@@ -34,6 +43,7 @@ public class CollectionMenu : MonoBehaviour
         var menu = go.AddComponent<CollectionMenu>();
         menu.titleFont = titleFont; menu.bodyFont = bodyFont; menu.uiSprite = uiSprite;
         menu.Build();
+        open = menu;
         return menu;
     }
 
@@ -41,6 +51,7 @@ public class CollectionMenu : MonoBehaviour
     {
         foreach (var t in loaded) if (t != null) Destroy(t);
         loaded.Clear();
+        if (open == this) open = null;
         Destroy(gameObject);
     }
 

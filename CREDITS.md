@@ -58,12 +58,27 @@ screen can be built from it. First draft 2026-10-09, made by scanning
 | [ ] | `transformer` | Electrical transformer (Persian file name) | | | |
 | [ ] | `windmill` | Windmill | | | |
 | [ ] | `wooden fence` | Wooden fence | | | |
-| [ ] | `Road_Materials` | Road / concrete textures (highway-lanes: looks like freepbr.com - check) | | | |
-| [ ] | `Fire Dept` textures `Bricks026`, `Concrete011` | Look like ambientCG (CC0) - confirm | ambientCG | CC0? | https://ambientcg.com |
+| [x] | `Road_Materials` | Road / concrete textures | FreePBR | Free (FreePBR licence) | https://freepbr.com |
+| [ ] | `Fire Dept` textures `Bricks026`, `Concrete011` | Brick and concrete textures (look like ambientCG, CC0 - confirm) | ambientCG | CC0? | https://ambientcg.com |
 | [ ] | `Sounds` | door-unlock, shutter clicks (file names look like Pixabay: free, no credit needed - confirm) | freesound_community, kauasilbershlachparodes | Pixabay Content Licence? | https://pixabay.com |
-| [ ] | `image` | Map layout + pngegg.png. **pngegg images are often copied from elsewhere** - replace unless you made it | | | |
+| [ ] | `image` | Map layout image (+ pngegg.png). **pngegg images are often copied from elsewhere** - replace unless you made it | | | |
 | [ ] | `image/Menu/Neon Gradient Crosshair Reticle.png` | Gun crosshair (neon reticle) | | | |
-| [ ] | `Weather` (4 skies) | HDRI skies: belfast_sunset, kloofendal_misty_morning, qwantani_moon_noon, qwantani_night (all "puresky 4k" .exr). File names look like Poly Haven (usually CC0, credit optional) - confirm where they came from | | | |
+| [x] | `Weather` (4 skies) | HDRI skies (belfast_sunset, kloofendal_misty_morning, qwantani_moon_noon, qwantani_night) | Poly Haven | CC0 | https://polyhaven.com |
+| [ ] | `CeilingLight` | Ceiling lamp (hotel / gas station lights) | | | |
+| [ ] | `Ceiling_Tube_Light` | Tube light batten (Zlight.fbx, gas station canopy) | | | |
+| [ ] | `Chandlier 2` | Ring chandelier (siyahavize1.fbx, hotel hall) | | | |
+| [ ] | `Chandlier` | Old heavy chandelier - **not used any more, can be deleted** | - | - | - |
+| [ ] | `Construction` (1-3) | Construction site props | | | |
+| [ ] | `Hauler` | Truck "maz 7310 prototype" | | | |
+| [ ] | `RepairShop` | Repair / respray shop building | | | |
+| [ ] | `Streetlight` | Street light model (StreetLight_Optimized is made from it) | | | |
+| [ ] | `payphone` | Payphone (tow service phones) | | | |
+| [ ] | `FREE Industrial Sign Pack` | Industrial signs - **check**: Asset Store? (not in your store cache) | | | |
+| [ ] | `Assets/Rainy VFX` | Rain effect (Railway) - **check**: maybe Asset Store "Rain System VFX" by AIK Studio | | | |
+| [x] | `image/Easter_eggs` (17) | Photo-hunt street art pictures | AI-generated with ChatGPT | own (AI-generated) | - |
+| [ ] | `image/Menu` | Mission Passed / Failed / Busted art, briefing pictures - your own / AI-made? | | | |
+| [ ] | `Icons` | Minimap icons (your AI icon sheet) | Harsh Nara (AI-generated) | own | - |
+| [ ] | `image/Mouse_cursor` | Golden mouse cursor - where is it from? | | | |
 | [x] | `Fonts/1` | Font "Tulpen One" (mission briefing titles) | Naima Ben Ayed | SIL Open Font License 1.1 (free, credit nice to have; OFL.txt included) | Google Fonts |
 | [x] | `Fonts/2` (`Fonts/3` is a duplicate) | Font "Sniglet" (mission briefing text) | Haley Fiege, Brenda Gallo, Pablo Impallari | SIL Open Font License 1.1 (OFL.txt included) | Google Fonts |
 
@@ -103,6 +118,7 @@ just don't share the raw files.
 | `Imports/Unity Technologies/CarsAssetPack` | Cars asset pack (player cars Car2, Car3) - **check** where it came from (not in the Asset Store cache) | Unity Technologies? |
 | `AssetsStore/Garage_props` | Garage Props Set | Abandoned World |
 | `Visual Design Cafe` | Nature Renderer 6 Free | Visual Design Cafe |
+| `Imports/AllSkyFree` | AllSky Free - 10 Sky Skybox Set | rpgwhitelock |
 | `Mirza/AERO - Volumetric Fog and Mist` (+ `Mirza/_VFXToolkit` noise texture) | AERO - Volumetric Fog & Mist (god rays, ground mist) - **check** it came from the Asset Store | Mirza Beig |
 | `TextMesh Pro`, URP, Input System | Unity packages | Unity Technologies |
 
@@ -117,7 +133,7 @@ to credit for those. If you re-import one, add it here.
 | What | Source | Licence | Credit |
 |---|---|---|---|
 | Player (Ch06), Guards (Ch18), Mob Leader (Ch33), Receptionist (Ch13), Gas Station gang (Whiteclown N Hallin) | Adobe Mixamo | Royalty-free, commercial use OK | Not required ("Characters and animations: Mixamo" is a nice touch) |
-| Hotel NPCs (`Characters/NPC` 1-10) | **Check** - Mixamo? | | |
+| Hotel NPCs (`Characters/NPC` 1-10) | Adobe Mixamo | Royalty-free, commercial use OK | Not required |
 | `Characters/Police` (empty folder) | - | - | - |
 | All clips in `Assets/Animations` (walk, run, crouch, rifle, stab, reload, deaths, texting...) | Adobe Mixamo | Royalty-free, commercial use OK | Not required |
 
@@ -187,7 +203,7 @@ licence on each page. Two (Studio jingle, Opening) list no author at all - credi
 | [ ] | Level up skill upgrade 4 | Blaze / bonus taxi unlocked | Yodguard |
 | [ ] | Fuel pump | refuelling | arunangshubanerjee |
 | [ ] | Spray | respray shop | Tiovanlley |
-| [ ] | Pause piano sound | pause menu | freesound_community |
+| [ ] | Pause piano sound | not used any more (pause sound removed) | freesound_community |
 | [ ] | Mouse click | every click in menus / map | MatthewVakaliuk73627 |
 | [ ] | Elektron - mission accomplished | Mission Passed | Gramuzik |
 | [ ] | Game over | Mission Failed | Alphix |
