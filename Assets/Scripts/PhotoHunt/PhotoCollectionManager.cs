@@ -76,14 +76,17 @@ public class PhotoCollectionManager : MonoBehaviour
         int got = CollectedCount;
         string label = string.IsNullOrEmpty(item.displayName) ? id : item.displayName;
         NotePopup.Show($"<b>Photo collection {got} / {Total}</b>\n{label}", 3.5f);
+        AudioManager am = AudioManager.Instance;
 
         if (got >= Total && !IsRewardUnlocked)
         {
             PlayerPrefs.SetInt(RewardKey, 1);
             PlayerPrefs.Save();
             NotePopup.Show(completeMessage, 6f);
+            if (am != null) am.PlayUI(am.unlockJingle); // the last one: Blaze unlocked
             RewardUnlocked?.Invoke();
         }
+        else if (am != null) am.PlayUI(am.photoCollected);
     }
 
     // For New Game: wipe the hunt and lock the reward again

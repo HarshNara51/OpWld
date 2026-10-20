@@ -39,6 +39,19 @@ public class Health : MonoBehaviour
         if (showHealthBar && !isPlayer) EnemyHealthBars.Register(this);
     }
 
+    private float nextHurtSound;
+
+    // Grunt on a hit (at most every half second), a lower one on death
+    private void PlayHurt(bool dying)
+    {
+        AudioManager am = AudioManager.Instance;
+        if (am == null || (!dying && Time.time < nextHurtSound)) return;
+        nextHurtSound = Time.time + 0.5f;
+        bool isPlayer = CompareTag("Player") || GetComponentInParent<PlayerDeath>() != null;
+        am.PlaySFXAt(isPlayer ? am.playerHurt : am.npcHurt, transform.position + Vector3.up * 1.5f, isPlayer ? 0.9f : 0.75f,
+                     dying ? Random.Range(0.8f, 0.88f) : Random.Range(0.95f, 1.1f), 40f);
+    }
+
     public void TakeDamage(float amount)
     {
         TakeDamage(amount, false);
@@ -49,6 +62,7 @@ public class Health : MonoBehaviour
         if (isDead) return;
 
         currentHealth = Mathf.Max(0f, currentHealth - amount);
+        if (amount > 0f) PlayHurt(currentHealth <= 0f);
 
         if (currentHealth <= 0f)
         {
@@ -67,6 +81,7 @@ public class Health : MonoBehaviour
 
         currentHealth = 0f;
         isDead = true;
+        PlayHurt(true);
         Died?.Invoke(); // first, so e.g. PlayerDeath is set before the mission reacts
         onDeath?.Invoke();
     }

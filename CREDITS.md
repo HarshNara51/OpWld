@@ -139,3 +139,73 @@ Textures: ambientCG (CC0), ...
 Sounds: Pixabay
 Made with Unity
 ```
+
+---
+
+## Part 4 - Audio (`Assets/Audio/import`, added 2026-10-19)
+
+File names look like Pixabay downloads (author-title-ID). Pixabay Content Licence: free, no credit
+required, but crediting each author on the Credits screen is the nice thing to do. Confirm the
+licence on each page. Two (Studio jingle, Opening) list no author at all - credit them as "Pixabay".
+
+| Status | Sound / track | Used for | Author |
+|---|---|---|---|
+| [ ] | Morning small town (birds) | Hub (morning) + Farm (dawn) ambience | freesound_community |
+| [ ] | Night ambience | Hotel (night) ambience | freesound_community |
+| [ ] | Midday in Munich street | Shopping Complex (afternoon) ambience | freesound_community |
+| [ ] | Summer evening ambience | Gas Station (evening) ambience | Alex_Jauk |
+| [ ] | Raigarh village early afternoon | not used yet | freesound_community |
+| [ ] | People talking in small room | hotel interior ambience | freesound_community |
+| [ ] | Calming rain | Railway rain | Liecio |
+| [ ] | Wind gust and blowing leaves | light wind outdoors | loswin23 |
+| [ ] | Harsh wind | wind while driving fast | Dragon_Studio |
+| [ ] | Sea, gently lapping waves | water / shoreline | JonathanSlatterMusic |
+| [ ] | Inside train start, cruise and stop | train engine loop (Railway) | freesound_community |
+| [ ] | Train (horn) | train horn | kauasilbershlachparodes |
+| [ ] | Truck passing | Farm + Gas Station trucks | freesound_community |
+| [ ] | Helicopter sound 8D | helicopters | Dragon_Studio |
+| [ ] | Helicopter flying by | not used any more (replaced by 8D) | Dragon_Studio |
+| [ ] | Jet plane fly-by | planes | u_xg7ssi08yr |
+| [ ] | Police siren | police cars when busted | Dragon_Studio |
+| [ ] | Machine gun | all gunshots (one shot cut out) | ScottishPerson |
+| [ ] | Gun reload 2 | reload | Dragon_Studio |
+| [ ] | Flesh impact | knife stab / takedown | u_xjrmmgxfru |
+| [ ] | Young man being hurt | player hurt | freesound_community |
+| [ ] | Hurt sound 2 | enemy hurt | cookiecheese |
+| [ ] | Walking sound effect | footsteps | u_3x9ga8wevj |
+| [ ] | Bomb countdown beeps | bomb ticking (Shopping) | freesound_community |
+| [ ] | Success | bomb defused | freesound_community |
+| [ ] | Explosion with debris | bomb explosion | Dragon_Studio |
+| [ ] | Whoosh cinematic | spotted / busted | Dragon_Studio |
+| [ ] | Elemental magic spell | EMP charging | Rescopic sound |
+| [ ] | Zap hit | EMP connection lost / fired | Dragon_Studio |
+| [ ] | Real clock ticking | last seconds of mission timers | Virtualvibes |
+| [ ] | Item pickup | cargo picked up | freesound_community |
+| [ ] | Luggage drop 1 | cargo delivered | freesound_community |
+| [ ] | iPhone camera capture | photo camera shutter | freesound_community |
+| [ ] | Studio jingle | photo-hunt item collected | (no author listed on the page) |
+| [ ] | Level up skill upgrade 4 | Blaze / bonus taxi unlocked | Yodguard |
+| [ ] | Fuel pump | refuelling | arunangshubanerjee |
+| [ ] | Spray | respray shop | Tiovanlley |
+| [ ] | Pause piano sound | pause menu | freesound_community |
+| [ ] | Mouse click | every click in menus / map | MatthewVakaliuk73627 |
+| [ ] | Elektron - mission accomplished | Mission Passed | Gramuzik |
+| [ ] | Game over | Mission Failed | Alphix |
+| [ ] | Opening | not used yet | (no author listed on the page) |
+| [ ] | Energetic music | main menu | JonasBlakewood |
+| [ ] | Background music | car radio | JonasBlakewood |
+| [ ] | Dark beat | car radio | vaitsez |
+| [ ] | Uplifting action sport energetic rock | car radio | ikoliks |
+| [ ] | The hip hop | car radio | Audioknap |
+| [ ] | Club (no copyright) | car radio | MiroMaxMusic |
+| [ ] | Beautiful uplifting music | car radio | Twisterium |
+| [ ] | Vibe song / Reels song / Ambient song | car radio | The_Mountain |
+| [ ] | Funny song | car radio | Atlas Audio |
+| [ ] | Gym songs | car radio | kiravale |
+| [ ] | Empty gun shot | trigger with no ammo | freesound_community |
+| [ ] | Car honk | car horn (H) | Dragon_Studio |
+| [ ] | Open car door | getting into a car | Dragon_Studio |
+| [ ] | Car door shut | getting out of a car | MusicNation782 |
+| [ ] | Sound effect - car crash | hitting things while driving | u_mgq59j5ayf |
+| [ ] | Walking on grass | footsteps outdoors (sped up when running) | Soumages |
+| [ ] | Deep UI chime | walking/driving into a gizmo | SoundShelfStudio |

@@ -38,6 +38,9 @@ public class MissionTimerDisplay : MonoBehaviour
         if (digits == null) return;
         bool warn = seconds <= warningSeconds;
         digits.color = warn ? warningColor : normalColor;
+        // Clock ticking under the last seconds
+        AudioManager am = AudioManager.Instance;
+        if (am != null) am.Loop(this, am.timerTick, warn && seconds > 0f && Time.timeScale > 0f, 0.6f);
         // Unscaled time, so the pulse doesn't freeze when the game pauses time
         float pulse = warn ? 1f + 0.08f * Mathf.Abs(Mathf.Sin(Time.unscaledTime * Mathf.PI * 2f)) : 1f;
         digits.transform.localScale = Vector3.one * pulse;

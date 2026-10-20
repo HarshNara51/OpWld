@@ -72,6 +72,10 @@ public class BombSystem : MonoBehaviour
 
     private void Update()
     {
+        // Beeping while it's armed - faster in the last seconds
+        AudioManager am = AudioManager.Instance;
+        if (am != null) am.Loop(this, am.bombBeeps, armed && !defused, 0.5f, remaining <= warningThreshold ? 1.3f : 1f);
+
         if (!armed || defused) return;
 
         remaining -= defusing ? Time.unscaledDeltaTime : Time.deltaTime;
@@ -132,6 +136,7 @@ public class BombSystem : MonoBehaviour
     {
         defused = true;
         armed = false;
+        if (AudioManager.Instance != null) AudioManager.Instance.PlayUI(AudioManager.Instance.bombDefused);
         if (warningPanel != null) warningPanel.SetActive(false);
         if (bombTimerText != null) bombTimerText.text = "";
     }
@@ -149,6 +154,8 @@ public class BombSystem : MonoBehaviour
         if (bombTimerText != null) bombTimerText.text = "";
         if (warningPanel != null) warningPanel.SetActive(false);
         if (cameraShake != null) cameraShake.Shake();
+        AudioManager am = AudioManager.Instance;
+        if (am != null) am.PlaySFXAt(am.explosion, bombCar != null ? bombCar.transform.position : transform.position, 1f, 1f, 300f);
 
         bool playerInside = bombCar != null && VehicleInteraction.Current == bombCar;
         if (bombCar != null) bombCar.DisableForGood(); // the car is toast either way

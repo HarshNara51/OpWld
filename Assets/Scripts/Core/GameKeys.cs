@@ -19,6 +19,8 @@ public enum GameAction
     Refuel, CallTowRepair, CallTowRefuel,
     // Map
     Map,
+    // Added later (kept at the end so saved keys stay put)
+    Horn,
 }
 
 // The one place that knows which key does what. Scripts ask
@@ -88,6 +90,7 @@ public static class GameKeys
         Add(GameAction.CallTowRefuel, KeyCode.O, Context.Foot);
 
         Add(GameAction.Map, KeyCode.M, Context.Foot | Context.Car);
+        Add(GameAction.Horn, KeyCode.H, Context.Car);
         return infos;
     }
 

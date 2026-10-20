@@ -52,6 +52,18 @@ public class CopLights : MonoBehaviour
         if (on) return;
         on = true;
         StartCoroutine(FlashRoutine());
+        // No siren set up on this car: make one from the AudioManager's siren clip
+        AudioManager am = AudioManager.Instance;
+        if (siren == null && am != null && am.policeSiren != null)
+        {
+            siren = gameObject.AddComponent<AudioSource>();
+            siren.clip = am.policeSiren;
+            siren.loop = true;
+            siren.spatialBlend = 1f;
+            siren.minDistance = 10f;
+            siren.maxDistance = 200f;
+            siren.outputAudioMixerGroup = am.SfxGroup;
+        }
         if (siren != null) siren.Play();
     }
 

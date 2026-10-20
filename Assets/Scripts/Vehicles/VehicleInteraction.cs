@@ -68,6 +68,8 @@ public class VehicleInteraction : MonoBehaviour
         }
         if (player == null || cameraOrbit == null)
             Debug.LogWarning($"{name}: no Player (tag) or CameraOrbit found - this car can't be entered.", this);
+
+        if (GetComponent<VehicleEngineAudio>() == null) gameObject.AddComponent<VehicleEngineAudio>();
     }
 
     private void OnEnable() => all.Add(this);
@@ -166,6 +168,8 @@ public class VehicleInteraction : MonoBehaviour
         isDriving = true;
         Current = this;
         lastSwitchFrame = Time.frameCount;
+        AudioManager am = AudioManager.Instance;
+        if (am != null) am.PlaySFXAt(am.carDoorOpen, transform.position, 0.8f, 1f, 25f);
 
         player.gameObject.SetActive(false);   // hides + disables all player scripts/collider in one go
         carControllerScript.enabled = true;
@@ -183,6 +187,8 @@ public class VehicleInteraction : MonoBehaviour
         isDriving = false;
         if (Current == this) Current = null;
         lastSwitchFrame = Time.frameCount;
+        AudioManager am = AudioManager.Instance;
+        if (am != null) am.PlaySFXAt(am.carDoorClose, transform.position, 0.8f, 1f, 25f);
 
         carControllerScript.enabled = false;
 

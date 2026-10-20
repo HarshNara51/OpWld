@@ -61,7 +61,13 @@ public class WeaponFire : MonoBehaviour
 
         if (GameKeys.Held(GameAction.FireStab) && Time.time >= nextFireTime)
         {
-            if (CurrentAmmo <= 0) return; // the prompt above already says what to do
+            if (CurrentAmmo <= 0)
+            {
+                // dry click, once per press (the prompt above already says what to do)
+                if (GameKeys.Down(GameAction.FireStab) && Time.timeScale > 0f && AudioManager.Instance != null)
+                    AudioManager.Instance.PlaySFX(AudioManager.Instance.gunEmpty, 0.9f);
+                return;
+            }
 
             nextFireTime = Time.time + fireRate;
             Fire();
@@ -74,6 +80,8 @@ public class WeaponFire : MonoBehaviour
         lastShotTime = Time.time;
 
         if (holster.CurrentWeapon != null) MuzzleFlash.Play(MuzzleFlash.Find(holster.CurrentWeapon.transform));
+        AudioManager am = AudioManager.Instance;
+        if (am != null) am.PlaySFXAt(am.gunShot, transform.position, 0.85f, Random.Range(0.94f, 1.06f), 120f);
 
         // A gunshot alerts everyone regardless of whether it hits -
         // this is the trigger that ends the "deal" formation.
@@ -108,6 +116,7 @@ public class WeaponFire : MonoBehaviour
     private IEnumerator Reload()
     {
         IsReloading = true;
+        if (AudioManager.Instance != null) AudioManager.Instance.PlaySFX(AudioManager.Instance.gunReload, 0.8f);
         yield return new WaitForSeconds(reloadSeconds);
         CurrentAmmo = magazineSize;
         IsReloading = false;

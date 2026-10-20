@@ -85,7 +85,14 @@ public class ControlsMenu : MonoBehaviour
                 Press("Steer", GameAction.SteerLeft, "/", GameAction.SteerRight),
                 Hold("Handbrake", GameAction.Handbrake),
                 Press("Reset car", GameAction.ResetCar),
+                Hold("Horn", GameAction.Horn),
                 Press("Summon your car", GameAction.SummonCar)),
+            new Section("Map",
+                Press("Open / close map", GameAction.Map),
+                Press("Zoom", "Scroll"),
+                Press("Move around", "Drag"),
+                Press("Set / remove waypoint", "Left Click"),
+                Press("Drop / remove a pin", "Right Click")),
         },
         new[]
         {
@@ -118,10 +125,12 @@ public class ControlsMenu : MonoBehaviour
                 Press("Bomb: cut a wire", "Left Click")),
             new Section("General",
                 Press("Pause", "Esc"),
-                Press("Map", GameAction.Map),
                 Press("Photo mode", GameAction.PhotoMode),
                 Press("Photo: zoom", "Scroll"),
-                Press("Photo: take picture", GameAction.TakePicture)),
+                Press("Photo: take picture", GameAction.TakePicture),
+                Press("Collection: zoom photo", "Scroll"),
+                Press("Collection: move photo", "Drag"),
+                Press("Collection: close photo", "Right Click")),
         },
     };
 

@@ -57,6 +57,7 @@ public class AllMissionsRewardCar : MonoBehaviour
                 PlayerPrefs.SetInt(NoteShownKey, 1);
                 PlayerPrefs.Save();
                 NotePopup.Show(unlockNote, 8f);
+                if (AudioManager.Instance != null) AudioManager.Instance.PlayUI(AudioManager.Instance.unlockJingle);
             }
         }
     }

@@ -84,11 +84,13 @@ public class ResprayShop : MonoBehaviour
             {
                 if (car == null) return;
                 painted = paint.Respray();
+                if (painted && AudioManager.Instance != null) AudioManager.Instance.Loop(this, AudioManager.Instance.spray, true, 0.8f);
                 if (alsoRepair && car.TryGetComponent(out VehicleHealth health)) health.Repair();
             },
             onDone: () =>
             {
                 working = false;
+                if (AudioManager.Instance != null) AudioManager.Instance.Loop(this, null, false);
                 if (rb != null) rb.isKinematic = wasKinematic;
 
                 if (!painted)

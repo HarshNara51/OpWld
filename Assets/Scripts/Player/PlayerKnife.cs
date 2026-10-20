@@ -106,6 +106,7 @@ public class PlayerKnife : MonoBehaviour
 
         yield return new WaitForSeconds(Mathf.Max(0f, hitTime - stepInTime));
         target.CompleteTakedown();
+        PlayStab();
 
         yield return new WaitForSeconds(recoverTime - hitTime);
         EndStab();
@@ -123,12 +124,19 @@ public class PlayerKnife : MonoBehaviour
         {
             Health health = c.GetComponentInParent<Health>();
             if (health == null || health == ownHealth) continue;
+            PlayStab();
             health.TakeDamage(damage);
             break; // one victim per stab
         }
 
         yield return new WaitForSeconds(recoverTime - hitTime);
         EndStab();
+    }
+
+    private void PlayStab()
+    {
+        AudioManager am = AudioManager.Instance;
+        if (am != null) am.PlaySFXAt(am.knifeStab, transform.position + transform.forward, 1f, Random.Range(0.95f, 1.05f), 30f);
     }
 
     private void BeginStab()

@@ -88,6 +88,7 @@ public class TruckEMP : MonoBehaviour
             {
                 IsDisrupted = true;
                 IsCharging = false;
+                if (AudioManager.Instance != null) AudioManager.Instance.PlayUI(AudioManager.Instance.empZap);
                 NotePopup.Show($"EMP connection lost - release {GameKeys.Label(GameAction.EMP)} and hold it again.", 2.5f);
                 ScheduleNextDisruption();
             }
@@ -97,9 +98,13 @@ public class TruckEMP : MonoBehaviour
             Percent01 = Mathf.Max(0f, Percent01 - (decayRatePercentPerSecond / 100f) * Time.deltaTime);
         }
 
+        AudioManager am = AudioManager.Instance;
+        if (am != null) am.Loop(this, am.empCharge, IsCharging && Percent01 < 1f, 0.6f, 0.9f + Percent01 * 0.4f);
+
         if (Percent01 >= 1f)
         {
             complete = true;
+            if (am != null) { am.Loop(this, am.empCharge, false); am.PlaySFXAt(am.empZap, truck.transform.position, 1f, 0.8f, 120f); }
             NotePopup.ClearPrompt(this);
             truck.ForceStop();
             if (callCopsPrompt != null) callCopsPrompt.SetActive(true);

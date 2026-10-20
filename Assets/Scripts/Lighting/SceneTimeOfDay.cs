@@ -19,6 +19,9 @@ public class SceneTimeOfDay : MonoBehaviour
     // True when the "dark scene" lights should be on
     public static bool LightsOn => current == null || (current.timeOfDay != TimeOfDay.Morning && current.timeOfDay != TimeOfDay.Day);
 
+    // This scene's time of day (null = the scene has no SceneTimeOfDay) - picks the ambience sound
+    public static TimeOfDay? Current => current != null ? current.timeOfDay : (TimeOfDay?)null;
+
     private void Awake() => current = this;
 
     private void OnDestroy()

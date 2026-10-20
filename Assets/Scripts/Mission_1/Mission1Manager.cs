@@ -113,6 +113,7 @@ public class Mission1Manager : MonoBehaviour, IFailableMission
         HasTrainDeparted = true;
         NotePopup.Show("Time's up - the train is leaving!", 3f);
 
+        if (train != null && AudioManager.Instance != null) AudioManager.Instance.PlaySFXAt(AudioManager.Instance.trainHorn, train.transform.position, 1f, 1f, 400f);
         if (train != null) train.Depart();
         else FailMission("Failed to deliver all cargo"); // no train assigned
     }
@@ -132,6 +133,7 @@ public class Mission1Manager : MonoBehaviour, IFailableMission
         CurrentState = MissionState.Success;
         HasTrainDeparted = true;
         if (TrainTimer.Instance != null) TrainTimer.Instance.StopTimer();
+        if (train != null && AudioManager.Instance != null) AudioManager.Instance.PlaySFXAt(AudioManager.Instance.trainHorn, train.transform.position, 1f, 1f, 400f);
         if (train != null) train.Depart(); // leaves with the cargo
         ObjectiveHUD.Clear();
 
@@ -147,6 +149,7 @@ public class Mission1Manager : MonoBehaviour, IFailableMission
         CurrentState = MissionState.Failed;
         HasTrainDeparted = true;
         if (TrainTimer.Instance != null) TrainTimer.Instance.StopTimer();
+        if (train != null && AudioManager.Instance != null) AudioManager.Instance.PlaySFXAt(AudioManager.Instance.trainHorn, train.transform.position, 1f, 1f, 400f);
         if (train != null) train.Depart(); // e.g. failed by suspicion - train leaves anyway
         ObjectiveHUD.Clear();
 

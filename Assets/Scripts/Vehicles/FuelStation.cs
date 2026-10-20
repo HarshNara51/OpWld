@@ -25,6 +25,7 @@ public class FuelStation : MonoBehaviour
         carInRange = car;
         if (car == null)
         {
+            if (wasRefuelling && AudioManager.Instance != null) AudioManager.Instance.Loop(this, null, false);
             NotePopup.ClearPrompt(this);
             wasRefuelling = false;
             return;
@@ -34,6 +35,7 @@ public class FuelStation : MonoBehaviour
         bool refuelling = GameKeys.Held(GameAction.Refuel) && car.Fuel01 < 1f && stopped;
         if (refuelling) car.AddFuel(refuelRate * Time.deltaTime);
         wasRefuelling = refuelling;
+        if (AudioManager.Instance != null) AudioManager.Instance.Loop(this, AudioManager.Instance.fuelPump, refuelling, 0.8f);
 
         // One prompt that always says what's going on
         int percent = Mathf.RoundToInt(car.Fuel01 * 100);

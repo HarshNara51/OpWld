@@ -38,6 +38,9 @@ public class AircraftFlight : MonoBehaviour
     private bool flying;
     private Action onFinished;
 
+    // Seconds left until it reaches the end of its path and disappears (0 before Fly) - the fly-by sound is stretched to this
+    public float RemainingSeconds => flying ? (1f - t) * length / Mathf.Max(0.01f, speed) : 0f;
+
     public void Fly(Vector3 start, Vector3 handle1, Vector3 handle2, Vector3 end, Action finished)
     {
         p0 = start; p1 = handle1; p2 = handle2; p3 = end;

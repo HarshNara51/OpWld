@@ -2,8 +2,8 @@ using System.Collections;
 using UnityEngine;
 
 // Put this on an empty GameObject at the CENTER of the map, at ground
-// level. Every so often it launches a random aircraft - sometimes a pair
-// flying in formation - from a point on a big circle around the map,
+// level. Every so often it launches a random aircraft - sometimes two at
+// once, each on its own path - from a point on a big circle around the map,
 // across the sky to roughly the opposite side, where it disappears.
 //
 // Each flight picks a path style: straight, a sweeping arc, or a
@@ -44,13 +44,11 @@ public class AirTrafficSpawner : MonoBehaviour
     [Range(0f, 90f)]
     [SerializeField] private float exitSpread = 40f;
 
-    [Header("Pairs")]
-    [Tooltip("Chance that a flight is a pair flying in formation (0-1)")]
+    [Header("Two at once")]
+    [Tooltip("Chance that a second aircraft takes off at the same time (0-1)")]
     [Range(0f, 1f)][SerializeField] private float pairChance = 0.25f;
-    [Tooltip("Sideways gap between the two aircraft")]
-    [SerializeField] private Vector2 pairSpacing = new Vector2(25f, 45f);
-    [Tooltip("Height difference between the two aircraft")]
-    [SerializeField] private float pairHeightOffset = 12f;
+    [Tooltip("The second one enters at least this far (degrees around the circle) from the first, so they never start side by side")]
+    [Range(30f, 180f)][SerializeField] private float pairMinSeparation = 70f;
 
     private IEnumerator Start()
     {
@@ -73,20 +71,25 @@ public class AirTrafficSpawner : MonoBehaviour
                 int stillFlying = 0;
                 bool pair = Random.value < pairChance;
 
-                BuildPath(prefab, out Vector3 a, out Vector3 b, out Vector3 c, out Vector3 d);
+                float startAngle = Random.Range(0f, 360f);
+                float endAngle = startAngle + 180f + Random.Range(-exitSpread, exitSpread);
+                BuildPath(prefab, startAngle, endAngle, out Vector3 a, out Vector3 b, out Vector3 c, out Vector3 d);
 
                 stillFlying++;
                 Launch(prefab, a, b, c, d, () => stillFlying--);
 
                 if (pair)
                 {
-                    // Same aircraft type, offset sideways and a little higher - a formation
-                    Vector3 side = Vector3.Cross(Vector3.up, (d - a).normalized);
-                    float spacing = Random.Range(pairSpacing.x, pairSpacing.y) * (Random.value < 0.5f ? 1f : -1f);
-                    Vector3 offset = side * spacing + Vector3.up * pairHeightOffset - (d - a).normalized * 15f;
+                    // A second, separate flight: its own aircraft, entering 70-145 degrees around the
+                    // circle from the first and leaving just as far from the first one's exit
+                    AircraftFlight second = aircraftPrefabs[Random.Range(0, aircraftPrefabs.Length)];
+                    if (second == null) second = prefab;
+                    float gap = Random.Range(pairMinSeparation, 180f - pairMinSeparation * 0.5f) * (Random.value < 0.5f ? 1f : -1f);
+                    float exitJitter = Random.Range(-15f, 15f); // exits stay as far apart as the entries
+                    BuildPath(second, startAngle + gap, endAngle + gap + exitJitter, out Vector3 a2, out Vector3 b2, out Vector3 c2, out Vector3 d2);
 
                     stillFlying++;
-                    Launch(prefab, a + offset, b + offset, c + offset, d + offset, () => stillFlying--);
+                    Launch(second, a2, b2, c2, d2, () => stillFlying--);
                 }
 
                 yield return new WaitUntil(() => stillFlying <= 0); // one flight (or pair) at a time
@@ -103,13 +106,11 @@ public class AirTrafficSpawner : MonoBehaviour
     }
 
     // Picks start/end on the circle and shapes the curve between them
-    private void BuildPath(AircraftFlight prefab, out Vector3 a, out Vector3 b, out Vector3 c, out Vector3 d)
+    private void BuildPath(AircraftFlight prefab, float startAngle, float endAngle, out Vector3 a, out Vector3 b, out Vector3 c, out Vector3 d)
     {
         Vector3 center = transform.position;
         float altitude = Random.Range(prefab.altitudeRange.x, prefab.altitudeRange.y);
 
-        float startAngle = Random.Range(0f, 360f);
-        float endAngle = startAngle + 180f + Random.Range(-exitSpread, exitSpread);
 
         a = center + Direction(startAngle) * radius + Vector3.up * altitude;
         d = center + Direction(endAngle) * radius + Vector3.up * altitude;

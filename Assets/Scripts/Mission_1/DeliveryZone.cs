@@ -47,6 +47,7 @@ public class DeliveryZone : MonoBehaviour
             return;
         }
 
+        if (AudioManager.Instance != null) AudioManager.Instance.PlaySFX(AudioManager.Instance.cargoDeliver);
         Mission1Manager.Instance.OnCargoDelivered();
         NotePopup.ClearPrompt(this);
     }

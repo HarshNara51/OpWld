@@ -31,6 +31,7 @@ public class CargoPickup : MonoBehaviour
                 return;
             }
 
+            if (AudioManager.Instance != null) AudioManager.Instance.PlaySFX(AudioManager.Instance.cargoPickup);
             Mission1Manager.Instance.OnCargoPickedUp();
             gameObject.SetActive(false);
         }

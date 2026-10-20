@@ -147,6 +147,7 @@ public class MissionResultUI : MonoBehaviour
             SetArt(null);
             message = string.IsNullOrEmpty(subtitle) ? "MISSION PASSED" : $"MISSION PASSED\n<size=60%>{subtitle}</size>";
         }
+        if (AudioManager.Instance != null) AudioManager.Instance.PlayUI(AudioManager.Instance.missionComplete);
         yield return Show(message, Style.Passed, displaySeconds, null);
     }
 
@@ -170,6 +171,9 @@ public class MissionResultUI : MonoBehaviour
 
     private Style PrepareFailure(string reason, out string message)
     {
+        AudioManager am = AudioManager.Instance;
+        if (am != null) am.PlayUI(reason == "Busted" || reason == "Spotted" ? am.alertWhoosh : am.missionFailed);
+
         if (reason == "Busted")
         {
             if (bustedSprite != null) { SetArt(bustedSprite); message = ""; }

@@ -43,6 +43,7 @@ public class GangAlert : MonoBehaviour
         if (flat.sqrMagnitude > radius * radius) return;
 
         EnemyCover.CombatActive = true;
+        if (AudioManager.Instance != null) AudioManager.Instance.PlayUI(AudioManager.Instance.alertWhoosh);
         if (!string.IsNullOrEmpty(spottedNote)) NotePopup.Show(spottedNote, 2.5f);
     }
 

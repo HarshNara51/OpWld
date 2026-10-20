@@ -97,6 +97,7 @@ public class PauseManager : MonoBehaviour
 
     public void SetPaused(bool paused)
     {
+        if (paused && !isPaused && AudioManager.Instance != null) AudioManager.Instance.PlayUI(AudioManager.Instance.pauseOpen);
         isPaused = paused;
         Time.timeScale = paused ? 0f : 1f;
 
