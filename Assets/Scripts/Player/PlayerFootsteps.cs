@@ -10,6 +10,10 @@ public class PlayerFootsteps : MonoBehaviour
     [Tooltip("Faster than this (m/s) counts as running")]
     [SerializeField] private float runSpeed = 3.2f;
     [SerializeField] private float runPitch = 1.35f;
+    [Header("Outdoors (grass)")]
+    [Tooltip("Grass steps are louder and slower in the recording than the indoor ones")]
+    [SerializeField] private float outdoorVolume = 0.5f;
+    [SerializeField] private float outdoorRunPitch = 1.75f;
 
     private CharacterController controller;
     private AudioSource source;
@@ -42,9 +46,11 @@ public class PlayerFootsteps : MonoBehaviour
         AudioClip want = am.PlayerIndoors || am.footstepsOutdoor == null ? am.footstepsIndoor : am.footstepsOutdoor;
         if (source.clip != want) { source.clip = want; if (want != null && walking) source.Play(); }
 
+        bool grass = want == am.footstepsOutdoor && want != am.footstepsIndoor;
         if (walking && want != null && !source.isPlaying) source.Play();
-        source.pitch = speed > runSpeed ? runPitch : 1f;
-        source.volume = Mathf.MoveTowards(source.volume, walking ? volume : 0f, Time.deltaTime * 6f);
+        source.pitch = speed > runSpeed ? (grass ? outdoorRunPitch : runPitch) : 1f;
+        float target = walking ? volume * (grass ? outdoorVolume : 1f) : 0f;
+        source.volume = Mathf.MoveTowards(source.volume, target, Time.deltaTime * 6f);
         if (!walking && source.volume <= 0f && source.isPlaying) source.Pause();
     }
 }

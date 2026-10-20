@@ -52,7 +52,8 @@ public class Mission5Manager : MonoBehaviour, IFailableMission
         CurrentState = MissionState.Success;
         UpdateObjective();
         GameManager.Instance.MarkMissionComplete(gameObject.scene.name); // saves progress
-        MissionResultUI.Instance.ShowSuccess("Bomb defused! The car is yours now - you'll find it in the garage.");
+        MissionResultUI.Instance.ShowSuccess(""); // the art only - the details go in a note
+        NotePopup.Show("Bomb defused! The car is yours now - you'll find it in the garage.", 6f);
         GameManager.Instance.UnlockCar2();
         if (cleanup != null) cleanup.ApplySuccessState();
     }
@@ -65,8 +66,8 @@ public class Mission5Manager : MonoBehaviour, IFailableMission
 
         CurrentState = MissionState.Failed;
         UpdateObjective();
-        MissionResultUI.Instance.ShowFailureStay("The bomb went off. The car is no longer drivable.\nBetter luck next time!");
-        NotePopup.Show("You got out just in time... but that car's wrecked. Come back and try again anytime.", 5f);
+        MissionResultUI.Instance.ShowFailureStay(""); // the art only - the details go in the note below
+        NotePopup.Show("The bomb went off! You got out just in time... but that car's wrecked. Come back and try again anytime.", 6f);
     }
 
     public void FailMission(string reason)
@@ -75,6 +76,7 @@ public class Mission5Manager : MonoBehaviour, IFailableMission
 
         CurrentState = MissionState.Failed;
         UpdateObjective();
-        MissionResultUI.Instance.ShowFailure(reason); // shared fail screen, then back to Hub
+        if (!string.IsNullOrEmpty(reason)) NotePopup.Show(reason + ".", 5f); // the reason as a note, not centre-screen text
+        MissionResultUI.Instance.ShowFailure(""); // shared fail screen, then back to Hub
     }
 }

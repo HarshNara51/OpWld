@@ -45,6 +45,10 @@ public class NPCDeath : MonoBehaviour
         if (IsDying) return;
         IsDying = true;
 
+        // Death cry - every way an NPC can die ends up here (shot, stabbed, taken down)
+        AudioManager am = AudioManager.Instance;
+        if (am != null) am.PlaySFXAt(am.npcHurt, transform.position + Vector3.up * 1.5f, 1f, Random.Range(0.8f, 0.88f), 45f);
+
         // Stop everything that makes him act like he's alive
         if (TryGetComponent(out GuardAI guard)) guard.enabled = false;
         if (TryGetComponent(out SuspicionSource source)) source.enabled = false;

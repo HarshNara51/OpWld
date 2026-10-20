@@ -25,7 +25,7 @@ using UnityEngine.SceneManagement;
 //   - Ambience: one bed per scene picked by its SceneTimeOfDay, swapped for the
 //     indoor bed inside an AmbienceZone, plus a light wind and a speed wind.
 //   - A click for any mouse click while the cursor is free (menus, map...).
-//   - A chime when the player walks/drives into a gizmo.
+//   - A chime when the player presses E (Interact) inside a gizmo.
 //   - Engine/rotor loops on traffic, trucks, the train and aircraft, and
 //     footsteps on the player (see LoopingSound, VehicleEngineAudio, PlayerFootsteps).
 public class AudioManager : MonoBehaviour
@@ -62,6 +62,8 @@ public class AudioManager : MonoBehaviour
     [Tooltip("Loops under the last seconds of a mission timer")]
     public AudioClip timerTick;
     public AudioClip bombBeeps;
+    [Tooltip("The fast beeping, for the bomb's last 10 seconds")]
+    public AudioClip bombBeepsFast;
     public AudioClip bombDefused;
     public AudioClip explosion;
     [Tooltip("Spotted / busted")]
@@ -114,6 +116,11 @@ public class AudioManager : MonoBehaviour
     [Tooltip("Car radio: plays (shuffled) only while driving outside missions")]
     public AudioClip[] carPlaylist;
     [SerializeField] private float musicFadeSeconds = 1.5f;
+    [Tooltip("Car radio loudness (the title music always plays at full)")]
+    [Range(0f, 1f)] [SerializeField] private float radioVolume = 0.75f;
+    [Tooltip("Radio during a mission, as a share of its normal loudness")]
+    [Range(0f, 1f)] [SerializeField] private float missionRadioVolume = 0.25f;
+    private float radioMix = 1f;
 
     [Header("Ambience (one per time of day, see SceneTimeOfDay)")]
     public AudioClip ambienceMorning;
@@ -224,7 +231,7 @@ public class AudioManager : MonoBehaviour
                 if (m != null && m.name.ToLowerInvariant().Contains("water") && !r.name.ToLowerInvariant().Contains("rock")) AddVisibleWater(r.bounds);
             }
         StartBed(waterSource, water.Count > 0 ? waterLoop : null);
-        waterSource.volume = ambienceLevel;
+        waterSource.volume = ambienceLevel * 0.8f;
     }
 
     private AudioClip AmbienceForScene()
@@ -271,6 +278,7 @@ public class AudioManager : MonoBehaviour
             nextGizmoCheck = Time.unscaledTime + 0.1f;
             UpdateGizmos();
         }
+        UpdateGizmoInteract();
     }
 
     // ---------- Music ----------
@@ -286,19 +294,23 @@ public class AudioManager : MonoBehaviour
                 want = musicSource.clip == titleMusic;
             }
         }
-        else if (carPlaylist != null && carPlaylist.Length > 0 && VehicleInteraction.Current != null && Time.timeScale > 0f
-                 && (!MissionStatus.HasMissionManager() || MissionStatus.HasMissionEnded()))
+        else if (carPlaylist != null && carPlaylist.Length > 0 && VehicleInteraction.Current != null && Time.timeScale > 0f)
         {
             bool onRadio = System.Array.IndexOf(carPlaylist, musicSource.clip) >= 0;
             if (!onRadio && musicGain <= 0.001f) NextTrack();
             want = System.Array.IndexOf(carPlaylist, musicSource.clip) >= 0;
-            // song finished - next one
+            // song finished, or N (next song) pressed - next one
             if (want && !musicPaused && !musicSource.isPlaying) NextTrack();
+            else if (want && GameKeys.Down(GameAction.NextSong)) NextTrack();
         }
+
+        // During a mission the radio stays on but turned way down, under the action
+        bool inMission = !isMenu && MissionStatus.HasMissionManager() && !MissionStatus.HasMissionEnded();
+        radioMix = Mathf.MoveTowards(radioMix, inMission ? missionRadioVolume : 1f, Time.unscaledDeltaTime * 0.5f);
 
         float step = Time.unscaledDeltaTime / Mathf.Max(0.05f, musicFadeSeconds);
         musicGain = Mathf.MoveTowards(musicGain, want ? 1f : 0f, step);
-        musicSource.volume = musicGain;
+        musicSource.volume = musicGain * (isMenu ? 1f : radioVolume * radioMix);
 
         if (!want && musicGain <= 0f && musicSource.isPlaying) { musicSource.Pause(); musicPaused = true; }
         else if (want && musicPaused) { musicSource.UnPause(); musicPaused = false; }
@@ -329,7 +341,7 @@ public class AudioManager : MonoBehaviour
         bool indoors = AmbienceZone.Contains(at, out bool chatter);
         float dt = Time.unscaledDeltaTime;
         ambienceSource.volume = Mathf.MoveTowards(ambienceSource.volume, ambienceLevel * (indoors ? 0.15f : 1f), dt * 0.7f);
-        indoorSource.volume = Mathf.MoveTowards(indoorSource.volume, chatter ? ambienceLevel : 0f, dt * 0.7f);
+        indoorSource.volume = Mathf.MoveTowards(indoorSource.volume, chatter ? ambienceLevel * 0.65f : 0f, dt * 0.7f); // the hotel crowd sits under the action
         UpdateWater(at);
         windLightSource.volume = Mathf.MoveTowards(windLightSource.volume, indoors ? 0f : ambienceLevel * 0.35f, dt * 0.7f);
 
@@ -354,9 +366,10 @@ public class AudioManager : MonoBehaviour
         return player != null ? player.position : Vector3.one * 99999f;
     }
 
-    // Samples the water surface every few metres and keeps only the spots where the
-    // ground is lower than the water - the water you can actually see
+    // Samples the water surface every few metres and keeps only real water: at least MinWaterDepth
+    // above the ground (sheets lying a few cm over flat terrain or under roads are not water you see)
     private const float WaterStep = 10f;
+    private const float MinWaterDepth = 0.75f;
     private void AddVisibleWater(Bounds b)
     {
         float y = b.max.y;
@@ -364,7 +377,7 @@ public class AudioManager : MonoBehaviour
             for (float z = b.min.z; z <= b.max.z; z += WaterStep)
             {
                 Vector3 p = new Vector3(x, y, z);
-                if (GroundHeight(p) < y - 0.05f) water.Add(p);
+                if (y - GroundHeight(p) >= MinWaterDepth) water.Add(p);
             }
     }
 
@@ -443,6 +456,12 @@ public class AudioManager : MonoBehaviour
         gizmosInside.RemoveWhere(l => l == null);
     }
 
+    // The chime when you press E (Interact) while standing in a gizmo
+    private void UpdateGizmoInteract()
+    {
+        if (gizmosInside.Count > 0 && Time.timeScale > 0f && GameKeys.Down(GameAction.Interact)) PlayUI(gizmoInteract);
+    }
+
     // ---------- Playing sounds ----------
 
     // 2D sound effect (same loudness everywhere) - pickups, deliveries, stingers
@@ -490,6 +509,7 @@ public class AudioManager : MonoBehaviour
             loops.Remove(owner);
             return;
         }
+        if (src != null && src.clip != clip) { src.clip = clip; src.Play(); } // same owner, new sound (e.g. bomb: steady -> fast)
         if (src == null)
         {
             var go = new GameObject("Loop_" + clip.name);

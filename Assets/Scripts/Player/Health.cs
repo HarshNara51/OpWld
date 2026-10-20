@@ -48,6 +48,7 @@ public class Health : MonoBehaviour
         if (am == null || (!dying && Time.time < nextHurtSound)) return;
         nextHurtSound = Time.time + 0.5f;
         bool isPlayer = CompareTag("Player") || GetComponentInParent<PlayerDeath>() != null;
+        if (dying && !isPlayer && GetComponent<NPCDeath>() != null) return; // NPCDeath plays the death cry
         am.PlaySFXAt(isPlayer ? am.playerHurt : am.npcHurt, transform.position + Vector3.up * 1.5f, isPlayer ? 0.9f : 0.75f,
                      dying ? Random.Range(0.8f, 0.88f) : Random.Range(0.95f, 1.1f), 40f);
     }

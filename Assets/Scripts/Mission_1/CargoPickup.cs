@@ -1,28 +1,44 @@
 using UnityEngine;
 
 // Put this on each cargo pickup gizmo in Mission1_Railway.
-// Requires a trigger Collider and the player tagged "Player".
+// Requires a trigger Collider. The prompt shows while the player - on foot,
+// or driving - is inside it (checked every frame: getting into the taxi
+// while standing in the zone never fires a trigger "exit").
 public class CargoPickup : MonoBehaviour
 {
+    private Collider zone;
+    private Transform player;
 
-    private bool playerInRange;
+    private void Awake() => zone = GetComponent<Collider>();
 
-    private void OnTriggerEnter(Collider other)
+    // On foot: the player. Driving: the car.
+    private bool PlayerInZone()
     {
-        if (!other.CompareTag("Player")) return;
-        playerInRange = true;
-        NotePopup.Prompt(this, $"Press {NotePopup.Key(GameAction.Interact)} to pick up the cargo");
-    }
-
-    private void OnTriggerExit(Collider other)
-    {
-        if (!other.CompareTag("Player")) return;
-        playerInRange = false;
-        NotePopup.ClearPrompt(this);
+        Vector3 at;
+        if (VehicleInteraction.Current != null) at = VehicleInteraction.Current.transform.position;
+        else
+        {
+            if (player == null)
+            {
+                GameObject p = GameObject.FindGameObjectWithTag("Player");
+                if (p == null) return false;
+                player = p.transform;
+            }
+            if (!player.gameObject.activeInHierarchy) return false;
+            at = player.position;
+        }
+        if (zone == null) return false;
+        Bounds b = zone.bounds;
+        b.Expand(new Vector3(3f, 6f, 3f)); // small boxes: 1.5 m of reach around them (the old trigger fired on touch)
+        return b.Contains(at);
     }
 
     private void Update()
     {
+        bool playerInRange = PlayerInZone();
+        if (playerInRange) NotePopup.Prompt(this, $"Press {NotePopup.Key(GameAction.Interact)} to pick up the cargo");
+        else NotePopup.ClearPrompt(this);
+
         if (playerInRange && GameKeys.Down(GameAction.Interact))
         {
             if (!Mission1Manager.Instance.IsTaxiNear(transform.position))

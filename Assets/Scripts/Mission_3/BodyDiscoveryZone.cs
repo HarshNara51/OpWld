@@ -9,7 +9,7 @@ public class BodyDiscoveryZone : PhotoTarget
     [TextArea(2, 5)]
     [SerializeField] private string discoveryNote =
         "Oh no... the farmer's son is dead. The man who once helped my family... and I came too late. " +
-        "Maybe there are clues around the farm that can tell me what really happened here.";
+        "I should take a photo of him - it could be evidence.";
 
     private bool discovered;
 
@@ -19,7 +19,9 @@ public class BodyDiscoveryZone : PhotoTarget
             && (other.CompareTag("Player") || other.CompareTag("PlayerCar")))
         {
             discovered = true;
-            NotePopup.Show(discoveryNote, 7f);
+            Mission3Manager.Instance.OnBodyDiscovered();
+            // the camera keys are added here, so they're right even after the player changes them
+            NotePopup.Show(discoveryNote + $"\n<size=85%>Press {NotePopup.Key(GameAction.PhotoMode)} for the camera, then left click.</size>", 8f);
         }
         base.OnTriggerEnter(other);
     }

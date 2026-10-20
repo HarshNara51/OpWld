@@ -24,12 +24,16 @@ public static class AudioLoopSlicer
         Slice(Src + "dragon-studio-police-siren-397963.mp3", 0.6f, 3.4f, 0.3f, true, Out + "Siren_Loop.wav");
         Slice(Src + "scottishperson-sound-effect-machine-gun-333524.mp3", 5.975f, 6.26f, 0f, true, Out + "Gun_Shot.wav");
         Slice(Src + "dragon-studio-car-honk-386166.mp3", 0.2f, 0.7f, 0.08f, true, Out + "Horn_Loop.wav");
+        // The beeps recording is ~35 dB quiet: two beeps of the slow part, and the fast part, both boosted
+        Slice(Src + "freesound_community-bomb-countdown-beeps-6868.mp3", 0.10f, 1.06f, 0f, true, Out + "Bomb_Beep_Loop.wav", 0.8f);
+        Slice(Src + "freesound_community-bomb-countdown-beeps-6868.mp3", 1.38f, 1.85f, 0f, true, Out + "Bomb_Beep_Fast_Loop.wav", 0.8f);
         AssetDatabase.Refresh();
         Debug.Log("Audio pieces rebuilt in " + Out);
     }
 
     // start/end in seconds. crossfade > 0 = seamless loop, 0 = one-shot with a fade-out.
-    public static void Slice(string srcPath, float start, float end, float crossfade, bool mono, string outPath)
+    // normalizePeak > 0: boost (or lower) the piece so its loudest sample hits this level (for very quiet recordings)
+    public static void Slice(string srcPath, float start, float end, float crossfade, bool mono, string outPath, float normalizePeak = 0f)
     {
         var clip = AssetDatabase.LoadAssetAtPath<AudioClip>(srcPath);
         if (clip == null) { Debug.LogError("AudioLoopSlicer: missing " + srcPath); return; }
@@ -64,6 +68,13 @@ public static class AudioLoopSlicer
             int fade = Mathf.Min(len, Mathf.RoundToInt(0.04f * hz)), fin = Mathf.Min(len, Mathf.RoundToInt(0.002f * hz));
             for (int i = 0; i < fade; i++) for (int c = 0; c < outCh; c++) data[(len - 1 - i) * outCh + c] *= i / (float)fade;
             for (int i = 0; i < fin; i++) for (int c = 0; c < outCh; c++) data[i * outCh + c] *= i / (float)fin;
+        }
+
+        if (normalizePeak > 0f)
+        {
+            float peak = 0f;
+            foreach (float f in data) peak = Mathf.Max(peak, Mathf.Abs(f));
+            if (peak > 1e-6f) for (int i = 0; i < data.Length; i++) data[i] *= normalizePeak / peak;
         }
 
         WriteWav(outPath, data, outCh, hz);

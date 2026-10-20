@@ -104,6 +104,12 @@ public class SpeedometerHUD : MonoBehaviour
     private VehicleHealth carHealth;
     private float shownSpeed, shownRpm, shownFuel = 1f;
 
+    // Where the RPM needle is right now (0-1), so the engine sound can follow it gear by gear.
+    // HasLiveRpm is false when the gauge isn't running this frame (no car, HUD hidden).
+    public static float LiveRpm01 { get; private set; }
+    private static int liveRpmFrame = -10;
+    public static bool HasLiveRpm => Time.frameCount - liveRpmFrame <= 2;
+
     private void Awake()
     {
         BuildUI();
@@ -170,6 +176,8 @@ public class SpeedometerHUD : MonoBehaviour
         rpm01 += Mathf.Sin(Time.unscaledTime * 40f) * 0.005f; // a tiny engine shimmer
         shownRpm = Mathf.Lerp(shownRpm, rpm01, 8f * dt);
         SetAngle(rpmNeedleRect, Mathf.Lerp(rpmAngleAtZero, rpmAngleAtMax, shownRpm));
+        LiveRpm01 = shownRpm;
+        liveRpmFrame = Time.frameCount;
 
         // Fuel
         if (carFuel != null)

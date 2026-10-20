@@ -86,6 +86,7 @@ public class ControlsMenu : MonoBehaviour
                 Hold("Handbrake", GameAction.Handbrake),
                 Press("Reset car", GameAction.ResetCar),
                 Hold("Horn", GameAction.Horn),
+                Press("Radio: next song", GameAction.NextSong),
                 Press("Summon your car", GameAction.SummonCar)),
             new Section("Map",
                 Press("Open / close map", GameAction.Map),

@@ -36,16 +36,56 @@ public class Mission3Manager : MonoBehaviour, IFailableMission
     [Tooltip("Seconds between delivering the evidence and the Mission Passed screen")]
     [SerializeField] private float passedScreenDelay = 6f;
 
+    [Header("Don't lose the trucks")]
+    [Tooltip("Further than this from the lead truck (m) = a 'too far' warning")]
+    [SerializeField] private float warnDistance = 120f;
+    [Tooltip("Further than this for 'Lose Seconds' = mission failed, the trucks escaped")]
+    [SerializeField] private float loseDistance = 200f;
+    [SerializeField] private float loseSeconds = 5f;
+    [Tooltip("After the trucks leave, no distance checks until the player is in a car or this many seconds have passed (running back to the car)")]
+    [SerializeField] private float followGraceSeconds = 30f;
+
     public bool BodyFound { get; private set; }
     public int CluesFound { get; private set; }
     public int TotalClues => totalClues;
     public bool CarParkedOrNoSpot => parkingSpot == null || parkingSpot.CarParked;
 
     private bool trucksStopped;
+    private float followStartTime, nextFarNote, tooFarFor;
+    private Transform player;
 
     private void Awake()
     {
         Instance = this;
+    }
+
+    // While following: warn when falling too far behind, fail if the trucks get clean away
+    private void Update()
+    {
+        if (CurrentState != MissionState.Following || trucksStopped || leadTruck == null) return;
+
+        VehicleInteraction car = VehicleInteraction.Current;
+        if (car == null && Time.time < followStartTime + followGraceSeconds) return; // still running back to the car
+
+        Vector3 me;
+        if (car != null) me = car.transform.position;
+        else
+        {
+            if (player == null) { GameObject p = GameObject.FindGameObjectWithTag("Player"); if (p == null) return; player = p.transform; }
+            me = player.position;
+        }
+
+        Vector3 gap = leadTruck.transform.position - me; gap.y = 0f;
+        float distance = gap.magnitude;
+
+        if (distance > warnDistance && Time.time >= nextFarNote)
+        {
+            nextFarNote = Time.time + 8f;
+            NotePopup.Show("You're too far away - the trucks are escaping! Don't lose them.", 3.5f);
+        }
+
+        tooFarFor = distance > loseDistance ? tooFarFor + Time.deltaTime : 0f;
+        if (tooFarFor >= loseSeconds) FailMission("The trucks escaped");
     }
 
     // Called by MissionBriefing once the player has read the
@@ -68,12 +108,12 @@ public class Mission3Manager : MonoBehaviour, IFailableMission
         switch (CurrentState)
         {
             case MissionState.Searching:
-                ObjectiveHUD.Set("Find the farmer's son");
+                ObjectiveHUD.Set(BodyDiscovered ? "Photograph the body" : "Find the farmer's son");
                 break;
             case MissionState.Investigating:
                 ObjectiveHUD.Set(CluesFound < totalClues
                     ? $"Photograph the clues ({CluesFound}/{totalClues})"
-                    : "Hide!");
+                    : "Hide behind the truck!");
                 break;
             case MissionState.TrucksAtFarm:
                 ObjectiveHUD.Set("Stay hidden");
@@ -94,13 +134,22 @@ public class Mission3Manager : MonoBehaviour, IFailableMission
 
     // Called by BodyDiscoveryZone when the body is photographed -
     // this is the moment everything else kicks off.
+    // Walked up to the body (before the photo) - the objective now says to photograph it
+    public bool BodyDiscovered { get; private set; }
+    public void OnBodyDiscovered()
+    {
+        if (CurrentState != MissionState.Searching || BodyDiscovered) return;
+        BodyDiscovered = true;
+        UpdateObjective();
+    }
+
     public void OnBodyFound()
     {
         if (CurrentState != MissionState.Searching || BodyFound) return;
 
         BodyFound = true;
         CurrentState = MissionState.Investigating;
-        NotePopup.Show($"Photograph all {totalClues} clues before the trucks arrive... then hide!");
+        NotePopup.Show($"There must be more clues around the farm. Photograph all {totalClues} of them as evidence - before the trucks arrive.", 6f);
         UpdateObjective();
 
         // The countdown starts the lead truck itself, timed to reach the farm entrance at 00:00
@@ -116,7 +165,7 @@ public class Mission3Manager : MonoBehaviour, IFailableMission
 
         if (CluesFound >= totalClues)
         {
-            NotePopup.Show("That's everything. The trucks will be here any minute. Hide. Now.");
+            NotePopup.Show("That's everything. The trucks will be here any minute! Hide behind the truck - the HIDE HERE marker. Now!", 6f);
         }
         UpdateObjective();
     }
@@ -150,6 +199,8 @@ public class Mission3Manager : MonoBehaviour, IFailableMission
         if (CurrentState != MissionState.TrucksAtFarm) return;
 
         CurrentState = MissionState.Following;
+        followStartTime = Time.time;
+        tooFarFor = 0f;
         NotePopup.Show(parkingSpot != null
             ? "They're leaving. Run back to your parked car and follow them... but keep your distance."
             : "They're leaving. Get in your car and follow them... but keep your distance.");

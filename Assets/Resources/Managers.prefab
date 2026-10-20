@@ -8669,9 +8669,9 @@ MonoBehaviour:
   sfxGroup: {fileID: -2470415476393560650, guid: 4150b5e00cc261b46863c12bdfbc304f, type: 2}
   ambienceGroup: {fileID: 3992287458858654500, guid: 4150b5e00cc261b46863c12bdfbc304f, type: 2}
   uiGroup: {fileID: 1712309134465310038, guid: 4150b5e00cc261b46863c12bdfbc304f, type: 2}
-  gizmoEnter: {fileID: 8300000, guid: 8c6cd86d6132aaa4991d6d68842679b3, type: 3}
+  gizmoEnter: {fileID: 0}
   gizmoExit: {fileID: 0}
-  gizmoInteract: {fileID: 0}
+  gizmoInteract: {fileID: 8300000, guid: 8c6cd86d6132aaa4991d6d68842679b3, type: 3}
   cargoPickup: {fileID: 8300000, guid: f5d3b49697a23e847b46dde2f87eb22d, type: 3}
   cargoDeliver: {fileID: 8300000, guid: 4a6bcfb3c30a3d44f8ddcf9c0d2dacd5, type: 3}
   actionDenied: {fileID: 0}
@@ -8680,7 +8680,8 @@ MonoBehaviour:
   missionComplete: {fileID: 8300000, guid: 97b2027c109aff742aeb16d0dc2c3f73, type: 3}
   missionFailed: {fileID: 8300000, guid: 069c17cad1436854b910e919bbf8258e, type: 3}
   timerTick: {fileID: 8300000, guid: 1896509cd6506f64097cfd811db4671e, type: 3}
-  bombBeeps: {fileID: 8300000, guid: ca9d7791fddc8a945aa483d47ff29303, type: 3}
+  bombBeeps: {fileID: 8300000, guid: 3f3be1f799c1c0548bc770dbeaad53fc, type: 3}
+  bombBeepsFast: {fileID: 8300000, guid: 1d8cc8546f76fd54aa9bfcc8ac147bb7, type: 3}
   bombDefused: {fileID: 8300000, guid: e98d1e164d3059f448240a6be3aa8f84, type: 3}
   explosion: {fileID: 8300000, guid: 0a64b8380fbeb5e4f934d28a750ff1ba, type: 3}
   alertWhoosh: {fileID: 8300000, guid: c7acd33eabe70944299d335c6e4248eb, type: 3}
@@ -8712,7 +8713,7 @@ MonoBehaviour:
   spray: {fileID: 8300000, guid: 9890235565b60534490b0e5988beafb1, type: 3}
   buttonClick: {fileID: 8300000, guid: d6622b136baada243b57205ba0af4ff8, type: 3}
   buttonHover: {fileID: 0}
-  pauseOpen: {fileID: 8300000, guid: f4d731e99ddb76746937139c3cfedf76, type: 3}
+  pauseOpen: {fileID: 0}
   titleMusic: {fileID: 8300000, guid: 6c174307249d0004eb5271643d4ed6af, type: 3}
   carPlaylist:
   - {fileID: 8300000, guid: 44ee1e6571c38e442803970407f51935, type: 3}
@@ -8727,6 +8728,8 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 85ad3a54581b5f943a1b8ac4cccfb82c, type: 3}
   - {fileID: 8300000, guid: c214b4cdc26a208418649d037717584c, type: 3}
   musicFadeSeconds: 1.5
+  radioVolume: 0.75
+  missionRadioVolume: 0.25
   ambienceMorning: {fileID: 8300000, guid: daf25857526ba1b4da38f164999cd382, type: 3}
   ambienceDay: {fileID: 8300000, guid: fc487d204a8353f488854ec997fb0f9f, type: 3}
   ambienceEvening: {fileID: 8300000, guid: ddf17c7d2bab12b48b50be2b7b2401c2, type: 3}
@@ -8737,7 +8740,7 @@ MonoBehaviour:
   windLight: {fileID: 8300000, guid: 5d6bfd15a6400d5468abbfb8423de84a, type: 3}
   windSpeed: {fileID: 8300000, guid: e3776d1d1a407e249b17a550dc2e9ecd, type: 3}
   waterLoop: {fileID: 8300000, guid: f3e203dacb9ff1845a421ff909cc3dec, type: 3}
-  ambienceLevel: 0.7
+  ambienceLevel: 0.5
 --- !u!114 &5191407134794590990
 MonoBehaviour:
   m_ObjectHideFlags: 0

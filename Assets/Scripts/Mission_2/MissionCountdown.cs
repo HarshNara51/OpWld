@@ -5,11 +5,17 @@ using TMPro;
 // A reusable on-screen countdown for any mission. Something calls
 // StartCountdown(); at zero it fires "On Finished" (wire it in the
 // Inspector). E.g. the Hotel escape: "Cops arrive in 00:45".
+//
+// With a Display set it uses the shared timer plate (same look as the
+// Railway train timer); otherwise it writes into the plain Timer Text.
 public class MissionCountdown : MonoBehaviour
 {
     [SerializeField] private float durationSeconds = 45f;
 
-    [Tooltip("On-screen text (TextMeshPro on the mission's Canvas)")]
+    [Tooltip("The shared timer plate (MissionTimerDisplay). Leave empty to use Timer Text instead.")]
+    [SerializeField] private MissionTimerDisplay display;
+
+    [Tooltip("Old plain on-screen text (TextMeshPro on the mission's Canvas) - only used without a Display")]
     [SerializeField] private TMP_Text timerText;
 
     [Tooltip("Shown before the time, e.g. 'Cops arrive in'")]
@@ -32,6 +38,7 @@ public class MissionCountdown : MonoBehaviour
     private void Awake()
     {
         if (timerText != null) timerText.text = "";
+        if (display != null) display.Hide();
     }
 
     public void StartCountdown()
@@ -39,6 +46,7 @@ public class MissionCountdown : MonoBehaviour
         remaining = durationSeconds;
         running = true;
         midpointFired = false;
+        if (display != null) display.Show(label.ToUpper());
         UpdateText();
     }
 
@@ -47,6 +55,7 @@ public class MissionCountdown : MonoBehaviour
     {
         running = false;
         if (timerText != null) timerText.text = "";
+        if (display != null) display.Hide();
     }
 
     private void Update()
@@ -73,6 +82,7 @@ public class MissionCountdown : MonoBehaviour
 
     private void UpdateText()
     {
+        if (display != null) { display.SetSeconds(remaining); return; }
         if (timerText == null) return;
         int minutes = Mathf.FloorToInt(remaining / 60f);
         int seconds = Mathf.FloorToInt(remaining % 60f);

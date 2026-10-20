@@ -136,17 +136,11 @@ public class MissionResultUI : MonoBehaviour
     {
         if (delay > 0f) yield return new WaitForSeconds(delay);
 
+        // Any subtitle goes in a note; the screen itself shows only the art / title
+        ShowReasonNote(subtitle);
         string message;
-        if (missionPassedSprite != null)
-        {
-            SetArt(missionPassedSprite);
-            message = subtitle ?? "";
-        }
-        else
-        {
-            SetArt(null);
-            message = string.IsNullOrEmpty(subtitle) ? "MISSION PASSED" : $"MISSION PASSED\n<size=60%>{subtitle}</size>";
-        }
+        if (missionPassedSprite != null) { SetArt(missionPassedSprite); message = ""; }
+        else { SetArt(null); message = "MISSION PASSED"; }
         if (AudioManager.Instance != null) AudioManager.Instance.PlayUI(AudioManager.Instance.missionComplete);
         yield return Show(message, Style.Passed, displaySeconds, null);
     }
@@ -167,6 +161,15 @@ public class MissionResultUI : MonoBehaviour
     {
         Style style = PrepareFailure(reason, out string message);
         Run(message, style, failDisplaySeconds, null);
+    }
+
+    // Pass/fail details as a normal note (with a full stop), never as centre-screen text
+    private static void ShowReasonNote(string text)
+    {
+        if (string.IsNullOrEmpty(text)) return;
+        text = text.Trim();
+        if (!text.EndsWith(".") && !text.EndsWith("!") && !text.EndsWith("?")) text += ".";
+        NotePopup.Show(text, 5f);
     }
 
     private Style PrepareFailure(string reason, out string message)
@@ -190,12 +193,10 @@ public class MissionResultUI : MonoBehaviour
 
         if (reason == "You Died!" && youDiedSprite != null) { SetArt(youDiedSprite); message = ""; return Style.Failed; }
 
-        if (missionFailedSprite != null) { SetArt(missionFailedSprite); message = reason ?? ""; }
-        else
-        {
-            SetArt(null);
-            message = string.IsNullOrEmpty(reason) ? "MISSION FAILED" : $"MISSION FAILED\n<size=60%>{reason}</size>";
-        }
+        // The reason ("The trucks escaped"...) goes in a note; the screen itself shows only the art / title
+        ShowReasonNote(reason);
+        if (missionFailedSprite != null) { SetArt(missionFailedSprite); message = ""; }
+        else { SetArt(null); message = "MISSION FAILED"; }
         return Style.Failed;
     }
 

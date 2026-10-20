@@ -12,6 +12,17 @@ public class VehicleEngineAudio : MonoBehaviour
     private AudioSource engine, screech, horn;
     private float basePitch = 1f;
     private float nextCrash;
+    private float smoothRpm = 0.12f;
+
+    // Same 5-gear shape as the speedometer's needle, for when the gauge isn't on screen
+    private static float FallbackRpm(float mps)
+    {
+        float speed01 = Mathf.Clamp01(mps * 2.237f / 260f); // the dial: mph, 260 max
+        if (speed01 <= 0.01f) return 0.12f;
+        const float gearSpan = 1f / 5f;
+        float inGear = speed01 >= 0.999f ? 1f : (speed01 % gearSpan) / gearSpan;
+        return Mathf.Lerp(0.35f, 0.92f, inGear);
+    }
 
     // Crash sound on a hard hit, louder the harder it is (not for landing on the ground or bumping the player)
     private void OnCollisionEnter(Collision collision)
@@ -58,7 +69,7 @@ public class VehicleEngineAudio : MonoBehaviour
     {
         AudioManager am = AudioManager.Instance;
         if (am == null || car == null) return;
-        if (engine == null && am.carEngine != null) engine = MakeSource(am.carEngine);
+        if (engine == null && am.carEngine != null) { engine = MakeSource(am.carEngine); engine.spatialBlend = 0.5f; engine.minDistance = 12f; } // loud from the chase camera too
         if (screech == null && am.tyreScreech != null) screech = MakeSource(am.tyreScreech);
 
         bool driving = VehicleInteraction.Current == car && Time.timeScale > 0f;
@@ -68,8 +79,11 @@ public class VehicleEngineAudio : MonoBehaviour
         if (engine != null)
         {
             if (driving && !engine.isPlaying) engine.Play();
-            engine.pitch = basePitch * (0.75f + k * 1.0f);
-            engine.volume = Mathf.MoveTowards(engine.volume, driving ? 0.45f + k * 0.4f : 0f, Time.unscaledDeltaTime * (driving ? 1.5f : 0.8f));
+            // Pitch follows the RPM needle: it climbs through each gear and drops at every shift
+            float rpm = driving && SpeedometerHUD.HasLiveRpm ? SpeedometerHUD.LiveRpm01 : FallbackRpm(speed);
+            smoothRpm = Mathf.Lerp(smoothRpm, rpm, 10f * Time.unscaledDeltaTime);
+            engine.pitch = basePitch * Mathf.Lerp(0.7f, 1.6f, smoothRpm) * (1f + k * 0.12f); // later gears sound a touch heavier-pushed
+            engine.volume = Mathf.MoveTowards(engine.volume, driving ? 0.75f + k * 0.25f : 0f, Time.unscaledDeltaTime * (driving ? 1.5f : 0.8f));
             if (!driving && engine.volume <= 0f && engine.isPlaying) engine.Stop();
         }
 
@@ -86,7 +100,7 @@ public class VehicleEngineAudio : MonoBehaviour
         {
             bool skid = driving && controller != null && (controller.isDrifting || (controller.isTractionLocked && Mathf.Abs(controller.carSpeed) > 12f)) && speed > 5f;
             if (skid && !screech.isPlaying) screech.Play();
-            screech.volume = Mathf.MoveTowards(screech.volume, skid ? 0.55f : 0f, Time.unscaledDeltaTime * 4f);
+            screech.volume = Mathf.MoveTowards(screech.volume, skid ? 0.44f : 0f, Time.unscaledDeltaTime * 4f);
             if (!skid && screech.volume <= 0f && screech.isPlaying) screech.Stop();
         }
     }

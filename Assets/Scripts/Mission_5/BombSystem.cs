@@ -72,9 +72,13 @@ public class BombSystem : MonoBehaviour
 
     private void Update()
     {
-        // Beeping while it's armed - faster in the last seconds
+        // Steady beeping while it's armed; the fast beeping for the last 10 seconds
         AudioManager am = AudioManager.Instance;
-        if (am != null) am.Loop(this, am.bombBeeps, armed && !defused, 0.5f, remaining <= warningThreshold ? 1.3f : 1f);
+        if (am != null)
+        {
+            bool lastSeconds = remaining <= 10f && am.bombBeepsFast != null;
+            am.Loop(this, lastSeconds ? am.bombBeepsFast : am.bombBeeps, armed && !defused, 0.7f);
+        }
 
         if (!armed || defused) return;
 

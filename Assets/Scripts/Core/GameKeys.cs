@@ -20,7 +20,7 @@ public enum GameAction
     // Map
     Map,
     // Added later (kept at the end so saved keys stay put)
-    Horn,
+    Horn, NextSong,
 }
 
 // The one place that knows which key does what. Scripts ask
@@ -91,6 +91,7 @@ public static class GameKeys
 
         Add(GameAction.Map, KeyCode.M, Context.Foot | Context.Car);
         Add(GameAction.Horn, KeyCode.H, Context.Car);
+        Add(GameAction.NextSong, KeyCode.N, Context.Car);
         return infos;
     }
 
@@ -241,6 +242,8 @@ public static class GameKeys
             case GameAction.CallTowRepair: return "Tow phone: repair";
             case GameAction.CallTowRefuel: return "Tow phone: refuel";
             case GameAction.Map: return "Map";
+            case GameAction.Horn: return "Horn";
+            case GameAction.NextSong: return "Radio: next song";
             default: return a.ToString();
         }
     }
