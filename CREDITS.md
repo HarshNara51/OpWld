@@ -23,64 +23,103 @@ screen can be built from it. First draft 2026-10-09, made by scanning
 
 ---
 
-## Part 1 - TO CHECK (probably Sketchfab or other free sites)
+## Part 1 - Models & art (mostly Sketchfab)
+
+Authors filled in by Harsh 2026-10-21. `[ ]` = author known, licence still to confirm on the
+Sketchfab page (CC-BY = credit, fine; **NonCommercial** = OK only while the game is 100% free;
+ND = no edits). Blank author = still unknown.
 
 | Status | Folder (`Assets/Imports/...`) | What it is | Author | Licence | Link |
 |---|---|---|---|---|---|
-| [ ] | `All Buildings` | Rural buildings: diners, henhouse, pigsty, stable | | | |
-| [ ] | `BillBoard_Posters` | Roadside billboard (Downloads: billboard-psd-layered-texture-maps-included.zip) | | | |
-| [ ] | `Bridge` | Bridge (file name is a Sketchfab model ID: 531574b2f9f54fcd9cd2d08cd5689795) | | | |
-| [ ] | `Buildings_1` | Rural building set | | | |
-| [ ] | `Buildings_2` | Low-poly building | | | |
-| [ ] | `Cargo Items` (1-6) | Cargo props (Mission 1) | | | |
-| [ ] | `Dagger` | Knife_low - player's knife | | | |
-| [ ] | `Dead_Body` | deadman / hobo body | | | |
-| [ ] | `Dinosaurs` (1-7) | Photo hunt dinosaurs: Triceratops (1), Stegosaurus (2), Brachiosaurus (3), T-Rex (4), Spinosaurus (5), Dilophosaurus (6), Charlie the Velociraptor (7) - separate models, check each | | | |
-| [ ] | `uplight` | Uplight / floodlight lamp model (lights the dinosaurs) | | | |
-| [ ] | `Fire Dept` | Fire department building (FireDep009.dae) | | | |
-| [ ] | `Gas station` | Gas station + "6twelve" store (Downloads: gas-station.zip, 6twelve.zip) | | | |
-| [ ] | `Grass_Dry` | Dry grass clumps | | | |
-| [ ] | `Hospital` | Hospital building | | | |
-| [ ] | `Hotel` | Hotel props: PC, printer, TV, briefcase, cabinet, car counter... | | | |
-| [ ] | `HotelInterior` | Hotel interior | | | |
-| [ ] | `Mob Room` | Mob leader's room (art, bed...) | | | |
-| [ ] | `PlayerHouse` | Farm house (player's house) | | | |
-| [ ] | `Police Station` | Police station (Downloads: city-police-station.zip) | | | |
-| [ ] | `Rocks` | River rocks | | | |
-| [ ] | `Tractor` | TractorMaster (maybe Asset Store "Old Antique Farm Tractor" by Gade Embossed - check) | | | |
-| [ ] | `Train_Track` | Railroad track + "BigBoy" locomotive and cab. Big Boy is a real Union Pacific locomotive: OK as a generic steam train, just don't use the UP logo/name | | | |
-| [ ] | `Trees` | Beech, cypress and other trees (maybe Asset Store "European Forests" by MysticForge - check) | | | |
-| [ ] | `Tunnel` | Concrete tunnel sections | | | |
-| [ ] | `garage` | Garage box | | | |
-| [ ] | `glass_display` | Glass showcase (Shopping Complex) | | | |
-| [ ] | `grassgreen` | Single grass mesh | | | |
-| [ ] | `pebbles` | Ground pebbles | | | |
-| [ ] | `transformer` | Electrical transformer (Persian file name) | | | |
-| [ ] | `windmill` | Windmill | | | |
-| [ ] | `wooden fence` | Wooden fence | | | |
+| [ ] | `All Buildings/henhouse` | Hen house | ArtDan | Sketchfab | |
+| [ ] | `All Buildings/stable1` | Horse stable | 00amza | Sketchfab | |
+| [ ] | `All Buildings/pigsy` | Farm pigsty | BytesCrafter | Sketchfab | |
+| [ ] | `PlayerHouse` | Farm house (player's house) | MaX3Dd | Sketchfab | |
+| [ ] | `Buildings_1` | Rural Buildings Set - Low Poly | Daniel Zhabotinsky | Sketchfab | |
+| [ ] | `Buildings_2` | Midcity Buildings Set - Low Poly | Daniel Zhabotinsky | Sketchfab | |
+| [ ] | `Fire Dept` | Fire department | jimbogies | Sketchfab | |
+| [ ] | `Gas station` | Gas station | gluttonia | Sketchfab | |
+| [ ] | `Police Station` | Police station | Sea Land Air | Sketchfab | |
+| [ ] | `Hospital` | Hospital | iagoArt3D | Sketchfab | |
+| [ ] | `garage` | Abandoned garage block (player's garage) | olegolegperepelica | Sketchfab | |
+| [ ] | `RepairShop` | Garage scene (repair / respray shop) | cbrown70 | Sketchfab | |
+| [x] | `HotelInterior` | Hotel interior | Harsh Nara (made in Blender) | own | - |
+| [ ] | `Mob Room` | Bedroom interior (mob room) | ankitk2618 | Sketchfab | |
+| [ ] | `Chandlier 2` | Chandelier Black (ring chandelier) | Pivoga | Sketchfab | |
+| [ ] | `CeilingLight` | Ceiling light (small round) | Heliona | Sketchfab | |
+| [ ] | `Ceiling_Tube_Light` | Simple fluorescent tube light | trashblinkr | Sketchfab | |
+| [ ] | `uplight` | Uplight | shaylastewart | Sketchfab | |
+| [ ] | `Hotel/cabinet` | Hanging kitchen cupboards | FordVFX | Sketchfab | |
+| [ ] | `Hotel/counter` | Kitchen cabinet and counter | fthylmaz | Sketchfab | |
+| [ ] | `Hotel/rcp_desk` | Reception counter | saqib24 | Sketchfab | |
+| [ ] | `Hotel/PC` | Desktop computer | Tytan | Sketchfab | |
+| [ ] | `Hotel/Printer` | Printer - Low Poly | CG Buzz | Sketchfab | |
+| [ ] | `Hotel/TV` | TV | CN Entertainment | Sketchfab | |
+| [ ] | `Hotel/briefcase`, `Cargo Items/6` | Briefcase / suitcase (low poly, game ready) | TampaJoey | Sketchfab | |
+| [ ] | `Hotel/briefcase`, `Cargo Items/6` | Briefcase | Bryan | Sketchfab | |
+| [ ] | `Cargo Items` | Old wooden pallet | Luka Feric | Sketchfab | |
+| [ ] | `Dagger` | "Kama" dagger (player's knife) | Arms Museum | Sketchfab | |
+| [ ] | `transformer` | Power transformer (rooftop electricity) | Mehdi Shahsavan | Sketchfab | |
+| [ ] | `Dead_Body` | Deadman | unalien.gaming / liltoba | Sketchfab | |
+| [ ] | `BillBoard_Posters` | Billboard - Lowpoly | rkmorello | Sketchfab | |
+| [ ] | `Tractor` | Tractor_231220 | 3D Error 404 | Sketchfab | |
+| [ ] | `Train_Track` | Steam locomotive "Union Pacific Big Boy" | Footloose | Sketchfab | |
+| [ ] | `Train_Track` | Train Tracks (asset pack) | evanpritchard | Sketchfab | |
+| [ ] | `Tunnel` | Concrete tunnel sections | Dumokan Art | Sketchfab | |
+| [ ] | `Bridge` | Bolsheokhtinsky Bridge | YuriSnitko | Sketchfab | |
+| [ ] | `Hauler` | MAZ 7310 prototype | dugito03 | Sketchfab | |
+| [ ] | `Construction/1` | Car showroom (construction site) | iliayurchenkov | Sketchfab | |
+| [ ] | `Construction/2` | Container construction site | simple and extensive design | Sketchfab | |
+| [ ] | `windmill` | Low poly windmill | Strifey7 | Sketchfab | |
+| [ ] | `wooden fence` | Wooden fence | DmitriyGDS | Sketchfab | |
+| [ ] | `Grass_Dry` | Dry grass | Pixel-bit | Sketchfab | |
+| [ ] | `grassgreen` | Single grass | oppne | Sketchfab | |
+| [ ] | `pebbles` | Ground pebbles | Kallvin | Sketchfab | |
+| [ ] | `Rocks` | River rocks | eb78 | Sketchfab | |
+| [ ] | `Dinosaurs/2` | JW Primal Ops Stegosaurus | SymbboySltunkio2019 | Sketchfab | |
+| [ ] | `Dinosaurs/3` | Brachiosaurus JWE | JW Roberta | Sketchfab | |
+| [ ] | `Dinosaurs/7` | Charlie the Velociraptor | tiranossaurocaua | Sketchfab | |
 | [x] | `Road_Materials` | Road / concrete textures | FreePBR | Free (FreePBR licence) | https://freepbr.com |
-| [ ] | `Fire Dept` textures `Bricks026`, `Concrete011` | Brick and concrete textures (look like ambientCG, CC0 - confirm) | ambientCG | CC0? | https://ambientcg.com |
-| [ ] | `Sounds` | door-unlock, shutter clicks (file names look like Pixabay: free, no credit needed - confirm) | freesound_community, kauasilbershlachparodes | Pixabay Content Licence? | https://pixabay.com |
-| [ ] | `image` | Map layout image (+ pngegg.png). **pngegg images are often copied from elsewhere** - replace unless you made it | | | |
-| [ ] | `image/Menu/Neon Gradient Crosshair Reticle.png` | Gun crosshair (neon reticle) | | | |
+| [ ] | `Fire Dept` textures `Bricks026`, `Concrete011`; `glass_display` texture `Metal063` | Brick, concrete and metal textures (look like ambientCG, CC0 - confirm) | ambientCG | CC0 | https://ambientcg.com |
 | [x] | `Weather` (4 skies) | HDRI skies (belfast_sunset, kloofendal_misty_morning, qwantani_moon_noon, qwantani_night) | Poly Haven | CC0 | https://polyhaven.com |
-| [ ] | `CeilingLight` | Ceiling lamp (hotel / gas station lights) | | | |
-| [ ] | `Ceiling_Tube_Light` | Tube light batten (Zlight.fbx, gas station canopy) | | | |
-| [ ] | `Chandlier 2` | Ring chandelier (siyahavize1.fbx, hotel hall) | | | |
-| [ ] | `Chandlier` | Old heavy chandelier - **not used any more, can be deleted** | - | - | - |
-| [ ] | `Construction` (1-3) | Construction site props | | | |
-| [ ] | `Hauler` | Truck "maz 7310 prototype" | | | |
-| [ ] | `RepairShop` | Repair / respray shop building | | | |
-| [ ] | `Streetlight` | Street light model (StreetLight_Optimized is made from it) | | | |
-| [ ] | `payphone` | Payphone (tow service phones) | | | |
-| [ ] | `FREE Industrial Sign Pack` | Industrial signs - **check**: Asset Store? (not in your store cache) | | | |
-| [ ] | `Assets/Rainy VFX` | Rain effect (Railway) - **check**: maybe Asset Store "Rain System VFX" by AIK Studio | | | |
-| [x] | `image/Easter_eggs` (17) | Photo-hunt street art pictures | AI-generated with ChatGPT | own (AI-generated) | - |
-| [ ] | `image/Menu` | Mission Passed / Failed / Busted art, briefing pictures - your own / AI-made? | | | |
-| [ ] | `Icons` | Minimap icons (your AI icon sheet) | Harsh Nara (AI-generated) | own | - |
-| [ ] | `image/Mouse_cursor` | Golden mouse cursor - where is it from? | | | |
+| [ ] | `Sounds` | door-unlock, shutter clicks (Pixabay) | freesound_community, kauasilbershlachparodes | Pixabay Content Licence | https://pixabay.com |
+| [x] | `image` (all pictures: menu art, street art, crosshair, cursor, icons) | Pictures and icons | AI-generated with ChatGPT | own (AI-generated) | - |
+| [x] | `image/Map Layout.png` | Map layout | Harsh Nara (made in Canva) | own | - |
 | [x] | `Fonts/1` | Font "Tulpen One" (mission briefing titles) | Naima Ben Ayed | SIL Open Font License 1.1 (free, credit nice to have; OFL.txt included) | Google Fonts |
 | [x] | `Fonts/2` (`Fonts/3` is a duplicate) | Font "Sniglet" (mission briefing text) | Haley Fiege, Brenda Gallo, Pablo Impallari | SIL Open Font License 1.1 (OFL.txt included) | Google Fonts |
+
+### Still unknown (find the author, or replace / delete the asset)
+
+| Status | Folder (`Assets/Imports/...`) | What it is | Author | Licence | Link |
+|---|---|---|---|---|---|
+| [ ] | `Dinosaurs/1` | Triceratops (Triceratops.fbx) | | | |
+| [ ] | `Dinosaurs/4` | T-Rex - file is "Decalcomania_T_Rex_Jurassic" (search that name) | | | |
+| [ ] | `Dinosaurs/5` | Spinosaurus (Spino.fbx) | | | |
+| [ ] | `Dinosaurs/6` | Dilophosaurus (Harsh: "maybe" - confirm it is the same model) | Msassasa | Sketchfab | |
+| [ ] | `Cargo Items/1`, `/3` | Cargo props (model.dae) - is one of them Luka Feric's pallet? | | | |
+| [ ] | `Cargo Items/2` | Ammo box (ammo_box.fbx) | | | |
+| [ ] | `Cargo Items/4` | Drugs | AMINE | Sketchfab | |
+| [ ] | `Cargo Items/5` | M112 Demolition Charge (C4) | thecrazy_craft | Sketchfab | |
+| [ ] | `Hotel/fax` | Semi-Vintage Fax Machine | Entflix | Sketchfab | |
+| [ ] | `Hotel/files` | Files / folders (Files.fbx) | | | |
+| [ ] | `Hotel/carCounter` | Low-poly cars | MaX3Dd | Sketchfab | |
+| [ ] | `Hotel/floVas` / `vasFlo` | Vase flower pot | Mehdi Shahsavan | Sketchfab | |
+| [ ] | `Hotel/floVas` / `vasFlo` | Flower vase | Pooja_Maurya | Sketchfab | |
+| [ ] | `Hotel/radio` | Vintage retro radio | Pavlo_Holubov | Sketchfab | |
+| [ ] | `Hotel/rec_chair` | Leather chair | R3indeer | Sketchfab | |
+| [ ] | `Hotel/sofa_set` | Couch complete set | Studio 23 | Sketchfab | |
+| [ ] | `Hotel/statue 2` | Small eagle statue low poly | B0bik | Sketchfab | |
+| [ ] | `Hotel/statue 1` | Statue (model.fbx) | | | |
+| [ ] | `Hotel/table_set` | Table set | Snowism | Sketchfab | |
+| [ ] | `Hotel/table` | Table (motif01_table.obj) | | | |
+| [ ] | `Mob Room/Window` | Window | jaggu | Sketchfab | |
+| [ ] | `Trees` | Beech, cypress, pine trees - maybe Asset Store "European Forests" by MysticForge | | | |
+| [ ] | `Streetlight` | Bridge street light 3 (StreetLight_Optimized is made from it) | Streetlights & ETC | Sketchfab | |
+| [ ] | `payphone` | Payphone | DJMaesen | Sketchfab | |
+
+**Not used in any scene - delete them, no credit needed:** `Chandlier` (old heavy chandelier),
+`All Buildings` diners (Rural_Diner_1/2), `Construction/3`, the `glass_display` model (only its metal
+texture is used), `pngegg.png`. The 6twelve store isn't in the project.
 
 Also check the Sketchfab zips still in `Downloads` (carrier-car, diner, laundry) - if any of them ended up in the game, add a row.
 
@@ -119,6 +158,8 @@ just don't share the raw files.
 | `AssetsStore/Garage_props` | Garage Props Set | Abandoned World |
 | `Visual Design Cafe` | Nature Renderer 6 Free | Visual Design Cafe |
 | `Imports/AllSkyFree` | AllSky Free - 10 Sky Skybox Set | rpgwhitelock |
+| `Imports/FREE Industrial Sign Pack` | FREE Industrial Sign Pack | |
+| `Assets/Rainy VFX` | Rain System VFX 2D 3D | AIK Studio |
 | `Mirza/AERO - Volumetric Fog and Mist` (+ `Mirza/_VFXToolkit` noise texture) | AERO - Volumetric Fog & Mist (god rays, ground mist) - **check** it came from the Asset Store | Mirza Beig |
 | `TextMesh Pro`, URP, Input System | Unity packages | Unity Technologies |
 
