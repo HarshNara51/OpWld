@@ -101,7 +101,7 @@ ND = no edits). Blank author = still unknown.
 | [x] | `Hotel/floVas` / `vasFlo` | Vase flower pot | Mehdi Shahsavan | CC-BY |  |
 | [x] | `Hotel/floVas` / `vasFlo` | Flower vase | Pooja_Maurya | CC-BY |  |
 | [x] | `Hotel/radio` | Vintage retro radio | Pavlo_Holubov | CC-BY |  |
-| [x] | `Hotel/rec_chair` | Leather chair | R3indeer | CC-BY-NC |  |
+| [x] | `Office_Chair` | Office chair (Hotel reception, replaced the NonCommercial leather chair 2026-11-06) | Red Fox / nokillnando | CC-BY | |
 | [x] | `Hotel/sofa_set` | Couch complete set | Studio 23 | CC-BY |  |
 | [x] | `Hotel/statue 2` | Small eagle statue low poly | B0bik | CC-BY |  |
 | [x] | `Hotel/statue 1` | Deer statue (model.fbx) | M Parkinson | Sketchfab Free Standard (no credit required) | |
