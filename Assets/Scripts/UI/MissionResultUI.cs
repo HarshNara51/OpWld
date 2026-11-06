@@ -156,11 +156,11 @@ public class MissionResultUI : MonoBehaviour
         });
     }
 
-    // Failed, but the player stays in the scene (free roam)
-    public void ShowFailureStay(string reason)
+    // Failed, but the player stays in the scene (free roam). onComplete runs once the screen is gone.
+    public void ShowFailureStay(string reason, Action onComplete = null)
     {
         Style style = PrepareFailure(reason, out string message);
-        Run(message, style, failDisplaySeconds, null);
+        Run(message, style, failDisplaySeconds, onComplete);
     }
 
     // Pass/fail details as a normal note (with a full stop), never as centre-screen text

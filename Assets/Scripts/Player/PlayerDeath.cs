@@ -33,6 +33,21 @@ public class PlayerDeath : MonoBehaviour
         if (health != null) health.Died -= OnDied;
     }
 
+    // Free-roam respawn: controls back on and the animator back to standing
+    public void Revive()
+    {
+        IsDead = false;
+        foreach (MonoBehaviour b in new MonoBehaviour[] { GetComponent<PlayerLocomotion>(), GetComponent<WeaponFire>(), GetComponent<PlayerKnife>(), GetComponent<WeaponHolster>() })
+            if (b != null) b.enabled = true;
+
+        Animator animator = GetComponentInChildren<Animator>();
+        if (animator != null)
+        {
+            animator.Rebind();   // leaves the death pose, back to the default (idle) state
+            animator.Update(0f);
+        }
+    }
+
     private void OnDied()
     {
         IsDead = true;

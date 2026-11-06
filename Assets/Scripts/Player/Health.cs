@@ -16,7 +16,15 @@ public class Health : MonoBehaviour
     private bool isDead;
 
     public float Percent01 => currentHealth / maxHealth;
+    public float Current => currentHealth;
+    public float Max => maxHealth;
     public bool IsDead => isDead;
+
+    // Time.time of the last hit - slow healing waits a while after this
+    public float LastDamageTime { get; private set; } = -999f;
+
+    // Any hit that took health away (the HUD flashes on it)
+    public event System.Action<float> Damaged;
 
     // For scripts (e.g. PlayerDeath) - same moment as On Death
     public event System.Action Died;
@@ -63,7 +71,12 @@ public class Health : MonoBehaviour
         if (isDead) return;
 
         currentHealth = Mathf.Max(0f, currentHealth - amount);
-        if (amount > 0f) PlayHurt(currentHealth <= 0f);
+        if (amount > 0f)
+        {
+            LastDamageTime = Time.time;
+            PlayHurt(currentHealth <= 0f);
+            Damaged?.Invoke(amount);
+        }
 
         if (currentHealth <= 0f)
         {
@@ -72,6 +85,21 @@ public class Health : MonoBehaviour
             Died?.Invoke(); // first, so e.g. PlayerDeath is set before the mission reacts
             onDeath?.Invoke();
         }
+    }
+
+    // Slow healing / the hospital. Does nothing once dead (use Revive).
+    public void Heal(float amount)
+    {
+        if (isDead || amount <= 0f) return;
+        currentHealth = Mathf.Min(maxHealth, currentHealth + amount);
+    }
+
+    // Back from the dead with full health (free-roam respawn at the hospital)
+    public void Revive()
+    {
+        isDead = false;
+        KilledByHeadshot = false;
+        currentHealth = maxHealth;
     }
 
     // For instant kills (e.g. headshots) - cleaner than faking it

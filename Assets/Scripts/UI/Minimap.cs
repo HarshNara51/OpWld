@@ -125,6 +125,11 @@ public class Minimap : MonoBehaviour
 
     public static Minimap Instance { get; private set; }
 
+    // For HUD pieces that sit next to the map (the health bar above it)
+    public bool IsShowing => root != null && root.activeSelf;
+    public float Diameter => diameter;
+    public Vector2 ScreenMargin => screenMargin;
+
     // The nearest visible mission objective (the marker's target with no waypoint set)
     public static GizmoLabel AutoTarget { get; private set; }
 

@@ -35,6 +35,9 @@ public class VehicleHealth : MonoBehaviour
     // For the speedometer HUD later
     public event Action<float> HealthChanged;
 
+    // Any real crash (impact speed in m/s) - PlayerHealthSystem hurts the driver on hard ones
+    public static event Action<VehicleHealth, float> Crashed;
+
     private VehicleInteraction interaction;
 
     private void Awake()
@@ -54,6 +57,7 @@ public class VehicleHealth : MonoBehaviour
         float impact = collision.relativeVelocity.magnitude;
         if (impact < minImpactSpeed) return;
 
+        Crashed?.Invoke(this, impact);
         TakeDamage((impact - minImpactSpeed) * damagePerImpactSpeed);
     }
 

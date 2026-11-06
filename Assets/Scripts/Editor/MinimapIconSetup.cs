@@ -31,6 +31,7 @@ public static class MinimapIconSetup
         "Something's Wrong", // Farm: the body - no spoilers, the player finds the son
         "Tow Truck",   // the payphones (the tow yard has its own place icon)
         "Return Home", // it's at the house, which has the home icon
+        "Hospital",    // the heal gizmo sits at the hospital, which has its own place icon
     };
 
     [MenuItem("Tools/Minimap/Set Up Icons")]
