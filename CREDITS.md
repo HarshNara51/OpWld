@@ -118,9 +118,7 @@ ND = no edits). Blank author = still unknown.
 | [ ] | `Streetlight` | Bridge street light 3 (StreetLight_Optimized is made from it) | Streetlights & ETC | Sketchfab | |
 | [ ] | `payphone` | Payphone | DJMaesen | Sketchfab | |
 
-**Not used in any scene - delete them, no credit needed:** `Chandlier` (old heavy chandelier),
-`All Buildings` diners (Rural_Diner_1/2), `Construction/3`, the `glass_display` model (only its metal
-texture is used), `pngegg.png`. The 6twelve store isn't in the project.
+**Unused imports deleted 2026-11-06** (about 1 GB): old `Chandlier`, `Construction/3`, the `glass_display` model, 10 unused AllSkyFree skies, 2 unused HDRI skies, unused road concrete, Nature Renderer installer, Human Character Dummy, Garage Props demo, Rain System VFX, and the asset packs' demo scenes/docs. `pngegg.png` is still USED (Managers prefab) - check its licence.
 
 Also check the Sketchfab zips still in `Downloads` (carrier-car, diner, laundry) - if any of them ended up in the game, add a row.
 
@@ -147,7 +145,6 @@ just don't share the raw files.
 | `Imports/High Matters` | American Sedans Taxi Police Classic | High Matters |
 | `Imports/IgniteCoders` | Simple Water Shader URP | IgniteCoders |
 | `Imports/KE Statues - Lite` | KE Statues - Lite | KE 3D Assets |
-| `Imports/Kevin Iglesias` | Human Character Dummy | Kevin Iglesias |
 | `Imports/PretoriusLab` | Industry Props | Pretorius Lab |
 | `Imports/Single_detailed_truck` | Single Detailed Truck | VIS Games |
 | `Imports/Truck_LowPoly` | Truck low poly | SR Studios Kerala |
@@ -159,11 +156,8 @@ just don't share the raw files.
 | `Imports/Low Poly Soviet Car Pack` | Low Poly Soviet Cars Pack (traffic) | Vitaly Tyavin |
 | `Imports/ICONIC - Sports Car FREE Vol.01` | ICONIC Low Poly Sports Car FREE Vol.01 (player car "Champion") | Bonq |
 | `Imports/Unity Technologies/CarsAssetPack` | Cars asset pack (player cars Car2, Car3) - **check** where it came from (not in the Asset Store cache) | Unity Technologies? |
-| `AssetsStore/Garage_props` | Garage Props Set | Abandoned World |
-| `Visual Design Cafe` | Nature Renderer 6 Free | Visual Design Cafe |
 | `Imports/AllSkyFree` | AllSky Free - 10 Sky Skybox Set | rpgwhitelock |
 | `Imports/FREE Industrial Sign Pack` | FREE Industrial Sign Pack | |
-| `Assets/Rainy VFX` | Rain System VFX 2D 3D | AIK Studio |
 | `Mirza/AERO - Volumetric Fog and Mist` (+ `Mirza/_VFXToolkit` noise texture) | AERO - Volumetric Fog & Mist (god rays, ground mist) - **check** it came from the Asset Store | Mirza Beig |
 | `TextMesh Pro`, URP, Input System | Unity packages | Unity Technologies |
 

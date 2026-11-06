@@ -154,10 +154,13 @@ MonoBehaviour:
   - {fileID: 676038578931327482}
   - {fileID: 1781095570533510861}
   beams:
-  - {fileID: 3047134625524393254}
-  - {fileID: 5882843599530913373}
+  - {fileID: 3331815031600712034}
+  - {fileID: 1433868212281852533}
   beamDistance: 70
   signalCycle: 0.7
+  tailDim: 0.35
+  brakeBright: 2
+  trafficBrakeDecel: 1
   useModelLamps: 1
   modelLampGlow: 4
 --- !u!1 &1461424561814386
@@ -522,7 +525,7 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!1 &2032625065474585985
+--- !u!1 &1693565534309127590
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -530,8 +533,8 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 3117488271782448843}
-  - component: {fileID: 5882843599530913373}
+  - component: {fileID: 2684928496520679661}
+  - component: {fileID: 1433868212281852533}
   m_Layer: 0
   m_Name: Beam_Right
   m_TagString: Untagged
@@ -539,13 +542,13 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &3117488271782448843
+--- !u!4 &2684928496520679661
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2032625065474585985}
+  m_GameObject: {fileID: 1693565534309127590}
   serializedVersion: 2
   m_LocalRotation: {x: 0.05232799, y: 0.017428488, z: -0.0009133884, w: 0.99847746}
   m_LocalPosition: {x: 0.492, y: 0.252, z: 1.8939508}
@@ -554,13 +557,13 @@ Transform:
   m_Children: []
   m_Father: {fileID: 6286791001631368798}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!108 &5882843599530913373
+--- !u!108 &1433868212281852533
 Light:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2032625065474585985}
+  m_GameObject: {fileID: 1693565534309127590}
   m_Enabled: 0
   serializedVersion: 12
   m_Type: 0
@@ -1249,7 +1252,7 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!1 &6837834939586946669
+--- !u!1 &6930920074680817020
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1257,8 +1260,49 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 3414671764609859008}
-  - component: {fileID: 3047134625524393254}
+  - component: {fileID: 6286791001631368798}
+  m_Layer: 0
+  m_Name: CarLights
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6286791001631368798
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6930920074680817020}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 918688769419079566}
+  - {fileID: 8328892053847719014}
+  - {fileID: 7978686582389583966}
+  - {fileID: 7415910558472890483}
+  - {fileID: 2058729884645309865}
+  - {fileID: 4346272150290611840}
+  - {fileID: 8277667852806009668}
+  - {fileID: 382030317530593646}
+  - {fileID: 6896125547402894284}
+  - {fileID: 2684928496520679661}
+  m_Father: {fileID: 4134731807131288}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &7873727893241981904
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6896125547402894284}
+  - component: {fileID: 3331815031600712034}
   m_Layer: 0
   m_Name: Beam_Left
   m_TagString: Untagged
@@ -1266,13 +1310,13 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &3414671764609859008
+--- !u!4 &6896125547402894284
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6837834939586946669}
+  m_GameObject: {fileID: 7873727893241981904}
   serializedVersion: 2
   m_LocalRotation: {x: 0.05232799, y: -0.017428488, z: 0.0009133884, w: 0.99847746}
   m_LocalPosition: {x: -0.492, y: 0.248, z: 1.8939507}
@@ -1281,13 +1325,13 @@ Transform:
   m_Children: []
   m_Father: {fileID: 6286791001631368798}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!108 &3047134625524393254
+--- !u!108 &3331815031600712034
 Light:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6837834939586946669}
+  m_GameObject: {fileID: 7873727893241981904}
   m_Enabled: 0
   serializedVersion: 12
   m_Type: 0
@@ -1346,47 +1390,6 @@ Light:
   m_LightUnit: 1
   m_LuxAtDistance: 1
   m_EnableSpotReflector: 1
---- !u!1 &6930920074680817020
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 6286791001631368798}
-  m_Layer: 0
-  m_Name: CarLights
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &6286791001631368798
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6930920074680817020}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 918688769419079566}
-  - {fileID: 8328892053847719014}
-  - {fileID: 7978686582389583966}
-  - {fileID: 7415910558472890483}
-  - {fileID: 2058729884645309865}
-  - {fileID: 4346272150290611840}
-  - {fileID: 8277667852806009668}
-  - {fileID: 382030317530593646}
-  - {fileID: 3414671764609859008}
-  - {fileID: 3117488271782448843}
-  m_Father: {fileID: 4134731807131288}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8176214480455616039
 GameObject:
   m_ObjectHideFlags: 0
