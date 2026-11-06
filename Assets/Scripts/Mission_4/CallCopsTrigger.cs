@@ -33,7 +33,7 @@ public class CallCopsTrigger : MonoBehaviour
 
         heldTime += Time.deltaTime;
 
-        // TEMP DIAGNOSTIC - remove once a real UI bar exists, if wanted
+        // Hold progress as a prompt ("2/3s"). A fill-up progress bar will replace this later.
         int second = Mathf.Min(Mathf.FloorToInt(heldTime), Mathf.FloorToInt(holdDuration));
         NotePopup.Prompt(this, $"Calling the cops... keep holding {NotePopup.Key(GameAction.Interact)} ({second}/{holdDuration:0}s)");
 

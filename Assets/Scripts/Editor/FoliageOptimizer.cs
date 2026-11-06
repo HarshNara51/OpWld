@@ -21,14 +21,10 @@ public static class FoliageOptimizer
     // Tree prefabs to optimize (paths relative to the project).
     static readonly string[] TreePrefabs =
     {
-        "Assets/Imports/Trees/one/All/tree1_LODParent.prefab",
-        "Assets/Imports/Trees/one/All/tree2_LODParent.prefab",
-        "Assets/Imports/Trees/one/All/tree3_LODParent.prefab",
-        "Assets/Imports/Trees/one/All/tree4_LODParent.prefab",
-        "Assets/Imports/Trees/one/All/tree5_LODParent.prefab",
-        "Assets/Imports/Trees/one/All/tree6_LODParent.prefab",
-        "Assets/Imports/Trees/one/All/tree7_LODParent.prefab",
-        "Assets/Imports/Trees/one/All/tree8_LODParent.prefab",
+        "Assets/Imports/Trees/birch/birch_LODParent.prefab",
+        "Assets/Imports/Trees/fir/fir_LODParent.prefab",
+        "Assets/Imports/Trees/oak/OakBig_LODParent.prefab",
+        "Assets/Imports/Trees/tree-gn/TreeGen_LODParent.prefab",
         "Assets/Imports/Trees/two/instance_0_LODParent.prefab",
         "Assets/Imports/Trees/Cypress_V2_test_LODParent.prefab",
         "Assets/Imports/Trees/beech_LODParent.prefab",
@@ -411,6 +407,16 @@ public static class FoliageOptimizer
         // of the impostor was blank), so compile synchronously and render a throw-away pass first.
         bool asyncWas = ShaderUtil.allowAsyncCompilation;
         ShaderUtil.allowAsyncCompilation = false;
+        // Full-screen renderer features (volumetric fog, custom lighting) paint over the clear
+        // colour and leave the impostor with no transparency, so switch them off while baking.
+        var pausedFeatures = new List<UnityEngine.Rendering.Universal.ScriptableRendererFeature>();
+        foreach (string guid in AssetDatabase.FindAssets("t:UniversalRendererData"))
+        {
+            var data = AssetDatabase.LoadAssetAtPath<UnityEngine.Rendering.Universal.UniversalRendererData>(AssetDatabase.GUIDToAssetPath(guid));
+            if (data == null) continue;
+            foreach (var feature in data.rendererFeatures)
+                if (feature != null && feature.isActive) { feature.SetActive(false); pausedFeatures.Add(feature); }
+        }
         try
         {
             for (int v = -1; v < 2; v++)
@@ -442,6 +448,7 @@ public static class FoliageOptimizer
         finally
         {
             ShaderUtil.allowAsyncCompilation = asyncWas;
+            foreach (var feature in pausedFeatures) feature.SetActive(true);
             Object.DestroyImmediate(treeGo);
             Object.DestroyImmediate(camGo);
             rt.Release();

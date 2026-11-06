@@ -80,9 +80,6 @@ public class MissionBriefing : MonoBehaviour
     // Wire this to the briefing panel's OK button OnClick event
     public void OnOkPressed()
     {
-        // TEMP DIAGNOSTIC - remove once click is confirmed working
-        Debug.Log("[DIAGNOSTIC] OnOkPressed called.");
-
         if (!waitingForOk) return; // ignore double-clicks restarting the countdown
         waitingForOk = false;
 
